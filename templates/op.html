@@ -20,13 +20,19 @@
             text-align: center;
             margin-top: 30px;
         } 
+        .hdg {
+            padding: 40px;
+        }
+        .para {
+            padding: 0 40px;
+        }
     </style>
 </head>
 
 <body>
     <h3 id="heading">Loaded Summary!!</h3>
-    <h2>Paragraph</h2>
-    <div>
+    <h2 class="hdg">Paragraph</h2>
+    <div class="para">
         {% for p in data["para"].split("\n") %}
             <p>{{ p }}</p>
         {% endfor %}

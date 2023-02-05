@@ -75,8 +75,8 @@ def submit():
         m6 = luhn_model(d["para"])
         d["extractive"]["Luhn"] = m6
         # print(m6)
-        # m7 = nlp_model(d)
-        # d["abstractive"]["NLP"] = m7
+        m7 = nlp_model(d["para"])
+        d["abstractive"]["NLP"] = m7
         # print(d.keys(), d["extractive"].keys(), d["abstractive"].keys())
 
     return render_template("op.html", data=d)
@@ -109,8 +109,7 @@ def openai_model(data):
     )
     # print(response, type(response))
     # print(response.choices[0].text, type(response.choices[0].text))
-    # return response.choices[0].text.split('- ' if '-' in response.choices[0].text else '\n\u2022')[1:]
-    return response.choices[0].text.split('\n')[2:]
+    return list(map(lambda x: x[3:], response.choices[0].text.split('\n')[2:]))
 
 def lexrank_model(data):
     from sumy.summarizers.lex_rank import LexRankSummarizer
@@ -180,10 +179,10 @@ def nlp_model(data):
                     else:
                         sentence_scores[sent] += word_frequencies[word]
 
-    summary_sentences = heapq.nlargest(5, sentence_scores, key=sentence_scores.get)
-
-    summary = ' '.join(summary_sentences)
-    return summary
+    summary_sentences = heapq.nlargest(10, sentence_scores, key=sentence_scores.get)
+    
+    # summary = ' '.join(summary_sentences)
+    return summary_sentences
 
 if __name__ == "__main__":
     app.run(debug=True)

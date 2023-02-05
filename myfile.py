@@ -90,17 +90,90 @@ Ganesh Utla: Same goes for you."""
 # res = response.json()
 # print(res["summary"])
 
-import requests
+# import requests
 
-url = "https://enelyou-enelyou-summarization--index--summary--topic--part-of-s.p.rapidapi.com/sumpagejson/"
+# url = "https://enelyou-enelyou-summarization--index--summary--topic--part-of-s.p.rapidapi.com/sumpagejson/"
 
-payload = "url=http%3A%2F%2Fen.wikipedia.org%2Fwiki%2FNatural_language_processing&length=.1"
-headers = {
-	"content-type": "application/x-www-form-urlencoded",
-	"X-RapidAPI-Key": "80a948574fmsh5676ccf6ef9c454p17718cjsneff8135f3b7d",
-	"X-RapidAPI-Host": "enelyou-enelyou-summarization--index--summary--topic--part-of-s.p.rapidapi.com"
-}
+# payload = "url=http%3A%2F%2Fen.wikipedia.org%2Fwiki%2FNatural_language_processing&length=.1"
+# headers = {
+# 	"content-type": "application/x-www-form-urlencoded",
+# 	"X-RapidAPI-Key": "80a948574fmsh5676ccf6ef9c454p17718cjsneff8135f3b7d",
+# 	"X-RapidAPI-Host": "enelyou-enelyou-summarization--index--summary--topic--part-of-s.p.rapidapi.com"
+# }
 
-response = requests.request("POST", url, data=payload, headers=headers)
+# response = requests.request("POST", url, data=payload, headers=headers)
 
-print(response.text)
+# print(response.text)
+
+import re
+import nltk
+import heapq
+
+def nlp_model(data):
+
+    article_text = re.sub(r'\[[0-9]*\]', ' ', data)
+    article_text = re.sub(r'\s+', ' ', article_text)
+
+    formatted_article_text = re.sub('[^a-zA-Z]', ' ', article_text )
+    formatted_article_text = re.sub(r'\s+', ' ', formatted_article_text)
+
+    sentence_list = nltk.sent_tokenize(article_text)
+    nltk.download("stopwords")
+    stopwords = nltk.corpus.stopwords.words('english')
+
+    word_frequencies = {}
+    for word in nltk.word_tokenize(formatted_article_text):
+        if word not in stopwords:
+            if word not in word_frequencies.keys():
+                word_frequencies[word] = 1
+            else:
+                word_frequencies[word] += 1
+                
+    maximum_frequncy = max(word_frequencies.values())
+
+    for word in word_frequencies.keys():
+        word_frequencies[word] = (word_frequencies[word]/maximum_frequncy)
+        
+    sentence_scores = {}
+    for sent in sentence_list:
+        for word in nltk.word_tokenize(sent.lower()):
+            if word in word_frequencies.keys():
+                if len(sent.split(' ')) < 30:
+                    if sent not in sentence_scores.keys():
+                        sentence_scores[sent] = word_frequencies[word]
+                    else:
+                        sentence_scores[sent] += word_frequencies[word]
+
+    summary_sentences = heapq.nlargest(5, sentence_scores, key=sentence_scores.get)
+
+    # summary = ' '.join(summary_sentences)
+    return summary_sentences
+
+print(nlp_model(s))
+
+
+"""
+import speech_recognition as sr
+
+# initialize recognizer class
+r = sr.Recognizer()
+
+//
+# For Reading Microphone as source
+with sr.Microphone() as source:
+    print("Talk")
+    audio = r.listen(source)
+# OR
+# For reading audio
+filename = "audio_file.wav"
+with sr.AudioFile(filename) as source:
+    audio_text = r.record(source)
+//
+# using google to recognize audio
+try:
+    print("The audio file contains: " + r.recognize_google(audio_text))
+except sr.UnknownValueError:
+    print("Google Speech Recognition could not understand audio")
+except sr.RequestError as e:
+    print("Could not request results from Google Speech Recognition service; {0}".format(e))
+"""
