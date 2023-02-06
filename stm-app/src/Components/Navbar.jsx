@@ -9,7 +9,6 @@ import {
   ListItemIcon,
   ListItemButton,
   ListItemText,
-  colors,
 } from "@mui/material";
 import React, { useContext, useState } from "react";
 import { ColorModeContext, tokens } from "../theme";
@@ -66,7 +65,10 @@ const Sidebar = () => {
             <ListItemText primary="About Us" />
           </ListItemButton>
 
-          <ListItemButton sx={{ pl: 4, pb: 1 }} onClick={() => navigate("/login")}>
+          <ListItemButton sx={{ pl: 4, pb: 1 }} onClick={() => {
+            colorMode.toggleColorMode();
+            navigate("/login")
+          }}>
             <ListItemIcon>
               <LogoutIcon />
             </ListItemIcon>
@@ -83,7 +85,7 @@ const Navbar = () => {
   const colors = tokens(theme.palette.mode);
   const colorMode = useContext(ColorModeContext);
   const navigate = useNavigate();
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const isNonMobile = useMediaQuery("(min-width: 500px)");
 
   const handleClick = () => {
@@ -160,7 +162,10 @@ const Navbar = () => {
             </Tooltip>
 
             <Tooltip title="Logout">
-              <IconButton onClick={() => navigate("/login")}>
+              <IconButton onClick={() => {
+                colorMode.toggleColorMode();
+                navigate("/login")
+              }}>
                 <LogoutIcon />
               </IconButton>
             </Tooltip>

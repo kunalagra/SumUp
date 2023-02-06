@@ -1,20 +1,20 @@
 import { Box, FormLabel, Typography, useTheme } from "@mui/material";
 import { tokens } from "../theme";
+import { useState } from "react";
 
 const CreateSummary = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const [para, setPara] = useState("");
 
-  const handleSubmit = (event) => {
-    let inputPara = document.getElementById("para").value;
-    let inputFile = document.getElementById("formFile").files[0];
-    let inputAudioFile = document.getElementById("audioFile").files[0];
-    console.log(inputPara);
-    console.log(inputFile);
-    console.log(inputAudioFile);
-    event.preventDefault();
+  const handleChange = (event) => {
+    setPara(event.target.value);
   };
 
+  const handleSubmit = () => {
+    console.log(para);
+  };
+  
   return (
     <Box m="20px auto" p="0 20px" maxWidth="700px" minHeight="80vh">
       <Typography variant="h3" id="heading">
@@ -42,21 +42,16 @@ const CreateSummary = () => {
               backgroundColor: `${colors.primary[800]}`,
               color: `${colors.grey[100]}`,
             }}
+            onChange={handleChange}
           ></textarea>
         </Box>
 
         <Box className="or-line row">
-          <div className="col-5">
-            <hr></hr>
-          </div>
+          <div className="col-5"><hr></hr></div>
           <div className="col-2">
-            <Typography className="text-center" variant="h5">
-              OR
-            </Typography>
+          <Typography className="text-center" variant="h5">OR</Typography>
           </div>
-          <div className="col-5">
-            <hr></hr>
-          </div>
+          <div className="col-5"><hr></hr></div>
         </Box>
 
         <Box className="mb-3">
@@ -75,45 +70,13 @@ const CreateSummary = () => {
             }}
           ></input>
         </Box>
-
-        <Box className="or-line row">
-          <div className="col-5">
-            <hr></hr>
-          </div>
-          <div className="col-2">
-            <Typography className="text-center" variant="h5">
-              OR
-            </Typography>
-          </div>
-          <div className="col-5">
-            <hr></hr>
-          </div>
-        </Box>
-
-        <Box className="mb-3">
-          <FormLabel htmlFor="audioFile" className="form-label">
-            Upload the Audio Transcript File {"(.wav / .mp3)"}
-          </FormLabel>
-          <input
-            className="form-control"
-            type="file"
-            id="audioFile"
-            name="audioFile"
-            style={{
-              border: `2px solid ${colors.grey[900]}`,
-              backgroundColor: `${colors.primary[800]}`,
-              color: `${colors.grey[100]}`,
-            }}
-          ></input>
-        </Box>
-
         <button
           type="submit"
           className="btn"
-          style={{
+          style={{ 
             backgroundColor: `${colors.blueAccent[500]}`,
-            color: "white",
-          }}
+            color: "white"
+            }}
         >
           Load Summary
         </button>
