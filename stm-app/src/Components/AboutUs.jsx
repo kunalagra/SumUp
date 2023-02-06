@@ -1,5 +1,6 @@
-import { Box, Typography, Button } from "@mui/material";
-import useMediaQuery from "@mui/material/useMediaQuery";
+// import { Box, Typography, Button } from "@mui/material";
+import { Box } from "@mui/material";
+// import useMediaQuery from "@mui/material/useMediaQuery";
 
 const AboutUs = () => {
     return (

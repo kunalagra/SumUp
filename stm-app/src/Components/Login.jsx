@@ -40,7 +40,6 @@ const Login = () => {
           "& .MuiTextField-root": { mt: "20px", width: "100%" },
         }}
         noValidate
-        autoComplete="off"
         width={isNonMobile? "300px" : "90%" } 
       >
         <Typography variant="h3"> Login</Typography>
