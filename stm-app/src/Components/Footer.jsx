@@ -14,7 +14,7 @@ const Footer = () => {
         textAlign="center"
         sx={{ m: "15px" }}
       >
-        © 2022
+        © 2023
         <Link to="/" style={{textDecoration: "none", color: `${colors.greenAccent[500]}`, margin: "7px"}}>
             Sum-Up
         </Link>

@@ -16,7 +16,7 @@ const CreateSummary = () => {
   };
   //   const isNonMobile = useMediaQuery("(min-width: 600px)");
   return (
-    <Box m="20px auto" p="0 20px" maxWidth="700px" minHeight="85vh">
+    <Box m="20px auto" p="0 20px" maxWidth="700px" minHeight="80vh">
       <Typography variant="h3" id="heading">
         Input Data
       </Typography>

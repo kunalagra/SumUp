@@ -110,7 +110,7 @@ const RenderSummary = () => {
     <Box
       m="20px auto"
       p="0 20px"
-      minHeight="85vh"
+      minHeight="80vh"
       display="flex"
       flexDirection="column"
       justifyContent="center"
@@ -121,14 +121,12 @@ const RenderSummary = () => {
           Given Transcript
         </Typography>
         <Box
-          // backgroundColor={colors.grey[800]}
-          // color={colors.grey[100]}
           height="400px"
           overflow="auto"
           m="20px 0"
           p="10px"
           border={`2px solid ${colors.grey[800]}`}
-          borderRadius="10px"
+          borderRadius="10px 0 0 10px"
         >
           {paragraph}
         </Box>

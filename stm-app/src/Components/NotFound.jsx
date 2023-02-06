@@ -13,7 +13,7 @@ const NotFound = () => {
             flexDirection="column"
             alignItems="center"
             mt="100px"
-            minHeight="85vh"
+            minHeight="70vh"
         >
             <Box 
                 display="flex"
