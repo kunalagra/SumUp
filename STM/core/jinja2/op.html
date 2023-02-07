@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Summary Page</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <style>
+        .table {
+            width: 1000px;
+            margin: 30px auto;
+        }
+        .heading {
+            width: 15%;
+        }
+        #heading {
+            text-align: center;
+            margin-top: 30px;
+        } 
+        .hdg {
+            padding: 40px;
+        }
+        .para {
+            padding: 0 40px;
+        }
+    </style>
+</head>
+
+<body>
+    <h3 id="heading">Loaded Summary!!</h3>
+    <h2 class="hdg">Paragraph</h2>
+    <div class="para">
+        {% for p in data["para"].split("\n") %}
+            <p>{{ p }}</p>
+        {% endfor %}
+    </div>
+    <table class="table table-light table-striped">
+        <tr>
+            <th class="table-primary text-center heading">Model</th>
+            <th class="table-primary text-center">Summary Generated</th>
+        </tr>
+        {% for k,v in data["extractive"].items() %}
+        <tr>
+            <th class="heading text-center">{{ k }}</th>
+            <td>
+                <div class="table-data">
+                    <ul>
+                        {% for s in v %}
+                            <li>{{ s }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+        {% for k,v in data["abstractive"].items() %}
+        <tr>
+            <th class="heading text-center">{{ k }}</th>
+            <td>
+                <div class="table-data">
+                    <ul>
+                        {% for s in v %}
+                            <li>{{ s }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+        integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"
+        integrity="sha384-mQ93GR66B00ZXjt0YO5KlohRA5SY2XofN4zfuZxLkoj1gXtW8ANNCe9d5Y3eG5eD"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
