@@ -61,4 +61,4 @@ def gen_summ(request):
 	data["abstractive"]["NLP"] = m7
 	print(data)
 	# print(data.keys(), data["extractive"].keys(), data["abstractive"].keys())
-	return Response({"data": data})
+	return Response(data)
