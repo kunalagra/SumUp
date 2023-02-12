@@ -45,33 +45,33 @@ def lexrank_model(data):
     lexrank_summarizer = LexRankSummarizer()
     sumy_parser = PlaintextParser.from_string(data, Tokenizer('english'))
     lexrank_summary = lexrank_summarizer(sumy_parser.document,sentences_count=10)
-    # return " ".join(list(map(str, lexrank_summary)))
+    return " ".join(list(map(str, lexrank_summary)))
     # print(lexrank_summary)
-    return lexrank_summary
+    #return lexrank_summary
 
 def latent_summary_analysis_model(data):
     from sumy.summarizers.lsa import LsaSummarizer
     sumy_parser = PlaintextParser.from_string(data, Tokenizer('english'))
     lsa_summarizer = LsaSummarizer()
     lsa_summary = lsa_summarizer(sumy_parser.document, 10)
-    # return " ".join(list(map(str, lsa_summary)))
-    return lsa_summary
+    return " ".join(list(map(str, lsa_summary)))
+    #return lsa_summary
 
 def luhn_model(data):
     from sumy.summarizers.luhn import LuhnSummarizer
     sumy_parser = PlaintextParser.from_string(data, Tokenizer('english'))
     luhn_summarizer = LuhnSummarizer()
     luhn_summary = luhn_summarizer(sumy_parser.document, sentences_count=10)
-    # return " ".join(list(map(str,luhn_summary)))
-    return luhn_summary
+    return " ".join(list(map(str,luhn_summary)))
+    #return luhn_summary
 
 def klsum_model(data):
     from sumy.summarizers.kl import KLSummarizer
     sumy_parser = PlaintextParser.from_string(data, Tokenizer('english'))
     kl_summarizer = KLSummarizer()
     kl_summary = kl_summarizer(sumy_parser.document, sentences_count=10)
-    # return " ".join(list(map(str,kl_summary)))
-    return kl_summary
+    return " ".join(list(map(str,kl_summary)))
+    #return kl_summary
 
 def nlp_model(data):
 

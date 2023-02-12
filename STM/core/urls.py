@@ -7,6 +7,6 @@ from . import views
 
 urlpatterns = [
     path('', views.home, name='home'),
-	path('home', views.home_red, name='home_r'),
-	path('submit',views.form_sub, name='submit'),
+	# path('home', views.home_red, name='home_r'),
+	path('gen_summary',views.gen_summ, name='submit'),
 ]

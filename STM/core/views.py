@@ -9,12 +9,13 @@ import json
 def home(request):
 	return render(request, 'ip.html')
 
-@api_view(['GET'])
-def home_red(request):
-	return redirect('/')
+# @api_view(['GET'])
+# def home_red(request):
+# 	return redirect('/')
 
 @api_view(['POST'])
-def form_sub(request):
+def gen_summ(request):
+	print(request.POST.dict())
 	data = request.POST.dict()
 
 	if "para" not in data:
@@ -58,6 +59,6 @@ def form_sub(request):
 	# print(m6)
 	m7 =  models.nlp_model(data["para"])
 	data["abstractive"]["NLP"] = m7
+	print(data)
 	# print(data.keys(), data["extractive"].keys(), data["abstractive"].keys())
-	context = {'data': data}
-	return render(request,'op.html',context)
+	return Response({"data": data})
