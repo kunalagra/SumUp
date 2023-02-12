@@ -38,7 +38,7 @@ def openai_model(data):
     )
     # print(response, type(response))
     # print(response.choices[0].text, type(response.choices[0].text))
-    return list(map(lambda x: x[3:], response.choices[0].text.split('\n')[2:]))
+    return list(map(lambda x: x[0:], response.choices[0].text.split('\n')[2:]))
 
 def lexrank_model(data):
     from sumy.summarizers.lex_rank import LexRankSummarizer
