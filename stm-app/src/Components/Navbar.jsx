@@ -163,7 +163,9 @@ const Navbar = () => {
 
             <Tooltip title="Logout">
               <IconButton onClick={() => {
-                colorMode.toggleColorMode();
+                if(theme.palette.mode==="dark"){
+                  colorMode.toggleColorMode();
+                }
                 navigate("/login")
               }}>
                 <LogoutIcon />
