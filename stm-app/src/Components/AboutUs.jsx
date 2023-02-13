@@ -1,16 +1,17 @@
-// import { Box, Typography, Button } from "@mui/material";
-import { Box } from "@mui/material";
-// import useMediaQuery from "@mui/material/useMediaQuery";
+import React, { useState } from 'react';
 
-const AboutUs = () => {
-    return (
-        <Box 
-            m="20px"
-            minHeight="70vh"
-        >
-        
-        </Box>
-    )
-}
+const About = () => {
+  return (
+    <div>
+      <h2>About Our Team Meetings</h2>
+      <p>
+        Our team meetings are a space for us to come together, discuss progress,
+        and plan for the future. We aim to make our meetings productive and
+        efficient, ensuring that everyone has a chance to contribute and be heard.
+      </p>
 
-export default AboutUs;
+    </div>
+  );
+};
+
+export default About;

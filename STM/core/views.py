@@ -3,18 +3,68 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from docx import Document
 from . import models
-import json
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 # Create your views here.
+
 @api_view(['GET'])
 def home(request):
 	return render(request, 'ip.html')
 
+@api_view(['POST'])
+def login_user(request):
+	username = request.POST.get('email', None)
+	password = request.POST.get('password', None)
+	if not username or not password:
+		return Response({"message":"Please enter email and password"})
+	user = authenticate(request, username=username, password=password)
+	if user is not None:
+		login(request, user)
+		return Response({"message":"User logged in"})
+	else:
+		return Response({"message":"Invalid credentials"})
+	
 @api_view(['GET'])
-def home_red(request):
-	return redirect('/')
+def get_user(request):
+	if request.user.is_authenticated:
+		return Response({"message":"User logged in", "user":request.user.username})
+	else:
+		return Response({"message":"User not logged in"})
+
+@api_view(['GET'])
+def logout_user(request):
+	if request.user.is_authenticated:
+		logout(request)
+		return Response({"message":"User logged out"})
+	else:
+		return Response({"message":"User not logged in"})
 
 @api_view(['POST'])
-def form_sub(request):
+def signup(request):
+	username = request.POST.get('email', None)
+	password = request.POST.get('password', None)
+	if not username or not password:
+		return Response({"message":"Please enter email and password"})
+	if User.objects.filter(username=username).exists():
+		return Response({"message":"User already exists"})
+	else:
+		user = User.objects.create_user(username=username, password=password)
+		user.save()
+		return Response({"message":"User created"})
+
+	
+
+
+
+
+# @api_view(['GET'])
+# def home_red(request):
+# 	return redirect('/')
+
+@api_view(['POST'])
+def gen_summ(request):
+	print(request.POST.dict())
 	data = request.POST.dict()
 
 	if "para" not in data:
@@ -58,6 +108,6 @@ def form_sub(request):
 	# print(m6)
 	m7 =  models.nlp_model(data["para"])
 	data["abstractive"]["NLP"] = m7
+	print(data)
 	# print(data.keys(), data["extractive"].keys(), data["abstractive"].keys())
-	context = {'data': data}
-	return render(request,'op.html',context)
+	return Response(data)
