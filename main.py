@@ -77,6 +77,7 @@ def submit():
         # print(m6)
         m7 = nlp_model(d["para"])
         d["abstractive"]["NLP"] = m7
+        # print(d)
         # print(d.keys(), d["extractive"].keys(), d["abstractive"].keys())
 
     return render_template("op.html", data=d)
