@@ -166,7 +166,10 @@ const Navbar = () => {
               <IconButton onClick={() => {
                 httpClient.get('/logout').then((res) => {
                   if (res.data.message) {
-                    console.log(res.data);
+                    if(theme.palette.mode==="dark"){
+                      colorMode.toggleColorMode();
+                    }
+                    navigate("/login")
                   }
                   else {
                     alert("User not found");
