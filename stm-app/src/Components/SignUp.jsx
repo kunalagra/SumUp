@@ -17,6 +17,7 @@ import { Link } from "react-router-dom";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { Formik } from "formik";
 import * as yup from "yup";
+import httpClient from "../httpClient";
 
 function Responsive(Component) {
   return function WrappedComp(props) {
@@ -55,7 +56,16 @@ class SignUp extends Component {
   }
 
   handleFormSubmit(values) {
-    console.log(values);
+    httpClient.post('/signup', values).then((res) => {
+      if (res.data.message) {
+        console.log(res.data);
+      }
+      else {
+        alert("Invalid Credentials");
+      }
+  }).catch((err) => {
+      console.log(err);
+  });
   }
 
   render() {

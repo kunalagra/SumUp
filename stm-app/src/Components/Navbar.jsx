@@ -22,6 +22,7 @@ import { useNavigate } from "react-router-dom";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import MenuOpenIcon from "@mui/icons-material/MenuOpen";
 import MenuIcon from "@mui/icons-material/Menu";
+import httpClient from "../httpClient";
 
 const Sidebar = () => {
   const theme = useTheme();
@@ -163,8 +164,16 @@ const Navbar = () => {
 
             <Tooltip title="Logout">
               <IconButton onClick={() => {
-                colorMode.toggleColorMode();
-                navigate("/login")
+                httpClient.get('/logout').then((res) => {
+                  if (res.data.message) {
+                    console.log(res.data);
+                  }
+                  else {
+                    alert("User not found");
+                  }
+              }).catch((err) => {
+                  console.log(err);
+              });
               }}>
                 <LogoutIcon />
               </IconButton>

@@ -1,8 +1,10 @@
 from django.shortcuts import render,redirect
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from django.http import Http404
 from docx import Document
 from . import models
+import json
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -14,21 +16,20 @@ def home(request):
 
 @api_view(['POST'])
 def login_user(request):
-	username = request.POST.get('email', None)
-	password = request.POST.get('password', None)
-	if not username or not password:
-		return Response({"message":"Please enter email and password"})
-	user = authenticate(request, username=username, password=password)
+	data = json.loads(request.body)
+	username = data['email']
+	password = data['password']
+	user = authenticate(data, username=username, password=password)
 	if user is not None:
 		login(request, user)
-		return Response({"message":"User logged in"})
+		return Response({"message":"User logged in", "user":request.user.username, "name":request.user.first_name})
 	else:
-		return Response({"message":"Invalid credentials"})
+		return Response({"message":False})
 	
 @api_view(['GET'])
 def get_user(request):
 	if request.user.is_authenticated:
-		return Response({"message":"User logged in", "user":request.user.username})
+		return Response({"message":"User logged in", "user":request.user.username, "name":request.user.first_name})
 	else:
 		return Response({"message":"User not logged in"})
 
@@ -38,22 +39,21 @@ def logout_user(request):
 		logout(request)
 		return Response({"message":"User logged out"})
 	else:
-		return Response({"message":"User not logged in"})
+		return Response({"message":False})
 
 @api_view(['POST'])
 def signup(request):
-	username = request.POST.get('email', None)
-	password = request.POST.get('password', None)
-	if not username or not password:
-		return Response({"message":"Please enter email and password"})
+	data = json.loads(request.body)
+	username = data['email']
+	password = data['password']
+	name = data['name']
 	if User.objects.filter(username=username).exists():
-		return Response({"message":"User already exists"})
+		return Response({"message":False})
 	else:
-		user = User.objects.create_user(username=username, password=password)
+		user = User.objects.create_user(username=username, password=password, first_name=name)
 		user.save()
-		return Response({"message":"User created"})
+		return Response({"message":"User created", "user":username, "name": name})
 
-	
 
 
 
