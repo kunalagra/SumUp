@@ -12,6 +12,7 @@ import Login from "./Components/Login";
 import SignUp from "./Components/SignUp";
 import { Component } from "react";
 import { withRouter } from "./ComponentWithRouter";
+import {CommonProvider} from "./Context/commonContext";
 
 
 function withThemeProvider(Component) {
@@ -38,6 +39,7 @@ class App extends Component {
   render() {
     const navbar = !this.state.isUserPage? <Navbar /> : "";
     return (
+      <CommonProvider>
       <ColorModeContext.Provider value={this.props.colorMode}>
         <ThemeProvider theme={this.props.theme}>
           <CssBaseline />
@@ -59,6 +61,7 @@ class App extends Component {
           </div>
         </ThemeProvider>
       </ColorModeContext.Provider>
+      </CommonProvider>
     );
   }
 
