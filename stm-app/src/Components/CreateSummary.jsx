@@ -1,17 +1,81 @@
 import { Box, FormLabel, Typography, useTheme } from "@mui/material";
 import { tokens } from "../theme";
+// import httpClient from "../httpClient";
+import commonContext from "../Context/commonContext";
+import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const CreateSummary = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const navigate = useNavigate();
+
+  const { addSummary } = useContext(commonContext);
+  const { addPara } = useContext(commonContext);
 
   const handleSubmit = (event) => {
     let inputPara = document.getElementById("para").value;
     let inputFile = document.getElementById("formFile").files[0];
     let inputAudioFile = document.getElementById("audioFile").files[0];
-    console.log(inputPara);
-    console.log(inputFile);
-    console.log(inputAudioFile);
+
+    let formData = new FormData();
+    formData.append("para", inputPara);
+    formData.append("file", inputFile);
+    formData.append("audioFile", inputAudioFile);
+
+    axios.post("http://localhost:8000/gen_summary", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    })
+    .then((response) => {
+      const newsummaries = [
+        {
+          title: "LexRank",
+          summary: response.data.extractive.LexRank,
+          stars: 0,
+          type: "Extractive"
+        },
+        {
+          title: "LSA",
+          summary: response.data.extractive["LSA"],
+          stars: 0,
+          type: "Extractive"
+        },
+        {
+          title: "KL Sum",
+          summary: response.data.extractive["KL Sum"],
+          stars: 0,
+          type: "Extractive"
+        },
+        {
+          title: "Luhn",
+          summary: response.data.extractive["Luhn"],
+          stars: 0,
+          type: "Extractive"
+        },
+        {
+          title: "OpenAI",
+          summary: response.data.abstractive["OpenAI"],
+          stars: 0,
+          type: "Abstractive"
+        },
+        {
+          title: "NLP",
+          summary: response.data.abstractive["NLP"],
+          stars: 0,
+          type: "Abstractive"
+        },
+      ]
+      newsummaries.forEach((summary) => {
+        addSummary(summary);
+      });
+
+      addPara(response.data.para);
+
+      navigate("/summary");
+    });
     event.preventDefault();
   };
 
@@ -22,8 +86,6 @@ const CreateSummary = () => {
       </Typography>
       <form
         onSubmit={handleSubmit}
-        action="/submit"
-        method="post"
         id="input-form"
         encType="multipart/form-data"
       >
@@ -106,7 +168,6 @@ const CreateSummary = () => {
             }}
           ></input>
         </Box>
-
         <button
           type="submit"
           className="btn"

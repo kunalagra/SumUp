@@ -39,5 +39,18 @@ body,
   background-color: #3ea68b;
 }
 
-
+#about{
+  margin: 20px;
+}
+#id{
+  top: 50%;
+  margin-left: 100px;
+  width: fit-content;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 20px;
+  border: 1px solid rgb(132, 174, 219);
+  padding-top: 10px;
+}
 
