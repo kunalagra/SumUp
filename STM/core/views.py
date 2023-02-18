@@ -41,6 +41,21 @@ def get_user(request):
 def message(request):
 	return Response({"message":"Hello World"})
 
+@api_view(['POST'])
+def update_user(request):
+	data = json.loads(request.body)
+	username = data['email']
+	password = data['password']
+	name = data['name']
+	if User.objects.filter(username=username).exists():
+		user = User.objects.get(username=username)
+		user.set_password(password)
+		user.first_name = name
+		user.save()
+		return Response({"message":"User updated", "user":username, "name": name})
+	else:
+		return Response({"message":False})
+
 @api_view(['GET'])
 def logout_user(request):
 	print(request.user)
@@ -72,12 +87,12 @@ def gen_summ(request):
 	print(request.POST.dict())
 	data = request.POST.dict()
 
-	if "para" not in data:
-		f = request.files['formFile']
-		ext = (f.filename).split(".")[-1]
-		f.save(f.filename)
+	if "para" not in data or data["para"]=="":
+		f = request.FILES['file']
+		ext = f.name.split(".")[-1]
+		# print(ext)
 		if ext=="docx":
-			doc = Document(f.filename)
+			doc = Document(f)
 			paras = doc.paragraphs
 			content = ""
 			for i in range(8,len(paras),3):
@@ -85,11 +100,9 @@ def gen_summ(request):
 				content += paras[i].text.split(" - ")[0] + ": " + p + "\n"
 			data["para"] = content
 		elif ext=="txt":
-			tmp = open(f.filename, "r")
-			data["para"] = tmp.read()
+			data["para"] = f.read().decode("utf-8")
 		else:
 			return Response({"message":"File not valid"})
-		
 	data['abstractive'] = {}
 	data['extractive'] = {}
 	m2 = models.openai_model(data)

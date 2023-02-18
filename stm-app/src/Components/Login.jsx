@@ -17,12 +17,14 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import { Formik } from "formik";
 import * as yup from "yup";
 import httpClient from "../httpClient";
+import { useNavigate } from "react-router-dom";
 // import Cookies from "js-cookie";
 
 function Responsive(Component) {
   return function WrappedComp(props) {
+    const navigate = useNavigate();
     const isNonMobile = useMediaQuery("(min-width: 400px)");
-    return <Component {...props} isNonMobile={isNonMobile} />;
+    return <Component {...props} {...{navigate}} isNonMobile={isNonMobile} />;
   };
 }
 
@@ -42,6 +44,7 @@ class Login extends Component {
       email: yup.string().email("Invalid Email").required("required"),
       password: yup.string().required("required"),
     });
+
   }
 
   handleClickShowPassword() {
@@ -63,7 +66,8 @@ class Login extends Component {
           localStorage.setItem('name', res.data.name);
           localStorage.setItem('email', res.data.user);
           // console.log(Cookies.get("csrftoken"))
-          window.location.href = "/summarize";
+          const { navigate } = this.props;
+          navigate("/summarize")
         }
         else {
           alert("Invalid Credentials");
