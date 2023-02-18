@@ -26,7 +26,6 @@ SECRET_KEY = 'django-insecure-3ndow$xsvp19x%*)ju#v8oa5trup#q-&&7yd65t=i2iu#@m^j!
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -83,7 +82,13 @@ TEMPLATES = [
 WSGI_APPLICATION = 'STM.wsgi.application'
 
 CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
 ALLOWED_HOSTS = ['*']
+CSRF_TRUSTED_ORIGINS = ['https://*.mydomain.com','https://*.127.0.0.1', 'http://localhost:3000']
+CSRF_COOKIE_HTTPONLY = True
+CSRF_COOKIE_SAMESITE = 'Strict'
+SESSION_COOKIE_SAMESITE = 'Strict'
+SESSION_COOKIE_HTTPONLY = True
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
@@ -144,7 +149,14 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.AllowAny',
-    ]
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        # 'rest_framework.authentication.BasicAuthentication',
+        # 'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    )
 }
+
+# SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'

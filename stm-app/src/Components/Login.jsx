@@ -17,6 +17,7 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import { Formik } from "formik";
 import * as yup from "yup";
 import httpClient from "../httpClient";
+// import Cookies from "js-cookie";
 
 function Responsive(Component) {
   return function WrappedComp(props) {
@@ -26,6 +27,7 @@ function Responsive(Component) {
 }
 
 class Login extends Component {
+
   constructor(props) {
     super(props);
     this.state = {
@@ -58,7 +60,10 @@ class Login extends Component {
     console.log(email, password)
     httpClient.post('/login', {email, password}).then((res) => {
         if (res.data.message) {
-          console.log(res.data);
+          localStorage.setItem('name', res.data.name);
+          localStorage.setItem('email', res.data.user);
+          // console.log(Cookies.get("csrftoken"))
+          window.location.href = "/summarize";
         }
         else {
           alert("Invalid Credentials");
