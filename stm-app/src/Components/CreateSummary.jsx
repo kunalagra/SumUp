@@ -1,9 +1,10 @@
 import { Box, FormLabel, Typography, useTheme } from "@mui/material";
 import { tokens } from "../theme";
-import httpClient from "../httpClient";
+// import httpClient from "../httpClient";
 import commonContext from "../Context/commonContext";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const CreateSummary = () => {
   const theme = useTheme();
@@ -23,7 +24,12 @@ const CreateSummary = () => {
     formData.append("file", inputFile);
     formData.append("audioFile", inputAudioFile);
 
-    httpClient.post("/gen_summary", formData).then((response) => {
+    axios.post("http://localhost:8000/gen_summary", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    })
+    .then((response) => {
       const newsummaries = [
         {
           title: "LexRank",
