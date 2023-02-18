@@ -2,6 +2,7 @@ import django
 from django.shortcuts import render,redirect
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from rest_framework import status
 from django.http import Http404
 from docx import Document
 from . import models
@@ -24,18 +25,18 @@ def login_user(request):
 	if user is not None:
 		login(request, user)
 		if request.user.is_authenticated:
-			return Response({"sessionid":django.middleware.csrf.get_token(request), "message":"User logged in", "user":request.user.username, "name":request.user.first_name})
+			return Response({"sessionid":django.middleware.csrf.get_token(request), "message":"User logged in", "user":request.user.username, "name":request.user.first_name},status==status.HTTP_200_OK)
 		else:
-			return Response({"message":"User not logged in"})
+			return Response({"message":"User not logged in"},status==status.HTTP_401_UNAUTHORIZED)
 	else:
-		return Response({"message":False})
+		return Response({"message":False},status==status.HTTP_401_UNAUTHORIZED)
 	
 @api_view(['GET'])
 def get_user(request):
 	if request.user.is_authenticated:
-		return Response({"message":"User logged in", "user":request.user.username, "name":request.user.first_name})
+		return Response({"message":"User logged in", "user":request.user.username, "name":request.user.first_name},status==status.HTTP_200_OK)
 	else:
-		return Response({"message":"User not logged in"})
+		return Response({"message":"User not logged in"},status==status.HTTP_401_UNAUTHORIZED)
 	
 @api_view(['POST'])
 def message(request):
@@ -72,11 +73,11 @@ def signup(request):
 	password = data['password']
 	name = data['name']
 	if User.objects.filter(username=username).exists():
-		return Response({"message":False})
+		return Response({"message":"User Already Exist"},status==status.HTTP_403_FORBIDDEN)
 	else:
 		user = User.objects.create_user(username=username, password=password, first_name=name, email=username)
 		user.save()
-		return Response({"message":"User created", "user":username, "name": name})
+		return Response({"message":"User created", "user":username, "name": name},status==status.HTTP_200_OK)
 
 
 # @api_view(['GET'])
@@ -128,4 +129,4 @@ def gen_summ(request):
 	data["abstractive"]["NLP"] = m7
 	print(data)
 	# print(data.keys(), data["extractive"].keys(), data["abstractive"].keys())
-	return Response(data)
+	return Response(data,status==status.HTTP_200_OK)
