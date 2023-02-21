@@ -16,15 +16,20 @@ import { Link } from "react-router-dom";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { Formik } from "formik";
 import * as yup from "yup";
+import httpClient from "../httpClient";
+import { useNavigate } from "react-router-dom";
+// import Cookies from "js-cookie";
 
 function Responsive(Component) {
   return function WrappedComp(props) {
+    const navigate = useNavigate();
     const isNonMobile = useMediaQuery("(min-width: 400px)");
-    return <Component {...props} isNonMobile={isNonMobile} />;
+    return <Component {...props} {...{navigate}} isNonMobile={isNonMobile} />;
   };
 }
 
 class Login extends Component {
+
   constructor(props) {
     super(props);
     this.state = {
@@ -39,6 +44,7 @@ class Login extends Component {
       email: yup.string().email("Invalid Email").required("required"),
       password: yup.string().required("required"),
     });
+
   }
 
   handleClickShowPassword() {
@@ -51,8 +57,26 @@ class Login extends Component {
     event.preventDefault();
   }
 
-  handleFormSubmit(values) {
-    console.log(values);
+  handleFormSubmit = async (values) => {
+    // console.log(values);
+    const { email, password } = values;
+    console.log(email, password)
+    httpClient.post('/login', {email, password}).then((res) => {
+        if (res.data.message) {
+          localStorage.setItem('name', res.data.name);
+          localStorage.setItem('email', res.data.user);
+          // console.log(Cookies.get("csrftoken"))
+          const { navigate } = this.props;
+          navigate("/summarize")
+        }
+        else {
+          alert("Invalid Credentials");
+        }
+    }).catch((err) => {
+        console.log(err);
+    });
+
+
   }
 
   render() {

@@ -1,8 +1,10 @@
 import { Box, FormLabel, Typography, useTheme } from "@mui/material";
 import { tokens } from "../theme";
-import { useNavigate } from "react-router-dom";
+// import httpClient from "../httpClient";
 import commonContext from "../Context/commonContext";
 import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const CreateSummary = () => {
   const theme = useTheme();
@@ -10,62 +12,71 @@ const CreateSummary = () => {
   const navigate = useNavigate();
 
   const { addSummary } = useContext(commonContext);
+  const { addPara } = useContext(commonContext);
 
   const handleSubmit = (event) => {
+    let inputPara = document.getElementById("para").value;
+    let inputFile = document.getElementById("formFile").files[0];
+    let inputAudioFile = document.getElementById("audioFile").files[0];
 
-    // let inputPara = document.getElementById("para").value;
-    // let inputFile = document.getElementById("formFile").files[0];
-    // let inputAudioFile = document.getElementById("audioFile").files[0];
-    // console.log(inputPara);
-    // console.log(inputFile);
-    // console.log(inputAudioFile);
-    // event.preventDefault();
+    let formData = new FormData();
+    formData.append("para", inputPara);
+    formData.append("file", inputFile);
+    formData.append("audioFile", inputAudioFile);
 
-    const newSummaries = [
-      {
-        title: "LexRank",
-        summary: ['Ganesh Utla: Hello.', 'Kunal Agrawal: Thank you.', 'Ganesh Utla: Was that a conscious choice?', "Aman Tiwari: [inaudible 00:27] Ganesh Utla: No, no, That's perfect.", "I didn't really know what I was doing at the time, but at some point, I found out I was having some success with that, and so I started doing it for local businesses and restaurants.", "What kind of challenges did you experience when you were starting out, that you weren't expecting?", "Kunal Agrawal: Hmm, challenges I wasn't expecting.", "Kunal Agrawal: No, it's fine.", 'Kunal Agrawal: Okay, once again Thank you for your time.', 'Ganesh Utla: Same goes for you.'],
-        stars: 0,
-        type: "Extractive"
+    axios.post("http://localhost:8000/gen_summary", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
       },
-      {
-        title: "LSA",
-        summary: ['This is the second part of the interview and I want to get these as quickly as possible because I know you somewhere between.', 'Ganesh Utla: It says on the website you worked doing graphic design for a local branding agency before branching out and starting your own business.', 'Ganesh Utla: Was that a conscious choice?', 'Was starting your own company international, or did you just sort of fall into it?', 'Kunal Agrawal: Actually, Sort of both.', "Then it kind of took off from there, and I figured, well, if I'm going to be taking on all these new clients I might as well get a website going and make something out of this, you know?", "Kunal Agrawal: Hmm, challenges I wasn't expecting.", 'I keep putting on the spot.', 'Kunal Agrawal: Okay, once again Thank you for your time.', 'Ganesh Utla: Same goes for you.'],
-        stars: 0,
-        type: "Extractive"
-      },
-      {
-        title: "KL Sum",
-        summary: ['Hello.', "It's my pleasure.", 'We can hear the fan.', 'Thanks, Aman.', 'Good.', "I didn't really know what I was doing at the time, but at some point, I found out I was having some success with that, and so I started doing it for local businesses and restaurants.", "What kind of challenges did you experience when you were starting out, that you weren't expecting?", "We're just ad-libbing here.", 'So, challenges.', 'Time to say bye now!'],
-        stars: 0,
-        type: "Extractive"
-      },
-      {
-        title: "Luhn",
-        summary: ['This is the second part of the interview and I want to get these as quickly as possible because I know you somewhere between.', 'Ganesh Utla: It says on the website you worked doing graphic design for a local branding agency before branching out and starting your own business.', 'Ganesh Utla: Was that a conscious choice?', 'Was starting your own company international, or did you just sort of fall into it?', 'I started out doing it as a favour for a friend.', "I didn't really know what I was doing at the time, but at some point, I found out I was having some success with that, and so I started doing it for local businesses and restaurants.", "Then it kind of took off from there, and I figured, well, if I'm going to be taking on all these new clients I might as well get a website going and make something out of this, you know?", "What kind of challenges did you experience when you were starting out, that you weren't expecting?", "Kunal Agrawal: Hmm, challenges I wasn't expecting.", 'Kunal Agrawal: Okay, once again Thank you for your time.'],
-        stars: 0,
-        type: "Extractive"
-      },
-      {
-        title: "OpenAI",
-        summary: ['This was the second part of an interview.', 'Kunal worked as a graphic designer for a local branding agency before branching out and starting his own business.', 'Kunal started his own business as a favour for a friend.', 'Kunal was having success and started taking on new clients.', 'Kunal then created a website for his business.', 'Kunal was asked about unexpected challenges he faced when starting out.', 'Ganesh and Kunal discussed ad-libbing during the interview.', 'Kunal thanked Ganesh for his time.', 'Ganesh thanked Kunal for his time.', 'The interview concluded.'],
-        stars: 0,
-        type: "Abstractive"
-      },
-      {
-        title: "NLP",
-        summary: ['Ganesh Utla: It says on the website you worked doing graphic design for a local branding agency before branching out and starting your own business.', 'This is the second part of the interview and I want to get these as quickly as possible because I know you somewhere between.', "What kind of challenges did you experience when you were starting out, that you weren't expecting?", 'Was starting your own company international, or did you just sort of fall into it?', "I don't think I put that one in the questions either.", "Kunal Agrawal: Hmm, challenges I wasn't expecting.", 'I started out doing it as a favour for a friend.', 'Time to say bye now!', 'Ganesh Utla: Sorry, one sec.', 'I keep putting on the spot.'],
-        stars: 0,
-        type: "Abstractive"
-      },
-    ];
+    })
+    .then((response) => {
+      const newsummaries = [
+        {
+          title: "LexRank",
+          summary: response.data.extractive.LexRank,
+          stars: 0,
+          type: "Extractive"
+        },
+        {
+          title: "LSA",
+          summary: response.data.extractive["LSA"],
+          stars: 0,
+          type: "Extractive"
+        },
+        {
+          title: "KL Sum",
+          summary: response.data.extractive["KL Sum"],
+          stars: 0,
+          type: "Extractive"
+        },
+        {
+          title: "Luhn",
+          summary: response.data.extractive["Luhn"],
+          stars: 0,
+          type: "Extractive"
+        },
+        {
+          title: "OpenAI",
+          summary: response.data.abstractive["OpenAI"],
+          stars: 0,
+          type: "Abstractive"
+        },
+        {
+          title: "NLP",
+          summary: response.data.abstractive["NLP"],
+          stars: 0,
+          type: "Abstractive"
+        },
+      ]
+      newsummaries.forEach((summary) => {
+        addSummary(summary);
+      });
 
-    newSummaries.forEach(summ => {
-        addSummary(summ);
+      addPara(response.data.para);
+
+      navigate("/summary");
     });
-
-    navigate("/summary");
-
+    event.preventDefault();
   };
 
   return (
@@ -75,8 +86,6 @@ const CreateSummary = () => {
       </Typography>
       <form
         onSubmit={handleSubmit}
-        action="/submit"
-        method="post"
         id="input-form"
         encType="multipart/form-data"
       >
@@ -159,7 +168,6 @@ const CreateSummary = () => {
             }}
           ></input>
         </Box>
-
         <button
           type="submit"
           className="btn"

@@ -4,12 +4,14 @@ import commonReducer from './commonReducer';
 const commonContext = createContext();
 
 const initialState = {
-    summaries: []
+    summaries: [],
+    para: '',
 };
 
 
 const CommonProvider = ({ children }) => {
 
+    
     const [state, dispatch] = useReducer(commonReducer, initialState);
 
     const addSummary = (summ) => {
@@ -19,10 +21,18 @@ const CommonProvider = ({ children }) => {
         })
     }
 
+    const addPara = (para) => {
+        return dispatch({
+            type: 'ADD_PARA',
+            payload: { para }
+        })
+    }
+
     // Context values
     const values = {
         ...state,
         addSummary,
+        addPara,
     };
 
     return (

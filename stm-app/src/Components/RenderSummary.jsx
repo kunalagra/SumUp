@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import React, { useContext } from "react";
+=======
+import React, {useContext} from "react";
+>>>>>>> 8a78f0416006fa0115f7ec8fd49eb8fef5a44a1b
 import { Rating } from "react-simple-star-rating";
 import {
   Box,
@@ -108,6 +112,12 @@ const RenderSummary = () => {
   //     type: "Abstractive"
   //   },
   // ];
+<<<<<<< HEAD
+=======
+  const { summaries } = useContext(commonContext);
+  const { para } = useContext(commonContext);
+  console.log(summaries);
+>>>>>>> 8a78f0416006fa0115f7ec8fd49eb8fef5a44a1b
   return (
     <Box
       m="20px auto"
@@ -130,7 +140,7 @@ const RenderSummary = () => {
           border={`2px solid ${colors.grey[800]}`}
           borderRadius="10px 0 0 10px"
         >
-          <p>Ganesh Utla: Hello. Hello.</p><p>Ganesh Utla: Welcome back, Kunal. This is the second part of the interview and I want to get these as quickly as possible because I know you somewhere between. Thank you.</p><p>Kunal Agrawal: Thank you. It's my pleasure.</p><p>Ganesh Utla: It says on the website you worked doing graphic design for a local branding agency before branching out and starting your own business.</p><p>Kunal Agrawal: Yes.</p><p>Ganesh Utla: Was that a conscious choice?</p><p>Kunal Agrawal: Yes.</p><p>Ganesh Utla: Sorry, one sec. We can hear the fan.</p><p>Aman Tiwari: [inaudible 00:27]</p><p>Ganesh Utla: No, no, That's perfect. Thanks, Aman. Good. Was starting your own company international, or did you just sort of fall into it?</p><p>Kunal Agrawal: Actually, Sort of both. I started out doing it as a favour for a friend. I didn't really know what I was doing at the time, but at some point, I found out I was having some success with that, and so I started doing it for local businesses and restaurants. Then it kind of took off from there, and I figured, well, if I'm going to be taking on all these new clients I might as well get a website going and make something out of this, you know?</p><p>Ganesh Utla: Sure. What kind of challenges did you experience when you were starting out, that you weren't expecting?</p><p>Kunal Agrawal: Hmm, challenges I wasn't expecting.</p><p>Ganesh Utla: Hahaha. I keep putting on the spot. I don't think I put that one in the questions either. We're just ad-libbing here.</p><p>Kunal Agrawal: No, it's fine. So, challenges.</p><p>Ganesh Utla: Okay. I understood. Time to say bye now!</p><p>Kunal Agrawal: Okay, once again Thank you for your time.</p><p>Ganesh Utla: Same goes for you.</p>
+          <p>{para}</p>
         </Box>
       </Box>
       <Box m="40px 0" maxWidth="calc(min(900px, 95%))">

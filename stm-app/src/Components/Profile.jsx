@@ -22,11 +22,11 @@ const Profile = () => {
             </Box>
             <Box>
                 <Box m="15px 0">
-                    <Typography variant="h3">Name</Typography>
+                    <Typography variant="h3">{localStorage.getItem('name')}</Typography>
                     <Typography variant="h4">Username</Typography>
                 </Box>
                 <Box m="15px 0">
-                    <Typography variant="h3">Email</Typography>
+                    <Typography variant="h3">{localStorage.getItem('email')}</Typography>
                     <Typography variant="h4">User mail id</Typography>
                 </Box>
                 <Box m="15px 0">
