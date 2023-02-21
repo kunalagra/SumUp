@@ -169,7 +169,7 @@ class SignUp extends Component {
                   variant="contained"
                   sx={{ fontWeight: "bold" }}
                 >
-                  Sign Up
+                  SignUp
                 </Button>
                 <Link to="/login" style={{ textDecoration: "none" }}>
                   <Typography variant="h5" color="secondary" ml="10px">

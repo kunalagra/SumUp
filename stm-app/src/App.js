@@ -12,6 +12,7 @@ import Login from "./Components/Login";
 import SignUp from "./Components/SignUp";
 import { Component } from "react";
 import { withRouter } from "./ComponentWithRouter";
+import { CommonProvider } from "./Context/commonContext";
 
 
 function withThemeProvider(Component) {
@@ -38,27 +39,29 @@ class App extends Component {
   render() {
     const navbar = !this.state.isUserPage? <Navbar /> : "";
     return (
-      <ColorModeContext.Provider value={this.props.colorMode}>
-        <ThemeProvider theme={this.props.theme}>
-          <CssBaseline />
-          <div className="app">
-            <main className="content">
-              { navbar }
-              <Routes>
-                <Route path="/summarize" element={<CreateSummary />} />
-                <Route path="/summary" element={<RenderSummary />} />
-                <Route path="/user" element={<Profile />} />
-                <Route path="/about" element={<AboutUs />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/signup" element={<SignUp />} />
+      <CommonProvider>
+        <ColorModeContext.Provider value={this.props.colorMode}>
+          <ThemeProvider theme={this.props.theme}>
+            <CssBaseline />
+            <div className="app">
+              <main className="content">
+                { navbar }
+                <Routes>
+                  <Route path="/summarize" element={<CreateSummary />} />
+                  <Route path="/summary" element={<RenderSummary />} />
+                  <Route path="/user" element={<Profile />} />
+                  <Route path="/about" element={<AboutUs />} />
+                  <Route path="/login" element={<Login />} />
+                  <Route path="/signup" element={<SignUp />} />
 
-                <Route path="/*" element={<NotFound />} />
-              </Routes>
-              <Footer />
-            </main>
-          </div>
-        </ThemeProvider>
-      </ColorModeContext.Provider>
+                  <Route path="/*" element={<NotFound />} />
+                </Routes>
+                <Footer />
+              </main>
+            </div>
+          </ThemeProvider>
+        </ColorModeContext.Provider>
+      </CommonProvider>
     );
   }
 
