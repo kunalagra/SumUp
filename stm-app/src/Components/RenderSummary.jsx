@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-import React, { useContext } from "react";
-=======
 import React, {useContext} from "react";
->>>>>>> 8a78f0416006fa0115f7ec8fd49eb8fef5a44a1b
 import { Rating } from "react-simple-star-rating";
 import {
   Box,
@@ -72,7 +68,7 @@ const RenderSummary = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
-  const { summaries } = useContext(commonContext);
+  const { summaries, para } = useContext(commonContext);
 
   // const summaries = [
   //   {
@@ -112,12 +108,7 @@ const RenderSummary = () => {
   //     type: "Abstractive"
   //   },
   // ];
-<<<<<<< HEAD
-=======
-  const { summaries } = useContext(commonContext);
-  const { para } = useContext(commonContext);
-  console.log(summaries);
->>>>>>> 8a78f0416006fa0115f7ec8fd49eb8fef5a44a1b
+  // console.log(summaries);
   return (
     <Box
       m="20px auto"
