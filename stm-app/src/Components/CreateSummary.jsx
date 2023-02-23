@@ -30,58 +30,58 @@ const CreateSummary = () => {
 
     console.log(formData);
 
-    // axios.post("http://localhost:8000/gen_summary", formData, {
-    //   headers: {
-    //     "Content-Type": "multipart/form-data",
-    //   },
-    // })
-    // .then((response) => {
-    //   const newsummaries = [
-    //     {
-    //       title: "LexRank",
-    //       summary: response.data.extractive.LexRank,
-    //       stars: 0,
-    //       type: "Extractive"
-    //     },
-    //     {
-    //       title: "LSA",
-    //       summary: response.data.extractive["LSA"],
-    //       stars: 0,
-    //       type: "Extractive"
-    //     },
-    //     {
-    //       title: "KL Sum",
-    //       summary: response.data.extractive["KL Sum"],
-    //       stars: 0,
-    //       type: "Extractive"
-    //     },
-    //     {
-    //       title: "Luhn",
-    //       summary: response.data.extractive["Luhn"],
-    //       stars: 0,
-    //       type: "Extractive"
-    //     },
-    //     {
-    //       title: "OpenAI",
-    //       summary: response.data.abstractive["OpenAI"],
-    //       stars: 0,
-    //       type: "Abstractive"
-    //     },
-    //     {
-    //       title: "NLP",
-    //       summary: response.data.abstractive["NLP"],
-    //       stars: 0,
-    //       type: "Abstractive"
-    //     },
-    //   ]
-    //   newsummaries.forEach((summary) => {
-    //     addSummary(summary);
-    //   });
+    axios.post("http://localhost:8000/gen_summary", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    })
+    .then((response) => {
+      const newsummaries = [
+        {
+          title: "LexRank",
+          summary: response.data.extractive.LexRank,
+          stars: 0,
+          type: "Extractive"
+        },
+        {
+          title: "LSA",
+          summary: response.data.extractive["LSA"],
+          stars: 0,
+          type: "Extractive"
+        },
+        {
+          title: "KL Sum",
+          summary: response.data.extractive["KL Sum"],
+          stars: 0,
+          type: "Extractive"
+        },
+        {
+          title: "Luhn",
+          summary: response.data.extractive["Luhn"],
+          stars: 0,
+          type: "Extractive"
+        },
+        {
+          title: "OpenAI",
+          summary: response.data.abstractive["OpenAI"],
+          stars: 0,
+          type: "Abstractive"
+        },
+        {
+          title: "NLP",
+          summary: response.data.abstractive["NLP"],
+          stars: 0,
+          type: "Abstractive"
+        },
+      ]
+      newsummaries.forEach((summary) => {
+        addSummary(summary);
+      });
 
-    //   addPara(response.data.para);
+      addPara(response.data.para);
 
-    //   navigate("/summary");
-    // });
+      navigate("/summary");
+    });
     // event.preventDefault();
   };
 

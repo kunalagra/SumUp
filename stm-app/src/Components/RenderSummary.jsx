@@ -10,13 +10,17 @@ import {
   useTheme,
   List,
   ListItem,
-  ListItemButton,
   ListItemText,
   ListItemIcon,
 } from "@mui/material";
 import LabelIcon from "@mui/icons-material/Label";
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Pagination, A11y, Autoplay } from 'swiper';
 import { tokens } from "../theme";
 import commonContext from "../Context/commonContext";
+import 'swiper/scss';
+import 'swiper/scss/autoplay';
+import 'swiper/scss/pagination';
 
 const Summary = ({ summitem }) => {
   const [rating, setRating] = React.useState(0);
@@ -28,18 +32,16 @@ const Summary = ({ summitem }) => {
   };
 
   return (
-    <Card sx={{ maxWidth: "900px", marginTop: "20px" }}>
-      <CardHeader title={summitem.title} subheader={summitem.type} />
+    <Card sx={{ maxWidth: "900px", marginTop: "20px" }} className="summary-card">
+      <CardHeader title={summitem.title} subheader={summitem.type} className="summary-header"/>
       <CardContent>
-        <List>
+        <List className="summary-list">
           {summitem.summary.map((item, index) => (
             <ListItem disablePadding key={index}>
-              <ListItemButton>
-                <ListItemIcon>
+                <ListItemIcon className="summary-list-icon">
                   <LabelIcon />
                 </ListItemIcon>
-                <ListItemText>{item}</ListItemText>
-              </ListItemButton>
+                <ListItemText  className="summary-list-text">{item}</ListItemText>
             </ListItem>
           ))}
         </List>
@@ -47,6 +49,7 @@ const Summary = ({ summitem }) => {
       <CardActions
         disableSpacing
         style={{ justifyContent: "flex-end", margin: "0 10px 10px 0" }}
+        className="summary-card-actions"
       >
         <Typography mr="10px">Rate</Typography>
         <Rating
@@ -69,6 +72,8 @@ const RenderSummary = () => {
   const colors = tokens(theme.palette.mode);
 
   const { summaries, para } = useContext(commonContext);
+
+  // const para = <div><p>Ganesh Utla: Hello. Hello</p><p>Ganesh Utla: Welcome back, Kunal. This is the second part of the interview and I want to get these as quickly as possible because I know you somewhere between. Thank you.</p><p>Kunal Agrawal: Thank you. It's my pleasure.</p><p>Ganesh Utla: It says on the website you worked doing graphic design for a local branding agency before branching out and starting your own business.</p><p>Kunal Agrawal: Yes.</p><p>Ganesh Utla: Was that a conscious choice?</p><p>Kunal Agrawal: Yes.</p><p>Ganesh Utla: Sorry, one sec. We can hear the fan.</p><p>Aman Tiwari: [inaudible 00:27]</p><p>Ganesh Utla: No, no, That's perfect. Thanks, Aman. Good. Was starting your own company international, or did you just sort of fall into it?</p><p>Kunal Agrawal: Actually, Sort of both. I started out doing it as a favour for a friend. I didn't really know what I was doing at the time, but at some point, I found out I was having some success with that, and so I started doing it for local businesses and restaurants. Then it kind of took off from there, and I figured, well, if I'm going to be taking on all these new clients I might as well get a website going and make something out of this, you know?</p><p>Ganesh Utla: Sure. What kind of challenges did you experience when you were starting out, that you weren't expecting?</p><p>Kunal Agrawal: Hmm, challenges I wasn't expecting.</p><p>Ganesh Utla: Hahaha. I keep putting on the spot. I don't think I put that one in the questions either. We're just ad-libbing here.</p><p>Kunal Agrawal: No, it's fine. So, challenges.</p><p>Ganesh Utla: Okay. I understood. Time to say bye now!</p><p>Kunal Agrawal: Okay, once again Thank you for your time.</p><p>Ganesh Utla: Same goes for you.</p></div>;
 
   // const summaries = [
   //   {
@@ -139,9 +144,27 @@ const RenderSummary = () => {
           Generated Summaries!!
         </Typography>
         <Box mt="10px">
-          {summaries.map((summ, index) => (
-            <Summary summitem={summ} key={index} />
-          ))}
+          <Swiper
+              modules={[Pagination, A11y, Autoplay]}
+              loop={true}
+              speed={400}
+              spaceBetween={100}
+              slidesPerView={1}
+              pagination={{ clickable: true }}
+              autoplay={{
+                  delay: 4000,
+                  disableOnInteraction: false,
+              }}
+          >
+            {summaries.map((summ, index) => (
+              <SwiperSlide
+                key={index}
+                className="summary-swiperslide mb-5"
+              >
+                <Summary summitem={summ}/>
+              </SwiperSlide>
+            ))}
+          </Swiper>
         </Box>
       </Box>
     </Box>
