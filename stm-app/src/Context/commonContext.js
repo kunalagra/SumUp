@@ -28,11 +28,25 @@ const CommonProvider = ({ children }) => {
         })
     }
 
+    const clearSummaries = () => {
+        return dispatch({
+            type: 'CLEAR_SUMMARIES'
+        })
+    }
+
+    const clearPara = () => {
+        return dispatch({
+            type: 'CLEAR_PARA'
+        })
+    }
+
     // Context values
     const values = {
         ...state,
         addSummary,
         addPara,
+        clearSummaries,
+        clearPara
     };
 
     return (
