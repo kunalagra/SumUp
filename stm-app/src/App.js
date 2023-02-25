@@ -9,6 +9,7 @@ import RenderSummary from "./Components/RenderSummary";
 import Profile from "./Components/Profile";
 import Login from "./Components/Login";
 import SignUp from "./Components/SignUp";
+import LoginTEMPP from "./Components/LoginTEMPP";
 import { Component } from "react";
 import { withRouter } from "./ComponentWithRouter";
 import { CommonProvider } from "./Context/commonContext";
@@ -51,6 +52,8 @@ class App extends Component {
                 <Route path="/user" element={<Profile />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<SignUp />} />
+                <Route path="/temp" element={<LoginTEMPP />} />
+
 
                 <Route path="/*" element={<NotFound />} />
               </Routes>
@@ -72,7 +75,7 @@ class App extends Component {
 
   onRouteChanged() {
     // console.log("Route changed", this.props.router.location.pathname);
-    if(this.props.router.location.pathname==='/login' || this.props.router.location.pathname==='/signup'){
+    if(this.props.router.location.pathname==='/login' || this.props.router.location.pathname==='/temp' || this.props.router.location.pathname==='/signup'){
       this.setState({
         isUserPage: true,
       })
