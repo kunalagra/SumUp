@@ -4,6 +4,7 @@ import {
   OutlinedInput,
   InputAdornment,
   IconButton,
+  FormHelperText,
 } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
@@ -18,7 +19,7 @@ import { useNavigate } from "react-router-dom";
 function Responsive(Component) {
   return function WrappedComp(props) {
     const navigate = useNavigate();
-    const isNonMobile = useMediaQuery("(min-width: 400px)");
+    const isNonMobile = useMediaQuery("(min-width: 769px)");
     return <Component {...props} {...{ navigate }} isNonMobile={isNonMobile} />;
   };
 }
@@ -83,51 +84,64 @@ class LoginTEMPP extends Component {
     return (
       <div className="login">
         {/* Side Banner Left or Right */}
-        <div
-          className={`login__colored-container ${
-            this.state.login
-              ? "login__colored-container--left"
-              : "login__colored-container--right"
-          }`}
-        ></div>
+        {
+            this.props.isNonMobile? (
+                <div
+                  className={`login__colored-container ${
+                    this.state.login
+                      ? "login__colored-container--left"
+                      : "login__colored-container--right"
+                  }`}
+                ></div>
+            ) : (
+                <></>
+            )
+        }
 
         {/* Signin Side Banner */}
-        <div
-          className={`login__welcome-back ${
-            this.state.login
-              ? "login__welcome-back--active"
-              : "login__welcome-back--inactive"
-          }`}
-        >
-          <div className="login__welcome-back__logo-container">
-            <img
-              className="login__welcome-back__logo-container--image"
-              src="logo.png"
-              alt="Budwriter"
-            />
-            STM-Quad
-          </div>
-          <div className="login__welcome-back__main-container">
-            <div className="login__welcome-back__main-container__text-container">
-              <span className="login__welcome-back__main-container__text-container--title">
-                Welcome Back!
-              </span>
-              <span className="login__welcome-back__main-container__text-container--secondary">
-                To keep sharing your work with us, please log in.
-              </span>
-            </div>
-            <div
-              onClick={() => {
-                this.setState({
-                  login: !this.state.login,
-                });
-              }}
-              className="login__welcome-back__main-container__button-container"
-            >
-              Sign In
-            </div>
-          </div>
-        </div>
+        {
+            this.props.isNonMobile? (
+
+                <div
+                className={`login__welcome-back ${
+                    this.state.login
+                    ? "login__welcome-back--active"
+                    : "login__welcome-back--inactive"
+                }`}
+                >
+                <div className="login__welcome-back__logo-container">
+                    <img
+                    className="login__welcome-back__logo-container--image"
+                    src="logo.png"
+                    alt="Budwriter"
+                    />
+                    <h5>STM-Quad</h5>
+                </div>
+                <div className="login__welcome-back__main-container">
+                    <div className="login__welcome-back__main-container__text-container">
+                    <span className="login__welcome-back__main-container__text-container--title">
+                        Welcome Back!
+                    </span>
+                    <span className="login__welcome-back__main-container__text-container--secondary">
+                        To keep sharing your work with us, please log in.
+                    </span>
+                    </div>
+                    <div
+                    onClick={() => {
+                        this.setState({
+                        login: !this.state.login,
+                        });
+                    }}
+                    className="login__welcome-back__main-container__button-container"
+                    >
+                    Sign In
+                    </div>
+                </div>
+                </div>
+            ) : (
+                <></>
+            )
+        }
 
         {/* Sign Up Page */}
         <div
@@ -137,7 +151,7 @@ class LoginTEMPP extends Component {
               : "login__create-container--inactive"
           }`}
         >
-          Create Account
+          Create an Account
           <div className="login__create-container__social-container">
             <img
               className="login__create-container__social-container--facebook-icon"
@@ -156,14 +170,14 @@ class LoginTEMPP extends Component {
             />
           </div>
           <span className="login__create-container--info-text">
-            or use email for your registration
+            Use email for your registration
           </span>
           <div className="login__create-container__form-container">
             <form
               className="login__create-container__form-container__form"
               onSubmit={this.handleFormSubmit}
             >
-              <FormControl sx={{ width: "270px" }} variant="outlined">
+              <FormControl sx={{ width: "min(270px, 90vw)" }} variant="outlined">
                 <InputLabel htmlFor="outlined-name">Name</InputLabel>
                 <OutlinedInput
                   id="outlined-name"
@@ -186,7 +200,7 @@ class LoginTEMPP extends Component {
                   required
                 />
               </FormControl>
-              <FormControl sx={{ width: "270px" }} variant="outlined">
+              <FormControl sx={{ width: "min(270px, 90vw)" }} variant="outlined">
                 <InputLabel htmlFor="outlined-email">Email</InputLabel>
                 <OutlinedInput
                   id="outlined-email"
@@ -209,7 +223,7 @@ class LoginTEMPP extends Component {
                   required
                 />
               </FormControl>
-              <FormControl sx={{ width: "270px" }} variant="outlined">
+              <FormControl sx={{ width: "min(270px, 90vw)" }} variant="outlined">
                 <InputLabel htmlFor="outlined-password">Password</InputLabel>
                 <OutlinedInput
                   id="outlined-password"
@@ -244,11 +258,24 @@ class LoginTEMPP extends Component {
                   }
                   required
                 />
+                <FormHelperText style={{fontSize:"0.8rem"}}>Password should contain atleast 4 characters</FormHelperText>
               </FormControl>
               <button className="login__create-container__form-container__form--submit">
                 Sign Up
               </button>
             </form>
+            {
+                this.props.isNonMobile? (<></>) : (
+                    <div 
+                        className="login__create-container__form-container--toogle-page-div"
+                        onClick={() => {
+                            this.setState({
+                                login: !this.state.login,
+                            });
+                        }}
+                    ><p>Already had one? Sign In</p></div>
+                )
+            }
           </div>
         </div>
 
@@ -287,14 +314,14 @@ class LoginTEMPP extends Component {
               />
             </div>
             <span className="login__login-container__main-container--info-text">
-              or use email for your login
+              Use email for your login
             </span>
             <div className="login__login-container__main-container__form-container">
               <form
                 className="login__login-container__main-container__form-container__form"
                 onSubmit={this.handleFormSubmit}
               >
-                <FormControl sx={{ width: "270px" }} variant="outlined">
+                <FormControl sx={{ width: "min(270px, 90vw)" }} variant="outlined">
                   <InputLabel htmlFor="outlined-email">Email</InputLabel>
                   <OutlinedInput
                     id="outlined-email"
@@ -317,7 +344,7 @@ class LoginTEMPP extends Component {
                     required
                   />
                 </FormControl>
-                <FormControl sx={{ width: "270px" }} variant="outlined">
+                <FormControl sx={{ width: "min(270px, 90vw)" }} variant="outlined">
                   <InputLabel htmlFor="outlined-password">Password</InputLabel>
                   <OutlinedInput
                     id="outlined-password"
@@ -357,37 +384,56 @@ class LoginTEMPP extends Component {
                   Sign In
                 </button>
               </form>
+              {
+                this.props.isNonMobile? (<></>) : (
+                    <div 
+                        className="login__login-container__main-container__form-container__toogle-page-div"
+                        onClick={() => {
+                            this.setState({
+                                login: !this.state.login,
+                            });
+                        }}
+                    ><p>Create an account? Sign Up</p></div>
+                )
+              }
             </div>
           </div>
         </div>
 
         {/* ṢignUp Side Banner */}
-        <div
-          className={`login__hello-container ${
-            !this.state.login
-              ? "login__hello-container--active"
-              : "login__hello-container--inactive"
-          }`}
-        >
-          <div className="login__welcome-back__main-container__text-container">
-            <span className="login__welcome-back__main-container__text-container--title">
-              Hello, stranger!
-            </span>
-            <span className="login__welcome-back__main-container__text-container--secondary">
-              Enter your personal details and start your own portfolio!
-            </span>
-          </div>
-          <div
-            onClick={() => {
-              this.setState({
-                login: !this.state.login,
-              });
-            }}
-            className="login__welcome-back__main-container__button-container"
-          >
-            Sign Up
-          </div>
-        </div>
+        {
+            this.props.isNonMobile? (
+
+            <div
+            className={`login__hello-container ${
+                !this.state.login
+                ? "login__hello-container--active"
+                : "login__hello-container--inactive"
+            }`}
+            >
+            <div className="login__welcome-back__main-container__text-container">
+                <span className="login__welcome-back__main-container__text-container--title">
+                Hello, stranger!
+                </span>
+                <span className="login__welcome-back__main-container__text-container--secondary">
+                Enter your personal details and summarize your meets!
+                </span>
+            </div>
+            <div
+                onClick={() => {
+                this.setState({
+                    login: !this.state.login,
+                });
+                }}
+                className="login__welcome-back__main-container__button-container"
+            >
+                Sign Up
+            </div>
+            </div>
+            ) : (
+                <></>
+            )
+        }
       </div>
     );
   }

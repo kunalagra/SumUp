@@ -124,6 +124,7 @@ $base-color: #986060;
         flex-direction: column;
         justify-content: center;
         align-items: center;
+        text-align: center;
         height: 100%;
         color: $base-color;
         font-weight: bold;
@@ -137,6 +138,10 @@ $base-color: #986060;
         &--active {
             visibility: visible;
             transform: translateX(0%);
+            
+            @include devices(md) {
+                width: 40%;
+            }
         }
     
         &--inactive {
@@ -179,6 +184,7 @@ $base-color: #986060;
         }
 
         &__form-container {
+
             margin-top: 3%;
             &__form {
                 display: flex;
@@ -194,14 +200,10 @@ $base-color: #986060;
                 }
 
                 input {
-                    width: 250px;
                     border-radius: 3px;
                     background-color: #f1f1f1;
                     color: #242424;
 
-                    @include devices(md) {
-                        width: 50vw;
-                    }
                 }
 
                 &--submit {
@@ -292,6 +294,7 @@ $base-color: #986060;
             }
 
             &__form-container {
+
                 margin-top: 3%;
                 &__form {
                     display: flex;
@@ -307,7 +310,6 @@ $base-color: #986060;
                     }
     
                     input {
-                        width: 250px;
                         border-radius: 3px;
                         background-color: #f1f1f1;
                         color: #242424;
@@ -333,6 +335,10 @@ $base-color: #986060;
             transform: translateX(0%);
             opacity: 1;
             width: 70%;
+
+            @include devices(md) {
+                width: 100%;
+            }
         }
 
         &--inactive {
@@ -382,5 +388,12 @@ $base-color: #986060;
         &--right {
             transform: translateX(235%);
         }
+    }
+
+    p {
+        font-size: 1rem;
+        text-align: center;
+        cursor: pointer;
+        margin-top: 10px;
     }
 }
