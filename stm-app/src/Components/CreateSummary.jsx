@@ -28,7 +28,7 @@ const CreateSummary = () => {
     formData["audioFile"] = audio;
     formData["videoFile"] = video;
 
-    console.log(formData);
+    // console.log(formData);
 
     axios.post("http://localhost:8000/gen_summary", formData, {
       headers: {
@@ -147,7 +147,7 @@ const CreateSummary = () => {
                   backgroundColor: `${colors.primary[800]}`,
                   color: `${colors.grey[100]}`,
                 }}
-                onChange={(e) => setTranscript(e.target.files[0])}
+                onChange={(e) => setTranscript(e.target.files[0]?  e.target.files[0] : null)}
                 disabled={para !== "" || audio !== null || video !== null}
                 required
               ></input>
@@ -182,7 +182,7 @@ const CreateSummary = () => {
                   backgroundColor: `${colors.primary[800]}`,
                   color: `${colors.grey[100]}`,
                 }}
-                onChange={(e) => setAudio(e.target.files[0])}
+                onChange={(e) => setAudio(e.target.files[0]?  e.target.files[0] : null)}
                 disabled={para !== "" || transcript !== null || video !== null}
                 required
               ></input>
@@ -217,7 +217,7 @@ const CreateSummary = () => {
                   backgroundColor: `${colors.primary[800]}`,
                   color: `${colors.grey[100]}`,
                 }}
-                onChange={(e) => setVideo(e.target.files[0])}
+                onChange={(e) => setVideo(e.target.files[0]?  e.target.files[0] : null)}
                 disabled={para !== "" || transcript !== null || audio !== null}
                 required
               ></input>

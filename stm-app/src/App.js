@@ -7,7 +7,6 @@ import Footer from "./Components/Footer";
 import CreateSummary from "./Components/CreateSummary";
 import RenderSummary from "./Components/RenderSummary";
 import Profile from "./Components/Profile";
-import AboutUs from "./Components/AboutUs";
 import Login from "./Components/Login";
 import SignUp from "./Components/SignUp";
 import { Component } from "react";
@@ -50,7 +49,6 @@ class App extends Component {
                 <Route path="/summarize" element={<CreateSummary />} />
                 <Route path="/summary" element={<RenderSummary />} />
                 <Route path="/user" element={<Profile />} />
-                <Route path="/about" element={<AboutUs />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<SignUp />} />
 

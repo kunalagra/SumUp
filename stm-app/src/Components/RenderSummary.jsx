@@ -18,6 +18,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination, A11y, Autoplay } from 'swiper';
 import { tokens } from "../theme";
 import commonContext from "../Context/commonContext";
+
 import 'swiper/scss';
 import 'swiper/scss/autoplay';
 import 'swiper/scss/pagination';
@@ -137,6 +138,7 @@ const RenderSummary = () => {
           borderRadius="10px 0 0 10px"
         >
           <p>{para}</p>
+          {/* {para} */}
         </Box>
       </Box>
       <Box m="40px 0" maxWidth="calc(min(900px, 95%))">

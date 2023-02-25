@@ -17,7 +17,6 @@ import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 import LogoutIcon from "@mui/icons-material/Logout";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import SummarizeOutlinedIcon from "@mui/icons-material/SummarizeOutlined";
-import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import { useNavigate } from "react-router-dom";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import MenuOpenIcon from "@mui/icons-material/MenuOpen";
@@ -57,13 +56,6 @@ const Sidebar = () => {
               <AccountCircleOutlinedIcon />
             </ListItemIcon>
             <ListItemText primary="Profile" />
-          </ListItemButton>
-
-          <ListItemButton sx={{ pl: 4, pb: 1 }} onClick={() => navigate("/about")}>
-            <ListItemIcon>
-              <InfoOutlinedIcon />
-            </ListItemIcon>
-            <ListItemText primary="About Us" />
           </ListItemButton>
 
           <ListItemButton sx={{ pl: 4, pb: 1 }} onClick={() => {
@@ -153,12 +145,6 @@ const Navbar = () => {
             <Tooltip title="Profile">
               <IconButton onClick={() => navigate("/user")}>
                 <AccountCircleOutlinedIcon />
-              </IconButton>
-            </Tooltip>
-
-            <Tooltip title="About">
-              <IconButton onClick={() => navigate("/about")}>
-                <InfoOutlinedIcon />
               </IconButton>
             </Tooltip>
 
