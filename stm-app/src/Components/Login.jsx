@@ -69,9 +69,10 @@ class Login extends Component {
       .post("/signup", {name, email, password})
       .then((res) => {
         if (res.data.message) {
-          alert("Profile Created!!")
-          const { navigate } = this.props;
-          navigate("/login");
+          alert("Profile Created!! Sign In Now");
+          this.setState({
+            login: false
+          });
         } else {
           alert("Invalid Credentials");
         }
