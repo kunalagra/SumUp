@@ -30,10 +30,10 @@ const Sidebar = () => {
   const navigate = useNavigate();
 
   return (
-    <Box zIndex="999" width="200px" position="absolute" right="0" backgroundColor={colors.primary[400]}>
-      <Collapse in={true} timeout="auto" unmountOnExit>
-        <List component="div" disablePadding>
-          <ListItemButton sx={{ pl: 4, pb: 1 }} onClick={colorMode.toggleColorMode}>
+    <Box zIndex="999" width="100vw" position="sticky" top="67.28px" backgroundColor={colors.primary[400]}>
+      <Collapse in={true} timeout="auto" className="sidebar-collapse" unmountOnExit>
+        <List component="div" className="sidebar-collapse-list" disablePadding>
+          <ListItemButton sx={{ pl: 4, pb: 1 }} onClick={colorMode.toggleColorMode} className="list-item">
             <ListItemIcon>
               {theme.palette.mode === "dark" ? (
                 <LightModeOutlinedIcon />
@@ -41,17 +41,17 @@ const Sidebar = () => {
                 <DarkModeOutlinedIcon />
               )}
             </ListItemIcon>
-            <ListItemText primary="Change Theme" />
+            <ListItemText primary="Change Theme" className="list-item-text" />
           </ListItemButton>
 
-          <ListItemButton sx={{ pl: 4, pb: 1 }} onClick={() => navigate("/summarize")}>
+          <ListItemButton sx={{ pl: 4, pb: 1 }} onClick={() => navigate("/summarize")} className="list-item">
             <ListItemIcon>
               <SummarizeOutlinedIcon />
             </ListItemIcon>
             <ListItemText primary="Summarize" />
           </ListItemButton>
 
-          <ListItemButton sx={{ pl: 4, pb: 1 }} onClick={() => navigate("/user")}>
+          <ListItemButton sx={{ pl: 4, pb: 1 }} onClick={() => navigate("/user")} className="list-item">
             <ListItemIcon>
               <AccountCircleOutlinedIcon />
             </ListItemIcon>
@@ -61,7 +61,7 @@ const Sidebar = () => {
           <ListItemButton sx={{ pl: 4, pb: 1 }} onClick={() => {
             colorMode.toggleColorMode();
             navigate("/login")
-          }}>
+          }} className="list-item">
             <ListItemIcon>
               <LogoutIcon />
             </ListItemIcon>
@@ -86,19 +86,21 @@ const Navbar = () => {
   };
 
   return (
-    <React.Fragment>
+    <React.Fragment >
       <Box
         display="flex"
         justifyContent="space-between"
         p={2}
         position="sticky"
         top="0"
-        backgroundColor={colors.primary[400]}
+        backgroundColor={colors.primary[700]}
         zIndex="999"
+        color="#fcfcfc"
+        id="navbar"
       >
         <Box
           display="flex"
-          backgroundColor={colors.primary[400]}
+          backgroundColor={colors.primary[700]}
           borderRadius="3px"
           alignItems="center"
           justifyContent="center"
@@ -125,9 +127,10 @@ const Navbar = () => {
             justifyContent="space-evenly"
             alignItems="center"
             width="calc(max(17%, 150px))"
+            id="nav-links"
           >
             <Tooltip title="Change Theme">
-              <IconButton onClick={colorMode.toggleColorMode}>
+              <IconButton onClick={colorMode.toggleColorMode} className="nav-links-btn">
                 {theme.palette.mode === "dark" ? (
                   <LightModeOutlinedIcon />
                 ) : (
@@ -137,19 +140,19 @@ const Navbar = () => {
             </Tooltip>
 
             <Tooltip title="Summarize">
-              <IconButton onClick={() => navigate("/summarize")}>
+              <IconButton onClick={() => navigate("/summarize")} className="nav-links-btn">
                 <SummarizeOutlinedIcon />
               </IconButton>
             </Tooltip>
 
             <Tooltip title="Profile">
-              <IconButton onClick={() => navigate("/user")}>
+              <IconButton onClick={() => navigate("/user")} className="nav-links-btn">
                 <AccountCircleOutlinedIcon />
               </IconButton>
             </Tooltip>
 
             <Tooltip title="Logout">
-              <IconButton onClick={() => {
+              <IconButton className="nav-links-btn" onClick={() => {
                 httpClient.get('/logout').then((res) => {
                   if (res.data.message) {
                     if(theme.palette.mode==="dark"){
@@ -169,7 +172,7 @@ const Navbar = () => {
             </Tooltip>
           </Box>
         ) : (
-          <IconButton onClick={handleClick}>
+          <IconButton onClick={handleClick} className="nav-links-btn">
             {open ? <MenuIcon /> : <MenuOpenIcon />}
           </IconButton>
         )}

@@ -91,7 +91,7 @@ const CreateSummary = () => {
 
   return (
     <Box m="20px auto" p="0 20px" id="create-summ-page">
-      <Typography variant="h3" id="heading">
+      <Typography variant="h3" id="heading" className="text-center">
         Input Data
       </Typography>
       <form
@@ -99,7 +99,13 @@ const CreateSummary = () => {
         id="input-form"
         encType="multipart/form-data"
       >
-        <Box className="create-summ-form">
+        <Box className="create-summ-form" sx={{
+          "input, textarea": {
+            "&:hover, &:active, &:focus" : {
+                outline: `3px solid ${theme.palette.mode==='dark'? colors.primary[800] : colors.primary[100]}`
+            }
+          }
+        }}>
           <Box className="textarea-div">
             <FormLabel htmlFor="para" className="form-label mb-3">
               Paste the Transcript
@@ -111,9 +117,9 @@ const CreateSummary = () => {
               rows="10"
               cols="50"
               style={{
-                border: `2px solid ${colors.grey[900]}`,
-                backgroundColor: `${colors.primary[800]}`,
-                color: `${colors.grey[100]}`,
+                border: `2px solid ${colors.primary[700]}`,
+                backgroundColor: "var(--light-color-5)",
+                color: "var(--dark-color-6)",
               }}
               onChange={(e) => setPara(e.target.value)}
               disabled={audio !== null || transcript !== null || video !== null}
@@ -136,7 +142,16 @@ const CreateSummary = () => {
               </div>
             </Box>
 
-            <Box className="mb-3">
+            <Box className="mb-3" sx={{
+              "&button" : {
+                backgroundColor: `${colors.primary[700]}`,
+                color: "var(--dark-color-7)",
+                
+                "&:hover" : {
+                  backgroundColor: `${colors.primary[400]}`,
+                }
+              }
+            }}>
               <FormLabel htmlFor="formFile" className="form-label">
                 Upload the Transcript File {"(.txt / .docx)"}
               </FormLabel>
@@ -147,9 +162,9 @@ const CreateSummary = () => {
                 name="formFile"
                 accept=".doc, .txt, .docx"
                 style={{
-                  border: `2px solid ${colors.grey[900]}`,
-                  backgroundColor: `${colors.primary[800]}`,
-                  color: `${colors.grey[100]}`,
+                  border: `2px solid ${colors.primary[700]}`,
+                  backgroundColor: "var(--light-color-5)",
+                  color: "var(--dark-color-6)",
                 }}
                 onChange={(e) => setTranscript(e.target.files[0]?  e.target.files[0] : null)}
                 disabled={para !== "" || audio !== null || video !== null}
@@ -182,9 +197,9 @@ const CreateSummary = () => {
                 id="audioFile"
                 name="audioFile"
                 style={{
-                  border: `2px solid ${colors.grey[900]}`,
-                  backgroundColor: `${colors.primary[800]}`,
-                  color: `${colors.grey[100]}`,
+                  border: `2px solid ${colors.primary[700]}`,
+                  backgroundColor: "var(--light-color-5)",
+                  color: "var(--dark-color-6)",
                 }}
                 onChange={(e) => setAudio(e.target.files[0]?  e.target.files[0] : null)}
                 disabled={para !== "" || transcript !== null || video !== null}
@@ -217,9 +232,9 @@ const CreateSummary = () => {
                 id="videoFile"
                 name="videoFile"
                 style={{
-                  border: `2px solid ${colors.grey[900]}`,
-                  backgroundColor: `${colors.primary[800]}`,
-                  color: `${colors.grey[100]}`,
+                  border: `2px solid ${colors.primary[700]}`,
+                  backgroundColor: "var(--light-color-5)",
+                  color: "var(--dark-color-6)",
                 }}
                 onChange={(e) => setVideo(e.target.files[0]?  e.target.files[0] : null)}
                 disabled={para !== "" || transcript !== null || audio !== null}
@@ -231,10 +246,6 @@ const CreateSummary = () => {
         <button
           type="submit"
           className="btn"
-          style={{
-            backgroundColor: `${colors.blueAccent[500]}`,
-            color: "white",
-          }}
         >
           Load Summary
         </button>

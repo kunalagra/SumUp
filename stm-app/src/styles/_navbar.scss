@@ -1,0 +1,13 @@
+#navbar {
+
+    #nav-links {
+        .nav-links-btn {
+            color: var(--light-color-3);
+
+            &:hover {
+                color: var(--light-color-1);
+            }
+        }
+    }
+
+}

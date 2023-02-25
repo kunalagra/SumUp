@@ -15,7 +15,7 @@ const Footer = () => {
         sx={{ m: "15px" }}
       >
         © 2023
-        <Link to="/" style={{textDecoration: "none", color: `${colors.greenAccent[500]}`, margin: "7px"}}>
+        <Link to="/" style={{textDecoration: "none", color: `${colors.primary[700]}`, margin: "7px"}}>
             Sum-Up
         </Link>
         | All Rights Reserved
