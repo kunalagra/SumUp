@@ -1,4 +1,4 @@
-import { Box, Typography, Button } from "@mui/material";
+import { Box, Typography} from "@mui/material";
 import useMediaQuery from "@mui/material/useMediaQuery";
 
 const Profile = () => {
@@ -11,7 +11,7 @@ const Profile = () => {
             alignItems="center"
             justifyContent="center"
             mt="70px"
-            minHeight="70vh"
+            id="profile-page"
         >
             <Box paddingRight={isNonMobile? "100px": "0"}>
                 <img 
@@ -30,9 +30,7 @@ const Profile = () => {
                     <Typography variant="h4">User mail id</Typography>
                 </Box>
                 <Box m="15px 0">
-                    <Button variant="outlined">
-                    <Typography variant="h6">Update</Typography>
-                    </Button>
+                    <button className="btn">Update</button>
                 </Box>
             </Box>
 

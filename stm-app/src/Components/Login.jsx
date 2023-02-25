@@ -33,6 +33,9 @@ class Login extends Component {
       email: "",
       password: "",
       showPassword: false,
+      alertType: "",
+      alertCont: "",
+      isAlert: false
     };
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
   }
@@ -40,52 +43,169 @@ class Login extends Component {
   handleFormSubmit(e) {
     e.preventDefault();
 
-    // console.log(this.state);
-    if (!this.state.login) {
-      const { email, password } = this.state;
-    //   console.log(email, password);
-      httpClient
-      .post("/login", { email, password })
-      .then((res) => {
-            if (res.data.message) {
-                  localStorage.setItem("name", res.data.name);
-                  localStorage.setItem("email", res.data.user);
-          // console.log(Cookies.get("csrftoken"))
-          const { navigate } = this.props;
-          navigate("/summarize");
-        } else {
-              alert("Invalid Credentials");
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    } 
-    
-    else {
-      const { name, email, password } = this.state;
-      // console.log(name, email, password);
-      httpClient
-      .post("/signup", {name, email, password})
-      .then((res) => {
-        if (res.data.message) {
-          alert("Profile Created!! Sign In Now");
-          this.setState({
-            login: false
-          });
-        } else {
-          alert("Invalid Credentials");
-        }
-      })
-      .catch((err) => {
-        console.log(err);
+    if(!(/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(.\w{2,3})+$/.test(this.state.email))) {
+      this.setState({
+        alertCont: "Invalid Email!!",
+        alertType: "danger",
+        isAlert: true
       });
     }
+    
+    else if(!(/^.{6,}$/.test(this.state.password))) {
+      this.setState({
+        alertCont: this.state.login? "Password should contain at least 6 characters!!" : "Incorrect Password!!",
+        alertType: "danger",
+        isAlert: true
+      });
+    }
+
+    else {
+      // console.log(this.state);
+      if (!this.state.login) {
+        const { email, password } = this.state;
+      //   console.log(email, password);
+        httpClient
+        .post("/login", { email, password })
+        .then((res) => {
+          
+          if (res.data.message) {
+            localStorage.setItem("name", res.data.name);
+            localStorage.setItem("email", res.data.user);
+            // console.log(Cookies.get("csrftoken"))
+
+            this.setState({
+              alertCont: "Login Successfull!!",
+              alertType: "success",
+              isAlert: true
+            })
+
+            setTimeout(() => {
+              this.setState({
+                alertCont: "",
+                alertType: "",
+                isAlert: false
+              })
+            }, 1500);
+
+            setTimeout(() => {
+              const { navigate } = this.props;
+              navigate("/summarize");
+            }, 1000);
+          } 
+          else {
+
+            this.setState({
+              alertCont: "Invalid Credentials",
+              alertType: "danger",
+              isAlert: true
+            })
+
+            setTimeout(() => {
+              this.setState({
+                alertCont: "",
+                alertType: "",
+                isAlert: false
+              })
+            }, 2000);
+               
+          }
+        })
+        .catch((err) => {
+          // console.log(err);
+          this.setState({
+            alertCont: "Invalid Credentials",
+            alertType: "danger",
+            isAlert: true
+          })
+
+          setTimeout(() => {
+            this.setState({
+              alertCont: "",
+              alertType: "",
+              isAlert: false
+            })
+          }, 2000);
+        });
+      } 
+      
+      else {
+        const { name, email, password } = this.state;
+        // console.log(name, email, password);
+        httpClient
+        .post("/signup", {name, email, password})
+        .then((res) => {
+          if (res.data.message) {
+            this.setState({
+              alertCont: "SignUp Successfull!! You can SignIn now!!",
+              alertType: "success",
+              isAlert: true
+            })
+
+            setTimeout(() => {
+              this.setState({
+                alertCont: "",
+                alertType: "",
+                isAlert: false,
+                login: false
+              })
+            }, 2000);
+          } 
+          
+          else {
+            this.setState({
+              alertCont: "Invalid Credentials",
+              alertType: "danger",
+              isAlert: true
+            })
+
+            setTimeout(() => {
+              this.setState({
+                alertCont: "",
+                alertType: "",
+                isAlert: false
+              })
+            }, 2000);
+          }
+        })
+        .catch((err) => {
+          // console.log(err);
+          this.setState({
+            alertCont: "SignUp failed!!",
+            alertType: "danger",
+            isAlert: true
+          })
+
+          setTimeout(() => {
+            this.setState({
+              alertCont: "",
+              alertType: "",
+              isAlert: false
+            })
+          }, 2000);
+        });
+      }
+      
+      return;
+    }
+
+    setTimeout(() => {
+      this.setState({
+        alertCont: "",
+        alertType: "",
+        isAlert: false
+      })
+    }, 2000);
+
   }
 
   render() {
     return (
-      <div className="login">
+      <div className="login" id="login-page">
+        {this.state.isAlert && (
+          <div style={{position: "absolute", right: "10px", top: "10px", zIndex: 999}} className={`alert alert-${this.state.alertType}`}>
+            {this.state.alertCont}
+          </div>
+        )}
         {/* Side Banner Left or Right */}
         {
             this.props.isNonMobile? (

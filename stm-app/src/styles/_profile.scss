@@ -1,0 +1,13 @@
+#profile-page {
+    margin-bottom: 100px;
+
+    button {
+        cursor: pointer;
+        background-color: var(--main-color-2);
+        color: var(--light-color-2);
+        
+        &:hover, &:active, &:focus {
+            background-color: var(--dark-color-1);
+        }
+    }
+}

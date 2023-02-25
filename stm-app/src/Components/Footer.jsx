@@ -10,12 +10,12 @@ const Footer = () => {
       {/* COPYRIGHT */}
       <Typography
         variant="h6"
-        color={colors.grey[300]}
+        color={colors.grey[200]}
         textAlign="center"
         sx={{ m: "15px" }}
       >
         © 2023
-        <Link to="/" style={{textDecoration: "none", color: `${colors.primary[700]}`, margin: "7px"}}>
+        <Link to="/" style={{textDecoration: "none", color: `${colors.primary[800]}`, margin: "7px", fontWeight: "bold"}}>
             Sum-Up
         </Link>
         | All Rights Reserved

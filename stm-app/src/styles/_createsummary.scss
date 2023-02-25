@@ -19,13 +19,6 @@
             grid-template-rows: 1fr 1fr;
         }
 
-        // input, textarea {
-
-        //     &:hover, &:active, &:focus {
-        //         outline: 4px solid var(--main-color-2);
-        //     }
-        // }
-
         .textarea-div {
             text-align: center;
 
@@ -52,12 +45,12 @@
     button {
         margin-top: 30px;
         cursor: pointer;
-            background-color: var(--main-color-2);
-            color: var(--light-color-2);
+        background-color: var(--main-color-2);
+        color: var(--light-color-2);
             
-            &:hover, &:active, &:focus {
-                background-color: var(--dark-color-1);
-            }
+        &:hover, &:active, &:focus {
+            background-color: var(--dark-color-1);
+        }
     }
 
 }
