@@ -13,6 +13,18 @@ const commonReducer = (state, action) => {
                 para: action.payload.para
             };
 
+        case 'CLEAR_SUMMARIES':
+            return {
+                ...state,
+                summaries: []
+            };
+
+        case 'CLEAR_PARA':
+            return {
+                ...state,
+                parag: ''
+            };
+
         default:
             return state;
     }

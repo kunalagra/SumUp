@@ -13,6 +13,7 @@ const CreateSummary = () => {
 
   const { addSummary } = useContext(commonContext);
   const { addPara } = useContext(commonContext);
+  const { clearSummaries, clearPara } = useContext(commonContext);
 
   const [para, setPara] = useState("");
   const [transcript, setTranscript] = useState(null);
@@ -23,10 +24,10 @@ const CreateSummary = () => {
     event.preventDefault();
 
     let formData = new FormData();
-    formData["para"] = para;
-    formData["file"] = transcript;
-    formData["audioFile"] = audio;
-    formData["videoFile"] = video;
+    formData.append("para", para);
+    formData.append("file", transcript);
+    formData.append("audio", audio);
+    formData.append("video", video);
 
     // console.log(formData);
 
@@ -37,12 +38,12 @@ const CreateSummary = () => {
     })
     .then((response) => {
       const newsummaries = [
-        {
-          title: "LexRank",
-          summary: response.data.extractive.LexRank,
-          stars: 0,
-          type: "Extractive"
-        },
+        // {
+        //   title: "LexRank",
+        //   summary: response.data.extractive.LexRank,
+        //   stars: 0,
+        //   type: "Extractive"
+        // },
         {
           title: "LSA",
           summary: response.data.extractive["LSA"],
@@ -55,12 +56,12 @@ const CreateSummary = () => {
           stars: 0,
           type: "Extractive"
         },
-        {
-          title: "Luhn",
-          summary: response.data.extractive["Luhn"],
-          stars: 0,
-          type: "Extractive"
-        },
+        // {
+        //   title: "Luhn",
+        //   summary: response.data.extractive["Luhn"],
+        //   stars: 0,
+        //   type: "Extractive"
+        // },
         {
           title: "OpenAI",
           summary: response.data.abstractive["OpenAI"],
@@ -74,6 +75,9 @@ const CreateSummary = () => {
           type: "Abstractive"
         },
       ]
+
+      clearSummaries();
+      clearPara();
       newsummaries.forEach((summary) => {
         addSummary(summary);
       });

@@ -7,6 +7,7 @@ import nltk
 import heapq
 import json
 import requests
+# import whisper
 
 
 # Create your models here.
@@ -26,19 +27,34 @@ def plaraphy_model(data):
     return js["summary"].split(". ")
 
 def openai_model(data):
+    # print(data)
     openai.api_key = "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"
-    response = openai.Completion.create(
-    model="text-davinci-003",
-    prompt=f"Summarize the following meeting in 10 bullet points: {data}",
-    temperature=0.7,
-    max_tokens=256,
-    top_p=1,
-    frequency_penalty=0,
-    presence_penalty=0
-    )
+    data = data.split()
+    paras = [' '.join(data[i:i+3000]) for i in range(0, len(data), 3000)]
+    # print(paras)
+    responses = []
+    for i in range(len(paras)):
+        response = openai.Completion.create(
+        model="text-davinci-003",
+        prompt=f"Summarize the following meeting in 10 bullet points: {paras[i]}",
+        temperature=0.7,
+        max_tokens=256,
+        top_p=1,
+        frequency_penalty=0,
+        presence_penalty=0
+        )
+        for i in response.choices[0].text.split('\n')[2:]:
+            if i[:2] == '10':
+                responses.append(i[3:].strip() if i[2:].strip()[-1] == '.' else i[2:].strip() + '.')
+            elif i[2:].strip() != "":
+                responses.append(i[2:].strip() if i[2:].strip()[-1] == '.' else i[2:].strip() + '.')
+    # print(responses)
+    return responses
+
+
     # print(response, type(response))
     # print(response.choices[0].text, type(response.choices[0].text))
-    return list(map(lambda x: x[0:], response.choices[0].text.split('\n')[2:]))
+    # return list(map(lambda x: x[0:], response.choices[0].text.split('\n')[2:]))
 
 def lexrank_model(data):
     from sumy.summarizers.lex_rank import LexRankSummarizer
@@ -112,3 +128,8 @@ def nlp_model(data):
     
     # summary = ' '.join(summary_sentences)
     return summary_sentences
+
+# def text_from_audio(data):
+#     model = whisper.load_model("base.en")
+#     output = model.transcribe(data)
+#     return output['text']
