@@ -42,8 +42,8 @@ class Login extends Component {
 
   handleFormSubmit(e) {
     e.preventDefault();
-
-    if(!(/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(.\w{2,3})+$/.test(this.state.email))) {
+    // eslint-disable-next-line
+    if(!(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(this.state.email))) {
       this.setState({
         alertCont: "Invalid Email!!",
         alertType: "danger",
@@ -89,7 +89,7 @@ class Login extends Component {
 
             setTimeout(() => {
               const { navigate } = this.props;
-              navigate("/summarize");
+              navigate("/");
             }, 1000);
           } 
           else {
@@ -306,6 +306,7 @@ class Login extends Component {
                   id="outlined-name"
                   className="login__create-container__form-container__form--name"
                   type="text"
+                  autoComplete="username"
                   endAdornment={
                     <InputAdornment position="end">
                       <PersonOutlineOutlinedIcon />
@@ -324,11 +325,12 @@ class Login extends Component {
                 />
               </FormControl>
               <FormControl sx={{ width: "min(270px, 90vw)" }} variant="outlined">
-                <InputLabel htmlFor="outlined-email">Email</InputLabel>
+                <InputLabel htmlFor="outlined-email-signup">Email</InputLabel>
                 <OutlinedInput
-                  id="outlined-email"
+                  id="outlined-email-signup"
                   className="login__create-container__form-container__form--email"
                   type="text"
+                  autoComplete="email"
                   endAdornment={
                     <InputAdornment position="end">
                       <MailOutlineIcon />
@@ -347,11 +349,12 @@ class Login extends Component {
                 />
               </FormControl>
               <FormControl sx={{ width: "min(270px, 90vw)" }} variant="outlined">
-                <InputLabel htmlFor="outlined-password">Password</InputLabel>
+                <InputLabel htmlFor="outlined-password-signup">Password</InputLabel>
                 <OutlinedInput
-                  id="outlined-password"
+                  id="outlined-password-signup"
                   className="login__create-container__form-container__form--password"
                   type={this.state.showPassword ? "text" : "password"}
+                  autoComplete="current-password"
                   endAdornment={
                     <InputAdornment position="end">
                       <IconButton
@@ -381,7 +384,7 @@ class Login extends Component {
                   }
                   required
                 />
-                <FormHelperText style={{fontSize:"0.8rem"}}>Password should contain atleast 4 characters</FormHelperText>
+                <FormHelperText style={{fontSize:"0.8rem"}}>Password should contain atleast 6 characters</FormHelperText>
               </FormControl>
               <button className="login__create-container__form-container__form--submit">
                 Sign Up
@@ -445,9 +448,9 @@ class Login extends Component {
                 onSubmit={this.handleFormSubmit}
               >
                 <FormControl sx={{ width: "min(270px, 90vw)" }} variant="outlined">
-                  <InputLabel htmlFor="outlined-email">Email</InputLabel>
+                  <InputLabel htmlFor="outlined-email-signin">Email</InputLabel>
                   <OutlinedInput
-                    id="outlined-email"
+                    id="outlined-email-signin"
                     className="login__login-container__main-container__form-container__form--email"
                     type="email"
                     value={this.state.email}
@@ -458,6 +461,7 @@ class Login extends Component {
                         password: this.state.password,
                       })
                     }
+                    autoComplete="email"
                     endAdornment={
                       <InputAdornment position="end">
                         <MailOutlineIcon />
@@ -468,11 +472,12 @@ class Login extends Component {
                   />
                 </FormControl>
                 <FormControl sx={{ width: "min(270px, 90vw)" }} variant="outlined">
-                  <InputLabel htmlFor="outlined-password">Password</InputLabel>
+                  <InputLabel htmlFor="outlined-password-signin">Password</InputLabel>
                   <OutlinedInput
-                    id="outlined-password"
+                    id="outlined-password-signin"
                     className="login__login-container__main-container__form-container__form--password"
                     type={this.state.showPassword ? "text" : "password"}
+                    autoComplete="current-password"
                     endAdornment={
                       <InputAdornment position="end">
                         <IconButton

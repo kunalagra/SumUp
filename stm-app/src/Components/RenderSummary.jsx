@@ -42,7 +42,7 @@ const Summary = ({ summitem }) => {
         <List className="summary-list">
           {summitem.summary.map((item, index) => (
             <ListItem disablePadding key={index}>
-                <ListItemIcon className="summary-list-icon">
+                <ListItemIcon className="summary-list-icon" style={{color: `${colors.primary[700]}`}}>
                   <LabelIcon />
                 </ListItemIcon>
                 <ListItemText  className="summary-list-text">{item}</ListItemText>
