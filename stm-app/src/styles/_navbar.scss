@@ -1,12 +1,22 @@
 #navbar {
 
-    #nav-links {
-        .nav-links-btn {
-            color: var(--light-color-3);
+    .nav-links-btn {
+        color: var(--light-color-3);
 
-            &:hover {
-                color: var(--light-color-1);
-            }
+        &:hover {
+            color: var(--light-color-1);
+        }
+    }
+
+}
+
+#side-bar {
+
+    .list-item-icon, .list-item-text {
+        color: var(--light-color-3);
+
+        &:hover {
+            color: var(--light-color-1);
         }
     }
 

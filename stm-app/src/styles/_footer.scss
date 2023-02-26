@@ -2,4 +2,15 @@
     position: absolute;
     bottom: 0;
     width: 100%;
+
+    color: var(--light-color-3);
+    
+    a {
+        color: var(--light-color-3);
+    
+        &:hover {
+            color: var(--light-color-1);
+        }
+        
+    }
 }
