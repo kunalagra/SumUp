@@ -21,6 +21,7 @@ import { EffectFlip, Navigation, Pagination } from "swiper";
 import { tokens } from "../theme";
 import commonContext from "../Context/commonContext";
 import PlayCircleFilledWhiteOutlinedIcon from "@mui/icons-material/PlayCircleFilledWhiteOutlined";
+import StopCircleIcon from '@mui/icons-material/StopCircle';
 
 import 'swiper/scss';
 import 'swiper/scss/navigation';
@@ -39,9 +40,18 @@ const Summary = ({ summitem }) => {
   };
 
   const headlespeech = () => {
-    const synth = window.speechSynthesis;
-    const utterThis = new SpeechSynthesisUtterance(summitem.summary.join(" "));
-    synth.speak(utterThis);
+    // female voice
+    console.log("playing")
+    const msg = new SpeechSynthesisUtterance(summitem.summary);
+    msg.voice = speechSynthesis.getVoices().filter((voice) => {
+      return voice.name === "Google US English";
+    }
+    )[0];
+    window.speechSynthesis.speak(msg);
+  };
+
+  const handlestop = () => {
+    window.speechSynthesis.cancel();
   };
 
   return (
@@ -69,6 +79,13 @@ const Summary = ({ summitem }) => {
         <Tooltip title="Play">
           <IconButton aria-label="play" onClick={headlespeech}>
             <PlayCircleFilledWhiteOutlinedIcon />
+          </IconButton>
+        </Tooltip>
+
+         {/* add stop icon */}
+        <Tooltip title="Stop">
+          <IconButton aria-label="stop" onClick={handlestop}>
+            <StopCircleIcon />
           </IconButton>
         </Tooltip>
         

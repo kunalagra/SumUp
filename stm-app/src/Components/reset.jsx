@@ -1,4 +1,3 @@
-// create update password page and add it to the router
 import React from "react";
 import { Component } from "react";
 import { useNavigate } from "react-router-dom";

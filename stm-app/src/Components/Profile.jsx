@@ -32,7 +32,9 @@ const Profile = () => {
                     <Typography variant="h4">User mail id</Typography>
                 </Box>
                 <Box m="15px 0">
-                    <button className="btn">Update</button>
+                    <button className="btn" onClick={()=>{
+                        navigate('/update')
+                    }}>Update</button>
                 </Box>
             </Box>
 
