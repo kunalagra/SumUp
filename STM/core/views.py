@@ -37,7 +37,7 @@ def login_user(request):
 		if request.user.is_authenticated:
 			return Response({"sessionid":django.middleware.csrf.get_token(request), "message":"User logged in", "user":request.user.username, "name":request.user.first_name},status=status.HTTP_200_OK)
 		else:
-			return Response({"message":"User not logged in"},status=status.HTTP_404_NOT_FOUND)
+			return Response({"message":"User not logged in"},status=status.HTTP_401_UNAUTHORIZED)
 	else:
 		return Response({"message":False},status=status.HTTP_401_UNAUTHORIZED)
 	
@@ -46,7 +46,7 @@ def get_user(request):
 	if request.user.is_authenticated:
 		return Response({"message":"User logged in", "user":request.user.username, "name":request.user.first_name}, status=status.HTTP_200_OK)
 	else:
-		return Response({"message":"User not logged in"}, status=status.HTTP_404_NOT_FOUND)
+		return Response({"message":"User not logged in"}, status=status.HTTP_401_UNAUTHORIZED)
 
 
 @api_view(['POST'])
@@ -61,13 +61,14 @@ def update_user(request):
 		return Response({"message":"Password updated", "user":username, "name": user.first_name})
 	
 	else:
-		return Response({"message":False}, status=status.HTTP_404_NOT_FOUND)
+		return Response({"message":False}, status=status.HTTP_401_UNAUTHORIZED)
 	
 	
 
 @api_view(['POST'])
 def password_reset(request):
 	data = json.loads(request.body)
+	print(data)
 	username = data['email']
 	if User.objects.filter(username=username).exists():
 		user = User.objects.get(username=username)
@@ -83,7 +84,7 @@ def password_reset(request):
 		)
 		return Response({"message":"Password reset", "user":username, "name": user.first_name}, status=status.HTTP_200_OK)
 	else:
-		return Response({"message":False}, status=status.HTTP_404_NOT_FOUND)
+		return Response({"message":False}, status=status.HTTP_401_UNAUTHORIZED)
 	
 
 
@@ -94,7 +95,7 @@ def logout_user(request):
 		logout(request)
 		return Response({"message":"User logged out"})
 	else:
-		return Response({"message":False}, status=status.HTTP_404_NOT_FOUND)
+		return Response({"message":False}, status=status.HTTP_401_UNAUTHORIZED)
 
 @api_view(['POST'])
 def signup(request):
@@ -107,6 +108,7 @@ def signup(request):
 	else:
 		user = User.objects.create_user(username=username, password=password, first_name=name, email=username)
 		user.save()
+		login(request, user)
 		return Response({"message":"User created", "user":username, "name": name},status=status.HTTP_200_OK)
 
 # @api_view(['GET'])

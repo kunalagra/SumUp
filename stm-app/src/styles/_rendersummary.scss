@@ -46,9 +46,22 @@
             color: var(--dark-color-6);
             background-color: var(--light-color-5);
             border-radius: 15px;
+            position: relative;
 
             &:hover {
                 box-shadow: 0 0 10px 0 var(--main-color-2);
+            }
+
+            .text-to-speech-btn {
+                position: absolute;
+                color: var(--light-color-3);
+                top: 18px;
+                right: 20px;
+                transition: all 0.5s ease;
+
+                &:hover {
+                    color: var(--light-color-2);
+                }
             }
 
             .summary-header {

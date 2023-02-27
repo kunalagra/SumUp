@@ -20,8 +20,8 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { EffectFlip, Navigation, Pagination } from "swiper";
 import { tokens } from "../theme";
 import commonContext from "../Context/commonContext";
-import PlayCircleFilledWhiteOutlinedIcon from "@mui/icons-material/PlayCircleFilledWhiteOutlined";
-import StopCircleIcon from '@mui/icons-material/StopCircle';
+import VolumeUpIcon from '@mui/icons-material/VolumeUp';
+import VolumeOffIcon from '@mui/icons-material/VolumeOff';
 
 import 'swiper/scss';
 import 'swiper/scss/navigation';
@@ -32,6 +32,7 @@ const Summary = ({ summitem }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [rating, setRating] = React.useState(0);
+  const [play, setPlay] = React.useState(true);
 
   const handleRating = (rate) => {
     setRating(rate);
@@ -39,24 +40,40 @@ const Summary = ({ summitem }) => {
     console.log(summitem);
   };
 
-  const headlespeech = () => {
-    // female voice
-    console.log("playing")
-    const msg = new SpeechSynthesisUtterance(summitem.summary);
-    msg.voice = speechSynthesis.getVoices().filter((voice) => {
-      return voice.name === "Google US English";
-    }
-    )[0];
-    window.speechSynthesis.speak(msg);
+  const handleSpeech = () => {
+    setPlay(false);
+    // female voice 
+    const voices = window.speechSynthesis.getVoices();
+    const voice = voices[4];
+    const synth = window.speechSynthesis;
+    const utterThis = new SpeechSynthesisUtterance(summitem.summary.join(" "));
+    utterThis.voice = voice;
+    synth.speak(utterThis);
+    // after speech is done
+    utterThis.onend = () => {
+      setPlay(true);
+    };
+    // const synth = window.speechSynthesis;
+    // const utterThis = new SpeechSynthesisUtterance(summitem.summary.join(" "));
+    // synth.speak(utterThis);
   };
 
-  const handlestop = () => {
+  const handleStop = () => {
     window.speechSynthesis.cancel();
+    setPlay(true);
   };
 
   return (
     <Card sx={{ maxWidth: "900px", marginTop: "20px" }} className="summary-card">
-      <CardHeader title={summitem.title} subheader={summitem.type} className="summary-header" style={{background: `${colors.primary[700]}`}}/>
+      <CardHeader title={summitem.title} subheader={summitem.type} className="summary-header" style={{background: `${colors.primary[700]}`}} 
+        action={
+          <Tooltip title={play? "Play" : "Pause"}>
+            <IconButton aria-label="play" onClick={play? handleSpeech : handleStop} className="text-to-speech-btn">
+              {play? <VolumeUpIcon /> : <VolumeOffIcon />}
+            </IconButton>
+          </Tooltip>
+        }
+      />
       <CardContent>
         <List className="summary-list">
           {summitem.summary.map((item, index) => (
@@ -73,22 +90,7 @@ const Summary = ({ summitem }) => {
         disableSpacing
         style={{ justifyContent: "flex-end", margin: "0 10px 10px 0" }}
         className="summary-card-actions"
-      >
-        
-        {/* add speech icon */}
-        <Tooltip title="Play">
-          <IconButton aria-label="play" onClick={headlespeech}>
-            <PlayCircleFilledWhiteOutlinedIcon />
-          </IconButton>
-        </Tooltip>
-
-         {/* add stop icon */}
-        <Tooltip title="Stop">
-          <IconButton aria-label="stop" onClick={handlestop}>
-            <StopCircleIcon />
-          </IconButton>
-        </Tooltip>
-        
+      > 
         <Typography mr="10px">Rate</Typography>
         <Rating
           onClick={handleRating}
