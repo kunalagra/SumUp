@@ -10,6 +10,7 @@ import Profile from "./Components/Profile";
 import Login from "./Components/Login";
 import UpdatePassword from "./Components/update";
 import ResetPassword from "./Components/reset";
+import HomePage from "./Components/HomePage";
 import { Component } from "react";
 import { withRouter } from "./ComponentWithRouter";
 import { CommonProvider } from "./Context/commonContext";
@@ -47,6 +48,7 @@ class App extends Component {
             <main className="content">
               { navbar }
               <Routes>
+                <Route path="/" element={<HomePage />} />
                 <Route path="/summarize" element={<CreateSummary />} />
                 <Route path="/summary" element={<RenderSummary />} />
                 <Route path="/user" element={<Profile />} />

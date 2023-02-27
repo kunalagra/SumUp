@@ -15,7 +15,6 @@ body,
   display: flex;
   position: relative;
   min-height: 100vh;
-  // background-color: var(--light-color-2);
 }
 
 #about{
@@ -33,4 +32,24 @@ body,
   border: 1px solid rgb(132, 174, 219);
   padding-top: 10px;
 }
+
+@media screen and (max-width: 400px) {
+  #features {
+    padding: 20px;
+    width: 111%;
+  }
+  #about,
+  #services,
+  #testimonials,
+  #team,
+  #contact,
+  #footer {
+    width: 111%;
+  }
+
+  #portfolio {
+    width: 110%;
+  }
+}
+
 

@@ -17,16 +17,19 @@ import {
 } from "@mui/material";
 import LabelIcon from "@mui/icons-material/Label";
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Pagination, A11y, Autoplay } from 'swiper';
+import { EffectFlip, Navigation, Pagination } from "swiper";
 import { tokens } from "../theme";
 import commonContext from "../Context/commonContext";
 import PlayCircleFilledWhiteOutlinedIcon from "@mui/icons-material/PlayCircleFilledWhiteOutlined";
 
 import 'swiper/scss';
-import 'swiper/scss/autoplay';
+import 'swiper/scss/navigation';
+import 'swiper/scss/effect-flip';
 import 'swiper/scss/pagination';
 
 const Summary = ({ summitem }) => {
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
   const [rating, setRating] = React.useState(0);
 
   const handleRating = (rate) => {
@@ -43,12 +46,12 @@ const Summary = ({ summitem }) => {
 
   return (
     <Card sx={{ maxWidth: "900px", marginTop: "20px" }} className="summary-card">
-      <CardHeader title={summitem.title} subheader={summitem.type} className="summary-header"/>
+      <CardHeader title={summitem.title} subheader={summitem.type} className="summary-header" style={{background: `${colors.primary[700]}`}}/>
       <CardContent>
         <List className="summary-list">
           {summitem.summary.map((item, index) => (
             <ListItem disablePadding key={index}>
-                <ListItemIcon className="summary-list-icon">
+                <ListItemIcon className="summary-list-icon" style={{color: `${colors.primary[700]}`}}>
                   <LabelIcon />
                 </ListItemIcon>
                 <ListItemText  className="summary-list-text">{item}</ListItemText>
@@ -76,7 +79,7 @@ const Summary = ({ summitem }) => {
           size={20}
           label
           transition
-          fillColor="orange"
+          fillColor={colors.primary[700]}
           emptyColor="gray"
           className="foo"
         />
@@ -136,11 +139,11 @@ const RenderSummary = () => {
     <Box
       m="20px auto"
       p="0 20px"
-      minHeight="80vh"
       display="flex"
       flexDirection="column"
       justifyContent="center"
       alignItems="center"
+      id="render-summary-page"
     >
       <Box maxWidth="calc(min(1000px, 95%))">
         <Typography variant="h2" textAlign="center">
@@ -151,8 +154,18 @@ const RenderSummary = () => {
           overflow="auto"
           m="20px 0"
           p="10px"
-          border={`2px solid ${colors.grey[800]}`}
           borderRadius="10px 0 0 10px"
+          className="given-transcript-box"
+
+          style={{
+            border: `2px solid ${colors.primary[700]}`,
+          }}
+    
+          sx={{
+            "&:hover": {
+              outline: `3px solid ${theme.palette.mode==='dark'? colors.light[100] : colors.primary[100]}`
+            }
+          }}
         >
           <p>{para}</p>
           {/* {para} */}
@@ -164,16 +177,17 @@ const RenderSummary = () => {
         </Typography>
         <Box mt="10px">
           <Swiper
-              modules={[Pagination, A11y, Autoplay]}
+              modules={[Pagination, EffectFlip, Navigation]}
               loop={true}
               speed={400}
-              spaceBetween={100}
+              spaceBetween={0}
               slidesPerView={1}
+              touchRatio={1.5}
+              navigation={true}
+              effect={'flip'}
               pagination={{ clickable: true }}
-              autoplay={{
-                  delay: 4000,
-                  disableOnInteraction: true,
-              }}
+              autoplay={false}
+              id="render-summary-swiper"
           >
             {summaries.map((summ, index) => (
               <SwiperSlide

@@ -33,59 +33,179 @@ class Login extends Component {
       email: "",
       password: "",
       showPassword: false,
+      alertType: "",
+      alertCont: "",
+      isAlert: false
     };
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
   }
 
   handleFormSubmit(e) {
     e.preventDefault();
-
-    // console.log(this.state);
-    if (!this.state.login) {
-      const { email, password } = this.state;
-    //   console.log(email, password);
-      httpClient
-      .post("/login", { email, password })
-      .then((res) => {
-            if (res.data.message) {
-                  localStorage.setItem("name", res.data.name);
-                  localStorage.setItem("email", res.data.user);
-          // console.log(Cookies.get("csrftoken"))
-          const { navigate } = this.props;
-          navigate("/summarize");
-        } else {
-              alert("Invalid Credentials");
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    } 
-    
-    else {
-      const { name, email, password } = this.state;
-      // console.log(name, email, password);
-      httpClient
-      .post("/signup", {name, email, password})
-      .then((res) => {
-        if (res.data.message) {
-          alert("Profile Created!! Sign In Now");
-          this.setState({
-            login: false
-          });
-        } else {
-          alert("Invalid Credentials");
-        }
-      })
-      .catch((err) => {
-        console.log(err);
+    // eslint-disable-next-line
+    if(!(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(this.state.email))) {
+      this.setState({
+        alertCont: "Invalid Email!!",
+        alertType: "danger",
+        isAlert: true
       });
     }
+    
+    else if(!(/^.{6,}$/.test(this.state.password))) {
+      this.setState({
+        alertCont: this.state.login? "Password should contain at least 6 characters!!" : "Incorrect Password!!",
+        alertType: "danger",
+        isAlert: true
+      });
+    }
+
+    else {
+      // console.log(this.state);
+      if (!this.state.login) {
+        const { email, password } = this.state;
+      //   console.log(email, password);
+        httpClient
+        .post("/login", { email, password })
+        .then((res) => {
+          
+          if (res.data.message) {
+            localStorage.setItem("name", res.data.name);
+            localStorage.setItem("email", res.data.user);
+            // console.log(Cookies.get("csrftoken"))
+
+            this.setState({
+              alertCont: "Login Successfull!!",
+              alertType: "success",
+              isAlert: true
+            })
+
+            setTimeout(() => {
+              this.setState({
+                alertCont: "",
+                alertType: "",
+                isAlert: false
+              })
+            }, 1500);
+
+            setTimeout(() => {
+              const { navigate } = this.props;
+              navigate("/");
+            }, 1000);
+          } 
+          else {
+
+            this.setState({
+              alertCont: "Invalid Credentials",
+              alertType: "danger",
+              isAlert: true
+            })
+
+            setTimeout(() => {
+              this.setState({
+                alertCont: "",
+                alertType: "",
+                isAlert: false
+              })
+            }, 2000);
+               
+          }
+        })
+        .catch((err) => {
+          // console.log(err);
+          this.setState({
+            alertCont: "Invalid Credentials",
+            alertType: "danger",
+            isAlert: true
+          })
+
+          setTimeout(() => {
+            this.setState({
+              alertCont: "",
+              alertType: "",
+              isAlert: false
+            })
+          }, 2000);
+        });
+      } 
+      
+      else {
+        const { name, email, password } = this.state;
+        // console.log(name, email, password);
+        httpClient
+        .post("/signup", {name, email, password})
+        .then((res) => {
+          if (res.data.message) {
+            this.setState({
+              alertCont: "SignUp Successfull!! You can SignIn now!!",
+              alertType: "success",
+              isAlert: true
+            })
+
+            setTimeout(() => {
+              this.setState({
+                alertCont: "",
+                alertType: "",
+                isAlert: false,
+                login: false
+              })
+            }, 2000);
+          } 
+          
+          else {
+            this.setState({
+              alertCont: "Invalid Credentials",
+              alertType: "danger",
+              isAlert: true
+            })
+
+            setTimeout(() => {
+              this.setState({
+                alertCont: "",
+                alertType: "",
+                isAlert: false
+              })
+            }, 2000);
+          }
+        })
+        .catch((err) => {
+          // console.log(err);
+          this.setState({
+            alertCont: "SignUp failed!!",
+            alertType: "danger",
+            isAlert: true
+          })
+
+          setTimeout(() => {
+            this.setState({
+              alertCont: "",
+              alertType: "",
+              isAlert: false
+            })
+          }, 2000);
+        });
+      }
+      
+      return;
+    }
+
+    setTimeout(() => {
+      this.setState({
+        alertCont: "",
+        alertType: "",
+        isAlert: false
+      })
+    }, 2000);
+
   }
 
   render() {
     return (
-      <div className="login">
+      <div className="login" id="login-page">
+        {this.state.isAlert && (
+          <div style={{position: "absolute", right: "10px", top: "10px", zIndex: 999}} className={`alert alert-${this.state.alertType}`}>
+            {this.state.alertCont}
+          </div>
+        )}
         {/* Side Banner Left or Right */}
         {
             this.props.isNonMobile? (
@@ -186,6 +306,7 @@ class Login extends Component {
                   id="outlined-name"
                   className="login__create-container__form-container__form--name"
                   type="text"
+                  autoComplete="username"
                   endAdornment={
                     <InputAdornment position="end">
                       <PersonOutlineOutlinedIcon />
@@ -204,11 +325,12 @@ class Login extends Component {
                 />
               </FormControl>
               <FormControl sx={{ width: "min(270px, 90vw)" }} variant="outlined">
-                <InputLabel htmlFor="outlined-email">Email</InputLabel>
+                <InputLabel htmlFor="outlined-email-signup">Email</InputLabel>
                 <OutlinedInput
-                  id="outlined-email"
+                  id="outlined-email-signup"
                   className="login__create-container__form-container__form--email"
                   type="text"
+                  autoComplete="email"
                   endAdornment={
                     <InputAdornment position="end">
                       <MailOutlineIcon />
@@ -227,11 +349,12 @@ class Login extends Component {
                 />
               </FormControl>
               <FormControl sx={{ width: "min(270px, 90vw)" }} variant="outlined">
-                <InputLabel htmlFor="outlined-password">Password</InputLabel>
+                <InputLabel htmlFor="outlined-password-signup">Password</InputLabel>
                 <OutlinedInput
-                  id="outlined-password"
+                  id="outlined-password-signup"
                   className="login__create-container__form-container__form--password"
                   type={this.state.showPassword ? "text" : "password"}
+                  autoComplete="current-password"
                   endAdornment={
                     <InputAdornment position="end">
                       <IconButton
@@ -261,7 +384,7 @@ class Login extends Component {
                   }
                   required
                 />
-                <FormHelperText style={{fontSize:"0.8rem"}}>Password should contain atleast 4 characters</FormHelperText>
+                <FormHelperText style={{fontSize:"0.8rem"}}>Password should contain atleast 6 characters</FormHelperText>
               </FormControl>
               <button className="login__create-container__form-container__form--submit">
                 Sign Up
@@ -325,9 +448,9 @@ class Login extends Component {
                 onSubmit={this.handleFormSubmit}
               >
                 <FormControl sx={{ width: "min(270px, 90vw)" }} variant="outlined">
-                  <InputLabel htmlFor="outlined-email">Email</InputLabel>
+                  <InputLabel htmlFor="outlined-email-signin">Email</InputLabel>
                   <OutlinedInput
-                    id="outlined-email"
+                    id="outlined-email-signin"
                     className="login__login-container__main-container__form-container__form--email"
                     type="email"
                     value={this.state.email}
@@ -338,6 +461,7 @@ class Login extends Component {
                         password: this.state.password,
                       })
                     }
+                    autoComplete="email"
                     endAdornment={
                       <InputAdornment position="end">
                         <MailOutlineIcon />
@@ -348,11 +472,12 @@ class Login extends Component {
                   />
                 </FormControl>
                 <FormControl sx={{ width: "min(270px, 90vw)" }} variant="outlined">
-                  <InputLabel htmlFor="outlined-password">Password</InputLabel>
+                  <InputLabel htmlFor="outlined-password-signin">Password</InputLabel>
                   <OutlinedInput
-                    id="outlined-password"
+                    id="outlined-password-signin"
                     className="login__login-container__main-container__form-container__form--password"
                     type={this.state.showPassword ? "text" : "password"}
+                    autoComplete="current-password"
                     endAdornment={
                       <InputAdornment position="end">
                         <IconButton

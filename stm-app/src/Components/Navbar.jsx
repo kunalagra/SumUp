@@ -30,11 +30,11 @@ const Sidebar = () => {
   const navigate = useNavigate();
 
   return (
-    <Box zIndex="999" width="100vw" position="sticky" top="67.28px" backgroundColor={colors.primary[400]}>
+    <Box zIndex="999" width="100vw" position="sticky" top="67.28px" backgroundColor={colors.primary[700]} id="side-bar">
       <Collapse in={true} timeout="auto" className="sidebar-collapse" unmountOnExit>
         <List component="div" className="sidebar-collapse-list" disablePadding>
           <ListItemButton sx={{ pl: 4, pb: 1 }} onClick={colorMode.toggleColorMode} className="list-item">
-            <ListItemIcon>
+            <ListItemIcon className="list-item-icon">
               {theme.palette.mode === "dark" ? (
                 <LightModeOutlinedIcon />
               ) : (
@@ -45,27 +45,27 @@ const Sidebar = () => {
           </ListItemButton>
 
           <ListItemButton sx={{ pl: 4, pb: 1 }} onClick={() => navigate("/summarize")} className="list-item">
-            <ListItemIcon>
+            <ListItemIcon className="list-item-icon">
               <SummarizeOutlinedIcon />
             </ListItemIcon>
-            <ListItemText primary="Summarize" />
+            <ListItemText primary="Summarize" className="list-item-text" />
           </ListItemButton>
 
           <ListItemButton sx={{ pl: 4, pb: 1 }} onClick={() => navigate("/user")} className="list-item">
-            <ListItemIcon>
+            <ListItemIcon className="list-item-icon">
               <AccountCircleOutlinedIcon />
             </ListItemIcon>
-            <ListItemText primary="Profile" />
+            <ListItemText primary="Profile" className="list-item-text" />
           </ListItemButton>
 
           <ListItemButton sx={{ pl: 4, pb: 1 }} onClick={() => {
             colorMode.toggleColorMode();
             navigate("/login")
           }} className="list-item">
-            <ListItemIcon>
+            <ListItemIcon className="list-item-icon">
               <LogoutIcon />
             </ListItemIcon>
-            <ListItemText primary="Log Out" />
+            <ListItemText primary="Log Out" className="list-item-text"/>
           </ListItemButton>
         </List>
       </Collapse>
