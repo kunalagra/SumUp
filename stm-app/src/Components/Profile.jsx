@@ -1,8 +1,10 @@
 import { Box, Typography, Button } from "@mui/material";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
     const isNonMobile = useMediaQuery("(min-width: 600px)");
+    const navigate = useNavigate();
     return (
         <Box 
             m="20px"
@@ -30,7 +32,11 @@ const Profile = () => {
                     <Typography variant="h4">User mail id</Typography>
                 </Box>
                 <Box m="15px 0">
-                    <Button variant="outlined">
+                    <Button variant="outlined"
+                    onClick={() => {
+                        navigate("/update");
+                    }}
+                    >
                     <Typography variant="h6">Update</Typography>
                     </Button>
                 </Box>

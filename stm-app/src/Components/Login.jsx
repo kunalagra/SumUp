@@ -383,6 +383,14 @@ class Login extends Component {
                     required
                   />
                 </FormControl>
+                <div
+                  className="login__login-container__main-container__form-container__form--forgot-password"
+                  onClick={() => {
+                    this.props.navigate("/reset")
+                  }}
+                >
+                  <p>Forgot Password?</p>
+                </div>
                 <button className="login__login-container__main-container__form-container__form--submit">
                   Sign In
                 </button>

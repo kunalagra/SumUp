@@ -9,6 +9,8 @@ from . import models
 import json
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from django.conf import settings
 import ffmpeg
 import requests
 import os
@@ -16,6 +18,8 @@ import whisper
 import pickle
 import ffmpeg
 import torch
+import random
+from django.core.mail import send_mail
 # Create your views here.
 
 @api_view(['GET'])
@@ -33,7 +37,7 @@ def login_user(request):
 		if request.user.is_authenticated:
 			return Response({"sessionid":django.middleware.csrf.get_token(request), "message":"User logged in", "user":request.user.username, "name":request.user.first_name},status=status.HTTP_200_OK)
 		else:
-			return Response({"message":"User not logged in"},status=status.HTTP_401_UNAUTHORIZED)
+			return Response({"message":"User not logged in"},status=status.HTTP_404_NOT_FOUND)
 	else:
 		return Response({"message":False},status=status.HTTP_401_UNAUTHORIZED)
 	
@@ -42,7 +46,7 @@ def get_user(request):
 	if request.user.is_authenticated:
 		return Response({"message":"User logged in", "user":request.user.username, "name":request.user.first_name}, status=status.HTTP_200_OK)
 	else:
-		return Response({"message":"User not logged in"}, status=status.HTTP_401_UNAUTHORIZED)
+		return Response({"message":"User not logged in"}, status=status.HTTP_404_NOT_FOUND)
 
 
 @api_view(['POST'])
@@ -50,15 +54,38 @@ def update_user(request):
 	data = json.loads(request.body)
 	username = data['email']
 	password = data['password']
-	name = data['name']
 	if User.objects.filter(username=username).exists():
 		user = User.objects.get(username=username)
 		user.set_password(password)
-		user.first_name = name
 		user.save()
-		return Response({"message":"User updated", "user":username, "name": name})
+		return Response({"message":"Password updated", "user":username, "name": user.first_name})
+	
 	else:
-		return Response({"message":False}, status=status.HTTP_403_FORBIDDEN)
+		return Response({"message":False}, status=status.HTTP_404_NOT_FOUND)
+	
+	
+
+@api_view(['POST'])
+def password_reset(request):
+	data = json.loads(request.body)
+	username = data['email']
+	if User.objects.filter(username=username).exists():
+		user = User.objects.get(username=username)
+		otp = random.randint(100000,999999)
+		user.set_password(str(otp))
+		user.save()
+		send_mail(
+			'Password Reset',
+			'Your new password is '+str(otp),
+			'deexithmadas277@gamil.com',
+			[username],
+			fail_silently=False,
+		)
+		return Response({"message":"Password reset", "user":username, "name": user.first_name}, status=status.HTTP_200_OK)
+	else:
+		return Response({"message":False}, status=status.HTTP_404_NOT_FOUND)
+	
+
 
 @api_view(['GET'])
 def logout_user(request):
@@ -67,7 +94,7 @@ def logout_user(request):
 		logout(request)
 		return Response({"message":"User logged out"})
 	else:
-		return Response({"message":False}, status=status.HTTP_401_UNAUTHORIZED)
+		return Response({"message":False}, status=status.HTTP_404_NOT_FOUND)
 
 @api_view(['POST'])
 def signup(request):
@@ -76,7 +103,7 @@ def signup(request):
 	password = data['password']
 	name = data['name']
 	if User.objects.filter(username=username).exists():
-		return Response({"message":"User Already Exist"},status=status.HTTP_403_FORBIDDEN)
+		return Response({"message":"User Already Exist"},status=status.HTTP_406_NOT_ACCEPTABLE)
 	else:
 		user = User.objects.create_user(username=username, password=password, first_name=name, email=username)
 		user.save()
@@ -113,13 +140,15 @@ def gen_summ(request):
 				with open("audio."+ext, 'wb+') as destination:
 					for chunk in f.chunks():
 						destination.write(chunk)
+				print(torch.cuda.is_available())
 				model = whisper.load_model("base.en")
 				# model = pickle.load(open("CUDAbase.en.sav" if torch.cuda.is_available() else "finalized_base.en_model.sav", 'rb'))
 				output = model.transcribe("audio."+ext)
+				print("Done")
 				data["para"] = output['text']
 				os.remove("audio."+ext)
 			else:
-				return Response({"message":"Invalid file type"},status=status.HTTP_403_FORBIDDEN)
+				return Response({"message":"Invalid file type"},status=status.HTTP_400_BAD_REQUEST)
 		elif 'video' in request.FILES.keys():
 			f = request.FILES['video']
 			ext = f.name.split(".")[-1]
@@ -130,6 +159,7 @@ def gen_summ(request):
 				audio = ffmpeg.input("video."+ext)
 				audio = ffmpeg.output(audio, 'audio.wav')
 				ffmpeg.run(audio)
+				print(torch.cuda.is_available())
 				model = whisper.load_model("base.en")
 				# model = pickle.load(open("CUDAbase.en.sav" if torch.cuda.is_available() else "finalized_base.en_model.sav", 'rb'))
 				output = model.transcribe("audio.wav")
@@ -138,9 +168,9 @@ def gen_summ(request):
 				os.remove("audio.wav")
 				os.remove("video."+ext)
 			else:
-				return Response({"message":"Invalid file type"},status=status.HTTP_403_FORBIDDEN)
+				return Response({"message":"Invalid file type"},status=status.HTTP_400_BAD_REQUEST)
 		else:
-			return Response({"message":"Invalid file type"},status=status.HTTP_403_FORBIDDEN)
+			return Response({"message":"Invalid file type"},status=status.HTTP_400_BAD_REQUEST)
 
 	# print(data["para"])
 	data['abstractive'] = {}

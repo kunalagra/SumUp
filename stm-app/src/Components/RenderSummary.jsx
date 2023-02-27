@@ -11,6 +11,8 @@ import {
   List,
   ListItem,
   ListItemText,
+  Tooltip,
+  IconButton,
   ListItemIcon,
 } from "@mui/material";
 import LabelIcon from "@mui/icons-material/Label";
@@ -18,6 +20,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination, A11y, Autoplay } from 'swiper';
 import { tokens } from "../theme";
 import commonContext from "../Context/commonContext";
+import PlayCircleFilledWhiteOutlinedIcon from "@mui/icons-material/PlayCircleFilledWhiteOutlined";
 
 import 'swiper/scss';
 import 'swiper/scss/autoplay';
@@ -30,6 +33,12 @@ const Summary = ({ summitem }) => {
     setRating(rate);
     summitem.stars += rate;
     console.log(summitem);
+  };
+
+  const headlespeech = () => {
+    const synth = window.speechSynthesis;
+    const utterThis = new SpeechSynthesisUtterance(summitem.summary.join(" "));
+    synth.speak(utterThis);
   };
 
   return (
@@ -52,6 +61,14 @@ const Summary = ({ summitem }) => {
         style={{ justifyContent: "flex-end", margin: "0 10px 10px 0" }}
         className="summary-card-actions"
       >
+        
+        {/* add speech icon */}
+        <Tooltip title="Play">
+          <IconButton aria-label="play" onClick={headlespeech}>
+            <PlayCircleFilledWhiteOutlinedIcon />
+          </IconButton>
+        </Tooltip>
+        
         <Typography mr="10px">Rate</Typography>
         <Rating
           onClick={handleRating}
@@ -155,7 +172,7 @@ const RenderSummary = () => {
               pagination={{ clickable: true }}
               autoplay={{
                   delay: 4000,
-                  disableOnInteraction: false,
+                  disableOnInteraction: true,
               }}
           >
             {summaries.map((summ, index) => (

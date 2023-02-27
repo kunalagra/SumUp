@@ -8,6 +8,8 @@ import CreateSummary from "./Components/CreateSummary";
 import RenderSummary from "./Components/RenderSummary";
 import Profile from "./Components/Profile";
 import Login from "./Components/Login";
+import UpdatePassword from "./Components/update";
+import ResetPassword from "./Components/reset";
 import { Component } from "react";
 import { withRouter } from "./ComponentWithRouter";
 import { CommonProvider } from "./Context/commonContext";
@@ -49,7 +51,8 @@ class App extends Component {
                 <Route path="/summary" element={<RenderSummary />} />
                 <Route path="/user" element={<Profile />} />
                 <Route path="/login" element={<Login />} />
-
+                <Route path="/update" element={<UpdatePassword />} />
+                <Route path="/reset" element={<ResetPassword />} />
 
                 <Route path="/*" element={<NotFound />} />
               </Routes>
