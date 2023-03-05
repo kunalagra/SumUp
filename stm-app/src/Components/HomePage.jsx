@@ -108,15 +108,6 @@ const HomePage = () => {
                         : "loading"}
                     </ul>
                   </div>
-                  <div className="col-lg-6 col-sm-6 col-xs-12">
-                    <ul>
-                      {data.About
-                        ? data.About.Why2.map((d, i) => (
-                            <li key={`${d}-${i}`}> {d}</li>
-                          ))
-                        : "loading"}
-                    </ul>
-                  </div>
                 </div>
               </div>
             </div>
@@ -400,19 +391,13 @@ const data = {
   },
   About: {
     paragraph:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      "Team Quad has developed an extension which can be used to summarize team meetings effortlessly with high degree of precision",
     Why: [
-      "Lorem ipsum dolor",
-      "Tempor incididunt",
-      "Lorem ipsum dolor",
-      "Incididunt ut labore",
-    ],
-    Why2: [
-      "Aliquip ex ea commodo",
-      "Lorem ipsum dolor",
-      "Exercitation ullamco",
-      "Lorem ipsum dolor",
-    ],
+      "Best summarizer",
+      "Free to use",
+      "Zero latency",
+      "Available as an extension",
+    ]
   },
   Gallery: [
     {
@@ -514,23 +499,23 @@ const data = {
   Features: [
     {
       icon: "fa fa-comments-o",
-      title: "Summarising Chatbot",
-      text: "Lorem ipsum dolor sit amet placerat facilisis felis mi in tempus eleifend pellentesque natoque etiam.",
+      title: "Summarising extension",
+      text: "Summarization of meetings from various formats like text file, audio file and video file.",
     },
     {
       icon: "fa fa-bullhorn",
-      title: "Blah",
-      text: "Lorem ipsum dolor sit amet placerat facilisis felis mi in tempus eleifend pellentesque natoque etiam.",
+      title: "Best summarization models.",
+      text: "We have used OpenAI model which has highest degree of precision.",
     },
     {
       icon: "fa fa-group",
-      title: "Lorem ipsum",
-      text: "Lorem ipsum dolor sit amet placerat facilisis felis mi in tempus eleifend pellentesque natoque etiam.",
+      title: "Extension for Google meet to create transcript.",
+      text: "Our extension can also download the transcript of a meeting on all platforms like Microsoft Teams, Zoom,Google Meet.",
     },
     {
       icon: "fa fa-magic",
-      title: "Lorem ipsum",
-      text: "Lorem ipsum dolor sit amet placerat facilisis felis mi in tempus eleifend pellentesque natoque etiam.",
+      title: "User friendly and with group summary mailing features.",
+      text: "No need of individual emails, we can share the summary with all the participants of the meeting .",
     },
   ],
 };
