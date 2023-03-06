@@ -21,8 +21,6 @@ const CreateSummary = () => {
 
   const [para, setPara] = useState("");
   const [transcript, setTranscript] = useState(null);
-  const [audio, setAudio] = useState(null);
-  const [video, setVideo] = useState(null);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -30,8 +28,6 @@ const CreateSummary = () => {
     let formData = new FormData();
     formData.append("para", para);
     formData.append("file", transcript);
-    formData.append("audio", audio);
-    formData.append("video", video);
 
     // console.log(formData);
 
@@ -96,7 +92,7 @@ const CreateSummary = () => {
   return (
     <Box m="20px auto" p="0 20px" id="create-summ-page">
       <Typography variant="h3" id="heading" className="text-center">
-        Input Data
+        Summarize your Meet!
       </Typography>
       <form
         onSubmit={handleSubmit}
@@ -118,15 +114,13 @@ const CreateSummary = () => {
               id="para"
               className="form-control mb-3"
               name="para"
-              rows="10"
-              cols="50"
               style={{
                 border: `2px solid ${colors.primary[700]}`,
                 backgroundColor: "var(--light-color-5)",
                 color: "var(--dark-color-6)",
               }}
               onChange={(e) => setPara(e.target.value)}
-              disabled={audio !== null || transcript !== null || video !== null}
+              disabled={transcript !== null}
               required
             ></textarea>
           </Box>
@@ -157,91 +151,21 @@ const CreateSummary = () => {
               }
             }}>
               <FormLabel htmlFor="formFile" className="form-label">
-                Upload the Transcript File {"(.txt / .docx)"}
+                Upload the Transcript File {"(.txt / .docx / .mp3 / .wav / .mp4 / etc)"}
               </FormLabel>
               <input
                 className="form-control"
                 type="file"
                 id="formFile"
                 name="formFile"
-                accept=".doc, .txt, .docx"
+                accept=".doc, .txt, .docx, .mp3, .mp4, .mkv, .wav, .flac, .avi"
                 style={{
                   border: `2px solid ${colors.primary[700]}`,
                   backgroundColor: "var(--light-color-5)",
                   color: "var(--dark-color-6)",
                 }}
                 onChange={(e) => setTranscript(e.target.files[0]?  e.target.files[0] : null)}
-                disabled={para !== "" || audio !== null || video !== null}
-                required
-              ></input>
-            </Box>
-
-            <Box className="or-line row">
-              <div className="col-5">
-                <hr></hr>
-              </div>
-              <div className="col-2">
-                <Typography className="text-center" variant="h5">
-                  OR
-                </Typography>
-              </div>
-              <div className="col-5">
-                <hr></hr>
-              </div>
-            </Box>
-
-            <Box className="mb-3">
-              <FormLabel htmlFor="audioFile" className="form-label">
-                Upload the Audio Transcript File {"(.wav / .mp3)"}
-              </FormLabel>
-              <input
-                className="form-control"
-                type="file"
-                accept="audio/*"
-                id="audioFile"
-                name="audioFile"
-                style={{
-                  border: `2px solid ${colors.primary[700]}`,
-                  backgroundColor: "var(--light-color-5)",
-                  color: "var(--dark-color-6)",
-                }}
-                onChange={(e) => setAudio(e.target.files[0]?  e.target.files[0] : null)}
-                disabled={para !== "" || transcript !== null || video !== null}
-                required
-              ></input>
-            </Box>
-
-            <Box className="or-line row">
-              <div className="col-5">
-                <hr></hr>
-              </div>
-              <div className="col-2">
-                <Typography className="text-center" variant="h5">
-                  OR
-                </Typography>
-              </div>
-              <div className="col-5">
-                <hr></hr>
-              </div>
-            </Box>
-
-            <Box className="mb-3">
-              <FormLabel htmlFor="videoFile" className="form-label">
-                Upload the Video Transcript File {"(.mp4, etc)"}
-              </FormLabel>
-              <input
-                className="form-control"
-                type="file"
-                accept="video/*"
-                id="videoFile"
-                name="videoFile"
-                style={{
-                  border: `2px solid ${colors.primary[700]}`,
-                  backgroundColor: "var(--light-color-5)",
-                  color: "var(--dark-color-6)",
-                }}
-                onChange={(e) => setVideo(e.target.files[0]?  e.target.files[0] : null)}
-                disabled={para !== "" || transcript !== null || audio !== null}
+                disabled={para !== ""}
                 required
               ></input>
             </Box>

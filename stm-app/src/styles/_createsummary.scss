@@ -2,42 +2,31 @@
 #create-summ-page {
 
     margin-bottom: 100px;
+    margin-top: 50px;
 
     form {
         text-align: center;
     }
 
     .create-summ-form {
+        @include flexbox(center, center);
+        flex-direction: column;
+        margin: 0 auto;
         margin-top: 20px;
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        grid-template-rows: 1fr;
-        gap: 2rem;
-        
-        @include devices(md) {
-            grid-template-columns: 1fr;
-            grid-template-rows: 1fr 1fr;
-        }
+        width: min(90vw, 500px);
 
         .textarea-div {
             text-align: center;
+            width: 100%;
 
             textarea {
-                min-height: 350px;
-
-                @include devices(md) {
-                    min-height: 0;
-                    height: 90%;
-                }
+                min-height: 150px;
             }
         }
 
         .media-div {
-            margin-top: 40px;
-
-            @include devices(md) {
-                margin-top: 0;
-            }
+            margin-top: 10px;
+            width: 100%;
         }
 
     }

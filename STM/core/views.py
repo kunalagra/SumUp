@@ -120,9 +120,9 @@ def gen_summ(request):
 	# print(request.FILES)
 	data = request.POST.dict()
 	if request.FILES:
-		if 'file' in request.FILES.keys():
-			f = request.FILES['file']
-			ext = f.name.split(".")[-1]
+		f = request.FILES['file']
+		ext = f.name.split(".")[-1]
+		if ext in ['txt', 'docx']:
 			# print(ext)
 			if ext=="docx":
 				doc = Document(f)
@@ -136,9 +136,7 @@ def gen_summ(request):
 				data["para"] = f.read().decode("utf-8")
 			else:
 				return Response({"message":"Invalid file format"},status=status.HTTP_400_BAD_REQUEST)
-		elif 'audio' in request.FILES.keys():
-			f = request.FILES['audio']
-			ext = f.name.split(".")[-1]
+		elif ext in ['mp3', 'wav', 'flac']:
 			if ext=="mp3" or ext=="wav" or ext=="flac":
 				with open("audio."+ext, 'wb+') as destination:
 					for chunk in f.chunks():
@@ -152,9 +150,7 @@ def gen_summ(request):
 				os.remove("audio."+ext)
 			else:
 				return Response({"message":"Invalid file type"},status=status.HTTP_400_BAD_REQUEST)
-		elif 'video' in request.FILES.keys():
-			f = request.FILES['video']
-			ext = f.name.split(".")[-1]
+		elif ext in ['mp4', 'mkv', 'avi']:
 			if ext=="mp4" or ext=="mkv" or ext=="avi":
 				with open("video."+ext, 'wb+') as destination:
 					for chunk in f.chunks():

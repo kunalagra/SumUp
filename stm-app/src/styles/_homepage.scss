@@ -93,8 +93,7 @@
   .btn.active {
     background-image: none;
     outline: 0;
-    -webkit-box-shadow: none;
-    box-shadow: none;
+    padding: 12px 32px;
   }
   a:focus,
   .btn:focus,
