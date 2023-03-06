@@ -6,7 +6,7 @@ const Footer = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   return (
-    <Box id="footer" backgroundColor={colors.primary[400]}>
+    <Box id="footer" backgroundColor={colors.primary[700]}>
       {/* COPYRIGHT */}
       <Typography
         variant="h6"

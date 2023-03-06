@@ -1,59 +1,53 @@
-import React, { useState } from "react";
-import { IconButton } from "@mui/material";
+import React from "react";
+import { useTheme, useMediaQuery } from "@mui/material";
+import { tokens } from "../theme";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import InstagramIcon from "@mui/icons-material/Instagram";
-
-const initialState = {
-  name: "",
-  email: "",
-  message: "",
-};
+import HomeWorkIcon from '@mui/icons-material/HomeWork';
+import LocalPostOfficeIcon from '@mui/icons-material/LocalPostOffice';
+import CallIcon from '@mui/icons-material/Call';
 
 const HomePage = () => {
-  const [{ name, email, message }, setState] = useState(initialState);
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setState((prevState) => ({ ...prevState, [name]: value }));
-  };
-
-  // const clearState = () => setState({ ...initialState });
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log(name, email, message);
-    // emailjs
-    //   .sendForm("YOUR_SERVICE_ID", "YOUR_TEMPLATE_ID", e.target, "YOUR_USER_ID")
-    //   .then(
-    //     (result) => {
-    //       console.log(result.text);
-    //       clearState();
-    //     },
-    //     (error) => {
-    //       console.log(error.text);
-    //     }
-    //   );
-  };
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);  
+  const isNonMobile = useMediaQuery("(min-width: 500px)");
 
   return (
-    <div id="home-page">
+    <div id="home-page" style={{
+      color: `${colors.grey[300]}`
+    }}>
       {/* Header */}
       <header id="header">
         <div className="intro">
-          <div className="overlay">
+          <div className="overlay" style={{ 
+            background: theme.palette.mode==="dark"? "rgba(0,0,0,0.3)" : "rgba(0,0,0,0.2)",
+            color: theme.palette.mode==="dark"? "#e5e5e5" : "#3d3d3d",
+            }}>
             <div className="container">
               <div className="row">
-                <div className="col-md-8 col-md-offset-2 intro-text">
-                  <h1>
-                    {data.Header ? data.Header.title : "Loading"}
-                    <span></span>
-                  </h1>
+                <div className="intro-text">
+                  {
+                    isNonMobile? (
+                      <h1>
+                        {data.Header ? data.Header.title : "Loading"}
+                        <span></span>
+                      </h1>
+                    ):(
+                      <h2>
+                        {data.Header ? data.Header.title : "Loading"}
+                        <span></span>
+                      </h2>
+                    )
+                  }
                   <p>{data.Header ? data.Header.paragraph : "Loading"}</p>
                   <a
                     href="#features"
                     className="btn btn-custom btn-lg page-scroll"
+                    style={{
+                      backgroundColor: `${colors.primary[700]}`
+                    }}
                   >
                     Learn More
                   </a>{" "}
@@ -65,17 +59,19 @@ const HomePage = () => {
       </header>
 
       {/* Features */}
-      <div id="features" className="text-center">
+      <div id="features" className="text-center" style={{
+        backgroundColor: theme.palette.mode==="dark"? "#ccc" : "var(--light-color-9)",
+        color: "#555555"
+      }}>
         <div className="container">
           <div className="col-md-10 col-md-offset-1 section-title">
             <h2>Features</h2>
           </div>
-          <div className="row">
+          <div className="feature-items">
             {data.Features
               ? data.Features.map((d, i) => (
-                  <div key={`${d.title}-${i}`} className="col-xs-6 col-md-3">
+                  <div key={`${d.title}-${i}`} className="feature-item">
                     {" "}
-                    <i className={d.icon}></i>
                     <h3>{d.title}</h3>
                     <p>{d.text}</p>
                   </div>
@@ -87,27 +83,25 @@ const HomePage = () => {
 
       {/* About */}
       <div id="about">
-        <div className="container">
-          <div className="row">
-            <div className="col-xs-12 col-md-6">
-              {" "}
-              <img src="img/about.jpg" className="img-responsive" alt="" />{" "}
-            </div>
-            <div className="col-xs-12 col-md-6">
-              <div className="about-text">
-                <h2>About Us</h2>
-                <p>{data.About ? data.About.paragraph : "loading..."}</p>
-                <h3>Why Choose Us?</h3>
-                <div className="list-style">
-                  <div className="col-lg-6 col-sm-6 col-xs-12">
-                    <ul>
-                      {data.About
-                        ? data.About.Why.map((d, i) => (
-                            <li key={`${d}-${i}`}>{d}</li>
-                          ))
-                        : "loading"}
-                    </ul>
-                  </div>
+        <div className="about-items">
+          <div className="about-img">
+            {" "}
+            <img src="img/about.jpg" className="img-responsive" alt="" />{" "}
+          </div>
+          <div className="about-content-div">
+            <div className="about-text">
+              <h2>About Us</h2>
+              <p>{data.About ? data.About.paragraph : "loading..."}</p>
+              <h3>Why Choose Us?</h3>
+              <div className="list-style">
+                <div className="col-lg-6 col-sm-6 col-xs-12">
+                  <ul>
+                    {data.About
+                      ? data.About.Why.map((d, i) => (
+                          <li key={`${d}-${i}`}>{d}</li>
+                        ))
+                      : "loading"}
+                  </ul>
                 </div>
               </div>
             </div>
@@ -131,7 +125,6 @@ const HomePage = () => {
               ? data.Services.map((d, i) => (
                   <div key={`${d.name}-${i}`} className="col-md-4">
                     {" "}
-                    <i className={d.icon}></i>
                     <div className="service-desc">
                       <h3>{d.name}</h3>
                       <p>{d.text}</p>
@@ -144,7 +137,7 @@ const HomePage = () => {
       </div>
 
       {/* Gallery */}
-      <div id="portfolio" className="text-center">
+      <div id="gallery" className="text-center">
         <div className="container">
           <div className="section-title">
             <h2>Gallery</h2>
@@ -153,13 +146,13 @@ const HomePage = () => {
               dapibus leonec.
             </p>
           </div>
-          <div className="row">
-            <div className="portfolio-items">
+          <div className="gallery-items-div">
+            <div className="gallery-items">
               {data.Gallery
                 ? data.Gallery.map((d, i) => (
                     <div
                       key={`${d.title}-${i}`}
-                      className="col-sm-6 col-md-4 col-lg-4"
+                      className="gallery-item"
                     >
                       <Image
                         title={d.title}
@@ -175,7 +168,10 @@ const HomePage = () => {
       </div>
 
       {/* Testimonials */}
-      <div id="testimonials">
+      <div id="testimonials" style={{
+        backgroundColor: theme.palette.mode==="dark"? "#ccc" : "var(--light-color-9)",
+        color: "#555555"
+      }}>
         <div className="container">
           <div className="section-title text-center">
             <h2>What our clients say</h2>
@@ -205,19 +201,18 @@ const HomePage = () => {
 
       <div id="team" className="text-center">
         <div className="container">
-          <div className="col-md-8 col-md-offset-2 section-title">
+          <div className="section-title">
             <h2>Meet the Team</h2>
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit duis sed
-              dapibus leonec.
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit duis sed dapibus leonec.
             </p>
           </div>
-          <div id="row">
+          <div className="team-div">
             {data.Team
               ? data.Team.map((d, i) => (
                   <div
                     key={`${d.name}-${i}`}
-                    className="col-md-3 col-sm-6 team"
+                    className="team"
                   >
                     <div className="thumbnail">
                       {" "}
@@ -239,90 +234,40 @@ const HomePage = () => {
       <div>
         <div id="contact">
           <div className="container">
-            <div className="col-md-8">
-              <div className="row">
-                <div className="section-title">
-                  <h2>Get In Touch</h2>
+            <div className="section-title">
+              <h2>Get In Touch</h2>
+              <p>
+                Please share us your issues related to this platform at given email and we
+                will get back to you as soon as possible.
+              </p>
+            </div>
+            <div className="contact-info">
+              <h3>Contact Info</h3>
+              <div className="contact-items">
+                <div className="contact-item">
                   <p>
-                    Please fill out the form below to send us an email and we
-                    will get back to you as soon as possible.
+                    <span>
+                      <HomeWorkIcon className="contact-icon"/> Address
+                    </span>
+                    {data.Contact ? data.Contact.address : "loading"}
                   </p>
                 </div>
-                <form name="sentMessage" onSubmit={handleSubmit}>
-                  <div className="row">
-                    <div className="col-md-6">
-                      <div className="form-group">
-                        <input
-                          type="text"
-                          id="name"
-                          name="name"
-                          className="form-control"
-                          placeholder="Name"
-                          required
-                          onChange={handleChange}
-                        />
-                        <p className="help-block text-danger"></p>
-                      </div>
-                    </div>
-                    <div className="col-md-6">
-                      <div className="form-group">
-                        <input
-                          type="email"
-                          id="email"
-                          name="email"
-                          className="form-control"
-                          placeholder="Email"
-                          required
-                          onChange={handleChange}
-                        />
-                        <p className="help-block text-danger"></p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="form-group">
-                    <textarea
-                      name="message"
-                      id="message"
-                      className="form-control"
-                      rows="4"
-                      placeholder="Message"
-                      required
-                      onChange={handleChange}
-                    ></textarea>
-                    <p className="help-block text-danger"></p>
-                  </div>
-                  <div id="success"></div>
-                  <button type="submit" className="btn btn-custom btn-lg">
-                    Send Message
-                  </button>
-                </form>
-              </div>
-            </div>
-            <div className="col-md-3 col-md-offset-1 contact-info">
-              <div className="contact-item">
-                <h3>Contact Info</h3>
-                <p>
-                  <span>
-                    <i className="fa fa-map-marker"></i> Address
-                  </span>
-                  {data.Contact ? data.Contact.address : "loading"}
-                </p>
-              </div>
-              <div className="contact-item">
-                <p>
-                  <span>
-                    <i className="fa fa-phone"></i> Phone
-                  </span>{" "}
-                  {data.Contact ? data.Contact.phone : "loading"}
-                </p>
-              </div>
-              <div className="contact-item">
-                <p>
-                  <span>
-                    <i className="fa fa-envelope-o"></i> Email
-                  </span>{" "}
-                  {data.Contact ? data.Contact.email : "loading"}
-                </p>
+                <div className="contact-item">
+                  <p>
+                    <span>
+                      <CallIcon className="contact-icon"/> Phone
+                    </span>{" "}
+                    {data.Contact ? data.Contact.phone : "loading"}
+                  </p>
+                </div>
+                <div className="contact-item">
+                  <p>
+                    <span>
+                      <LocalPostOfficeIcon className="contact-icon"/> Email
+                    </span>{" "}
+                    {data.Contact ? data.Contact.email : "loading"}
+                  </p>
+                </div>
               </div>
             </div>
             <div className="col-md-12">
@@ -330,31 +275,23 @@ const HomePage = () => {
                 <div className="social">
                   <ul>
                     <li>
-                      <a href={data.Contact ? data.Contact.facebook : "/"}>
-                        <IconButton>
-                          <FacebookIcon />
-                        </IconButton>
+                      <a href={data.Contact ? data.Contact.facebook : "/"} className="social-icon">
+                        <FacebookIcon />
                       </a>
                     </li>
                     <li>
-                      <a href={data.Contact ? data.Contact.twitter : "/"}>
-                        <IconButton>
-                          <TwitterIcon />
-                        </IconButton>
+                      <a href={data.Contact ? data.Contact.twitter : "/"} className="social-icon">
+                        <TwitterIcon />
                       </a>
                     </li>
                     <li>
-                      <a href={data.Contact ? data.Contact.instagram : "/"}>
-                        <IconButton>
-                          <InstagramIcon />
-                        </IconButton>
+                      <a href={data.Contact ? data.Contact.instagram : "/"} className="social-icon">
+                        <InstagramIcon />
                       </a>
                     </li>
                     <li>
-                      <a href={data.Contact ? data.Contact.linkedin : "/"}>
-                        <IconButton>
-                          <LinkedInIcon />
-                        </IconButton>
+                      <a href={data.Contact ? data.Contact.linkedin : "/"} className="social-icon">
+                        <LinkedInIcon />
                       </a>
                     </li>
                   </ul>
@@ -377,7 +314,9 @@ const Image = ({ largeImage, title, smallImage }) => {
           <div className="hover-text">
             <h4>{title}</h4>
           </div>
-          <img src={smallImage} className="img-responsive" alt={title} />{" "}
+          <img src={smallImage} className="img-responsive" alt={title} style={{
+            borderRadius: "15px"
+          }} />{" "}
         </a>{" "}
       </div>
     </div>
@@ -418,32 +357,26 @@ const data = {
   ],
   Services: [
     {
-      icon: "fa fa-wordpress",
       name: "Lorem ipsum dolor",
       text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis sed dapibus leo nec ornare diam sedasd commodo nibh ante facilisis bibendum dolor feugiat at.",
     },
     {
-      icon: "fa fa-cart-arrow-down",
       name: "Consectetur adipiscing",
       text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis sed dapibus leo nec ornare diam sedasd commodo nibh ante facilisis bibendum dolor feugiat at.",
     },
     {
-      icon: "fa fa-cloud-download",
       name: "Lorem ipsum dolor",
       text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis sed dapibus leo nec ornare diam sedasd commodo nibh ante facilisis bibendum dolor feugiat at.",
     },
     {
-      icon: "fa fa-language",
       name: "Consectetur adipiscing",
       text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis sed dapibus leo nec ornare diam sedasd commodo nibh ante facilisis bibendum dolor feugiat at.",
     },
     {
-      icon: "fa fa-plane",
       name: "Lorem ipsum dolor",
       text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis sed dapibus leo nec ornare diam sedasd commodo nibh ante facilisis bibendum dolor feugiat at.",
     },
     {
-      icon: "fa fa-pie-chart",
       name: "Consectetur adipiscing",
       text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis sed dapibus leo nec ornare diam sedasd commodo nibh ante facilisis bibendum dolor feugiat at.",
     },
@@ -498,24 +431,20 @@ const data = {
   },
   Features: [
     {
-      icon: "fa fa-comments-o",
       title: "Summarising extension",
       text: "Summarization of meetings from various formats like text file, audio file and video file.",
     },
     {
-      icon: "fa fa-bullhorn",
       title: "Best summarization models.",
       text: "We have used OpenAI model which has highest degree of precision.",
     },
     {
-      icon: "fa fa-group",
       title: "Extension for Google meet to create transcript.",
       text: "Our extension can also download the transcript of a meeting on all platforms like Microsoft Teams, Zoom,Google Meet.",
     },
     {
-      icon: "fa fa-magic",
       title: "User friendly and with group summary mailing features.",
-      text: "No need of individual emails, we can share the summary with all the participants of the meeting .",
+      text: "No need of individual emails, we can share the summary with all the participants of the meeting.",
     },
   ],
 };
