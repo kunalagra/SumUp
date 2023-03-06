@@ -158,6 +158,7 @@ const Navbar = () => {
                     if(theme.palette.mode==="dark"){
                       colorMode.toggleColorMode();
                     }
+                    localStorage.clear();
                     navigate("/login")
                   }
                   else {

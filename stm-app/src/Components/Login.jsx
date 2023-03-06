@@ -153,7 +153,7 @@ class Login extends Component {
           
           else {
             this.setState({
-              alertCont: "Invalid Credentials",
+              alertCont: "User already exists!!",
               alertType: "danger",
               isAlert: true
             })

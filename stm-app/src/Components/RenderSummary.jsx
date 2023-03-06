@@ -22,6 +22,7 @@ import { tokens } from "../theme";
 import commonContext from "../Context/commonContext";
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import VolumeOffIcon from '@mui/icons-material/VolumeOff';
+import { useNavigate } from "react-router-dom";
 
 import 'swiper/scss';
 import 'swiper/scss/navigation';
@@ -108,8 +109,13 @@ const Summary = ({ summitem }) => {
 };
 
 const RenderSummary = () => {
+  const navigate = useNavigate();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+
+  if (localStorage.length === 0){
+    navigate("/login");
+  }
 
   const { summaries, para } = useContext(commonContext);
 

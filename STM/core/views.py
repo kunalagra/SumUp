@@ -100,16 +100,17 @@ def logout_user(request):
 @api_view(['POST'])
 def signup(request):
 	data = json.loads(request.body)
-	username = data['email']
+	email = data['email']
 	password = data['password']
 	name = data['name']
-	if User.objects.filter(username=username).exists():
+	if User.objects.filter(username=email).exists():
 		return Response({"message":"User Already Exist"},status=status.HTTP_406_NOT_ACCEPTABLE)
 	else:
-		user = User.objects.create_user(username=username, password=password, first_name=name, email=username)
+		user = User.objects.create_user(username=email, password=password, first_name=name, email=email)
 		user.save()
 		login(request, user)
-		return Response({"message":"User created", "user":username, "name": name},status=status.HTTP_200_OK)
+		logout(request)
+		return Response({"message":"User created", "user":email, "name": name},status=status.HTTP_200_OK)
 
 # @api_view(['GET'])
 # def home_red(request):

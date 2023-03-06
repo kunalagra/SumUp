@@ -5,6 +5,9 @@ import { useNavigate } from "react-router-dom";
 const Profile = () => {
     const isNonMobile = useMediaQuery("(min-width: 600px)");
     const navigate = useNavigate();
+    if (localStorage.length === 0){
+        navigate("/login");
+    }
     return (
         <Box 
             m="20px"
