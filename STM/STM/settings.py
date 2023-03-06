@@ -96,7 +96,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'djongo',
         'CLIENT': {
-            'host': 'mongodb+srv://Deexith:Deexith@cluster0.w5geufm.mongodb.net/?retryWrites=true&w=majority',
+            # 'host': 'mongodb+srv://Deexith:Deexith@cluster0.w5geufm.mongodb.net/?retryWrites=true&w=majority',
+            'host': 'mongodb+srv://Deexith:Deexith@cluster0.vvebei4.mongodb.net/?retryWrites=true&w=majority',
             'username': 'Deexith',
             'password': 'Deexith',
             'name': 'Company',

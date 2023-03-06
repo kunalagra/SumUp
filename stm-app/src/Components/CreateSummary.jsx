@@ -11,6 +11,10 @@ const CreateSummary = () => {
   const colors = tokens(theme.palette.mode);
   const navigate = useNavigate();
 
+  if (localStorage.length === 0){
+    navigate("/login");
+  }
+
   const { addSummary } = useContext(commonContext);
   const { addPara } = useContext(commonContext);
   const { clearSummaries, clearPara } = useContext(commonContext);

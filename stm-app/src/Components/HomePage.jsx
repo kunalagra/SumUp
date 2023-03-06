@@ -4,6 +4,7 @@ import FacebookIcon from "@mui/icons-material/Facebook";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import InstagramIcon from "@mui/icons-material/Instagram";
+import { useNavigate } from "react-router-dom";
 
 const initialState = {
   name: "",
@@ -12,6 +13,13 @@ const initialState = {
 };
 
 const HomePage = () => {
+  const navigate = useNavigate();
+
+  if (localStorage.length === 0) {
+    navigate("/login");
+  }
+
+
   const [{ name, email, message }, setState] = useState(initialState);
 
   const handleChange = (e) => {
