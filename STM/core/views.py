@@ -54,9 +54,11 @@ def update_user(request):
 	data = json.loads(request.body)
 	username = data['email']
 	password = data['password']
+	name = data['name']
 	if User.objects.filter(username=username).exists():
 		user = User.objects.get(username=username)
 		user.set_password(password)
+		user.first_name = name
 		user.save()
 		return Response({"message":"Password updated", "user":username, "name": user.first_name})
 	
@@ -70,7 +72,7 @@ def get_recent_data(request):
 			person = models.user.objects.get(username=request.user.username)
 			return Response({"message":"Data fetched", "user":request.user.username, "recents_sum":person.recent_sum}, status=status.HTTP_200_OK)
 		else:
-			return Response({"message":"Data not found", "user":request.user.username}, status=status.HTTP_200_OK)
+			return Response({"message":"Data not found", "user":request.user.username, "recents_sum":[]}, status=status.HTTP_200_OK)
 	else:
 		return Response({"message":"User not logged in"}, status=status.HTTP_401_UNAUTHORIZED)
 	

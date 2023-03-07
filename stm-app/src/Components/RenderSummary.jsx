@@ -86,8 +86,18 @@ const Summary = ({ summitem }) => {
             </Tooltip>
             <Tooltip title="Share">
               <IconButton aria-label="share" className="card-action-btn share-btn" onClick={() => {
-                // gmail or whatsapp
-                const shareUrl = `mailto:?subject=Summary&body=${summitem.summary.join(" ")}`;
+                // gmail share
+                const shareUrl = `mailto:?subject=Summary&body=${
+                  "Meeting Summary :%0A%0A" + summitem.summary.map((item, index) => `${index+1}. ${item}`).join("%0A")
+                }`;
+                // whatsapp share
+                // const shareUrl = `https://wa.me/?text=${
+                //   "Meeting Summary :%0A" + summitem.summary.map((item, index) => `${index+1}. ${item}`).join("%0A")
+                // }`;
+                // twitter share
+                // const shareUrl = `https://twitter.com/intent/tweet?text=${
+                //   "Meeting Summary :%0A%0A" + summitem.summary.map((item, index) => `${index+1}. ${item}`).join("%0A")
+                // }`;
                 window.open(shareUrl, "_blank");
               }}>
                 <ShareIcon />

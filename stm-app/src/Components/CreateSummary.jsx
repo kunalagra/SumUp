@@ -50,9 +50,12 @@ const CreateSummary = () => {
       setSummary(newsummary);
       setParagraph(response.data.para);
 
+      let d = new Date();
+
       axios.post("http://127.0.0.1:8000/recent_data", {
         email: localStorage.getItem("email"),
         data: {
+          date : `${d.getDate()}-${d.getMonth()}-${d.getFullYear()}/${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`,
           transcript: response.data.para,
           summary: newsummary.summary
         }
