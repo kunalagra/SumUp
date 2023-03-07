@@ -15,4 +15,6 @@ urlpatterns = [
     path('logout', views.logout_user, name='logout'),
     path('update_user', views.update_user, name='update_user'),
     path('reset_password', views.password_reset, name='reset_password'),
+    path('recent_data', views.recent_data, name='recent_data'),
+    path('get_data', views.get_recent_data, name='get_data'),
 ]

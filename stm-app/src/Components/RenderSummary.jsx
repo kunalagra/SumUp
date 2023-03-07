@@ -1,4 +1,4 @@
-import React, {useContext} from "react";
+import React, {useContext, useRef} from "react";
 import {
   Box,
   Card,
@@ -21,6 +21,9 @@ import VolumeOffIcon from '@mui/icons-material/VolumeOff';
 import ShareIcon from '@mui/icons-material/Share';
 import DownloadIcon from '@mui/icons-material/Download';
 import { useNavigate } from "react-router-dom";
+import SummaryPrintPage from "./PDFPages";
+import html2canvas from "html2canvas";
+import { jsPDF } from "jspdf";
 
 
 const Summary = ({ summitem }) => {
@@ -51,8 +54,28 @@ const Summary = ({ summitem }) => {
     setPlay(true);
   };
 
+  const summaryPrintRef = useRef();
+
+  const handleDownloadPdf = async () => {
+    const element = summaryPrintRef.current;
+    const canvas = await html2canvas(element);
+    const data = canvas.toDataURL('image/png');
+
+    const pdf = new jsPDF();
+    const imgProperties = pdf.getImageProperties(data);
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight =
+      (imgProperties.height * pdfWidth) / imgProperties.width;
+
+    pdf.addImage(data, 'PNG', 0, 0, pdfWidth, pdfHeight);
+    pdf.save('sum-up-summary.pdf'); 
+  };
+
   return (
     <Card sx={{ maxWidth: "900px", marginTop: "20px" }} className="summary-card">
+      <div ref={summaryPrintRef} style={{position: "absolute", top: "-1000px", left: "-1000px"}}>
+        <SummaryPrintPage summary={summitem.summary}/>
+      </div>
       <CardHeader title={summitem.title} subheader={summitem.type} className="summary-header" style={{background: `${colors.primary[700]}`}} 
         action={
           <Box>
@@ -62,12 +85,16 @@ const Summary = ({ summitem }) => {
               </IconButton>
             </Tooltip>
             <Tooltip title="Share">
-              <IconButton aria-label="share" className="card-action-btn share-btn">
+              <IconButton aria-label="share" className="card-action-btn share-btn" onClick={() => {
+                // gmail or whatsapp
+                const shareUrl = `mailto:?subject=Summary&body=${summitem.summary.join(" ")}`;
+                window.open(shareUrl, "_blank");
+              }}>
                 <ShareIcon />
               </IconButton>
             </Tooltip>
             <Tooltip title="Download">
-              <IconButton aria-label="download" className="card-action-btn dwnld-btn">
+              <IconButton aria-label="download" className="card-action-btn dwnld-btn" onClick={handleDownloadPdf}>
                 <DownloadIcon />
               </IconButton>
             </Tooltip>

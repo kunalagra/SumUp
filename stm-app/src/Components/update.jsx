@@ -1,4 +1,3 @@
-// create update password page and add it to the router
 import React from "react";
 import { Component } from "react";
 import { useNavigate } from "react-router-dom";
@@ -16,7 +15,6 @@ import { Box,
  import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import axios from "axios";
-// import { tokens } from "../theme";
 
 function Responsive(Component) {
     return function WrappedComp(props) {
@@ -168,7 +166,7 @@ class UpdatePassword extends Component {
               className="login__create-container__form-container__form"
               onSubmit={this.handleUpdate}
             >
-              <TextField id="outlined-username" label="Outlined" variant="outlined" sx={{ width: "min(270px, 90vw)" }} 
+              <TextField id="outlined-username" label="Username" variant="outlined" sx={{ width: "min(270px, 90vw)" }} 
                 value={this.state.name}
                 onChange={(e) =>
                   this.setState({
@@ -219,7 +217,6 @@ class UpdatePassword extends Component {
                 <InputLabel htmlFor="outlined-conf-password-signup">Confirm Password</InputLabel>
                 <OutlinedInput
                     id="outlined-conf-password-signup"
-                    className="login__create-container__form-container__form--password"
                     type={this.state.showConfirmPassword ? "text" : "password"}
                     autoComplete="current-password"
                     endAdornment={

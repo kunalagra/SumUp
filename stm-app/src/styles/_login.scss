@@ -415,3 +415,11 @@ $base-color: var(--main-color-1);
         margin-top: 10px;
     }
 }
+
+.reset-form {
+    input {
+        border-radius: 3px;
+        background-color: #f1f1f1;
+        color: #242424;
+    }
+}

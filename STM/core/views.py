@@ -62,6 +62,32 @@ def update_user(request):
 	
 	else:
 		return Response({"message":False}, status=status.HTTP_401_UNAUTHORIZED)
+
+@api_view(['GET'])
+def get_recent_data(request):
+	if request.user.is_authenticated:
+		if models.user.objects.filter(username=request.user.username).exists():
+			person = models.user.objects.get(username=request.user.username)
+			return Response({"message":"Data fetched", "user":request.user.username, "recents_sum":person.recent_sum}, status=status.HTTP_200_OK)
+		else:
+			return Response({"message":"Data not found", "user":request.user.username}, status=status.HTTP_200_OK)
+	else:
+		return Response({"message":"User not logged in"}, status=status.HTTP_401_UNAUTHORIZED)
+	
+@api_view(['POST'])
+def recent_data(request):
+	data = json.loads(request.body)
+	username = data['email']
+	if models.user.objects.filter(username=username).exists():
+		print("User exists")
+		user = models.user.objects.get(username=username)
+		user.recent_sum.append(data['data'])
+		user.save()
+	else:
+		print("User does not exist")
+		user = models.user.objects.create(username=username, recent_sum=[data['data']], id= models.user.objects.count()+1)
+		user.save()
+	return Response({"message":"Data updated", "user":username})
 	
 	
 

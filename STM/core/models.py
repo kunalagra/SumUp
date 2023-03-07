@@ -1,4 +1,4 @@
-from django.db import models
+from djongo import models
 import openai
 from sumy.parsers.plaintext import PlaintextParser
 from sumy.nlp.tokenizers import Tokenizer
@@ -133,3 +133,8 @@ def nlp_model(data):
 #     model = whisper.load_model("base.en")
 #     output = model.transcribe(data)
 #     return output['text']
+
+class user(models.Model):
+    id = models.IntegerField(primary_key=True)
+    username = models.CharField(max_length=100)
+    recent_sum = models.JSONField(default=dict)
