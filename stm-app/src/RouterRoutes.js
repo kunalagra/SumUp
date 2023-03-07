@@ -8,6 +8,7 @@ import UpdatePassword from "./Components/update";
 import ResetPassword from "./Components/reset";
 import HomePage from "./Components/HomePage";
 import Preloader from "./Components/Preloader";
+// import Summary from "./Components/PDFPages";
 
 const RouterRoutes = () => {
 
@@ -21,7 +22,8 @@ const RouterRoutes = () => {
                 <Route path="/login" element={<Login />} />
                 <Route path="/update" element={<UpdatePassword />} />
                 <Route path="/reset" element={<ResetPassword />} />
-                <Route path="/load" element={<Preloader cont="LJLFKDSJFK"/>} />
+                <Route path="/load" element={<Preloader />} />
+                {/* <Route path="/pdfpage" element={<Summary />} /> */}
 
                 <Route path="/*" element={<NotFound />} />
             </Routes>

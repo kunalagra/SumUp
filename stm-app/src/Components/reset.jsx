@@ -2,10 +2,8 @@ import React from "react";
 import { Component } from "react";
 import { useNavigate } from "react-router-dom";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { Box, TextField,Button } from "@mui/material";
+import { Box, TextField } from "@mui/material";
 import axios from "axios";
-import { Formik } from "formik";
-import * as yup from "yup";
 
 function Responsive(Component) {
     return function WrappedComp(props) {
@@ -20,47 +18,99 @@ class ResetPassword extends Component {
         super(props);
         this.state = {
             email: "",
-            error: "",
+            isAlert: false,
+            alertCont: "",
+            alertType: ""
         };
+        this.handleReset = this.handleReset.bind(this);
     }
 
-    handleUpdate = (values) => {
-        const { email } = values;
+    handleReset = (e) => {
+        e.preventDefault();
+
+        const { email } = this.state;
+        // eslint-disable-next-line
+        if(!(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(this.state.email))) {
+            this.setState({
+              alertCont: "Invalid Email!!",
+              alertType: "danger",
+              isAlert: true
+            });
+            setTimeout(() => {
+                this.setState({
+                  alertCont: "",
+                  alertType: "",
+                  isAlert: false
+                })
+            }, 2000);
+            return;
+        }
+
         axios.post("http://localhost:8000/reset_password", {
             email: email,
         })
             .then((res) => {
                 if (res.status === 200) {
-                    alert("Password reset link sent to your email");
-                    this.props.navigate("/login");
+                    this.setState({
+                        alertCont: "Password sent to your email!!",
+                        alertType: "success",
+                        isAlert: true
+                      });
+                    setTimeout(() => {
+                        this.setState({
+                            alertCont: "",
+                            alertType: "",
+                            isAlert: false
+                        })
+                    }, 2000);
+                    setTimeout(() => {
+                        this.props.navigate("/login");
+                    }, 2000);
                 }
             }
             )
             .catch((err) => {
                 if (err.response.status === 401) {
-                    alert("User not found");
+                    this.setState({
+                        alertCont: "User not found!!",
+                        alertType: "danger",
+                        isAlert: true
+                    })
                 }
                 else {
-                    alert("Error in updating password");
+                    this.setState({
+                        alertCont: "Error in updating password!!",
+                        alertType: "danger",
+                        isAlert: true
+                    })
                 }
+                setTimeout(() => {
+                    this.setState({
+                        alertCont: "",
+                        alertType: "",
+                        isAlert: false
+                    })
+                }, 2000);
             }
             );
     };
 
     render() {
-        const { isNonMobile } = this.props;
-        const { name, email, password, confirmPassword } = this.state;
         return (
             <Box
                 m="20px"
                 display="flex"
-                flexDirection={isNonMobile ? "row" : "column"}
+                flexDirection={this.props.isNonMobile ? "row" : "column"}
                 alignItems="center"
                 justifyContent="center"
                 mt="70px"
-                minHeight="70vh"
             >
-                <Box paddingRight={isNonMobile ? "100px" : "0"}>
+                {this.state.isAlert && (
+                    <div style={{position: "absolute", right: "10px", top: "80px", zIndex: 999}} className={`alert alert-${this.state.alertType}`}>
+                    {this.state.alertCont}
+                    </div>
+                )}
+                <Box paddingRight={this.props.isNonMobile ? "100px" : "0"}>
                     <img
                         src="logo512.png"
                         height="300px"
@@ -68,58 +118,24 @@ class ResetPassword extends Component {
                     />
                 </Box>
                 <Box>
-                    <Formik
-                        initialValues={{
-                            name: name,
-                            email: email,
-                            password: password,
-                            confirmPassword: confirmPassword,
-                        }}
-                        validationSchema={yup.object().shape({
-                            email: yup.string().email().required("Email is required"),
-                        })}
-                        onSubmit={this.handleUpdate}
-                    >
-                        {(props) => {
-                            const {
-                                values,
-                                touched,
-                                errors,
-                                handleChange,
-                                handleBlur
-                            } = props;
-                            return (
-                                <form onSubmit={props.handleSubmit}>
-                                    <div>
-                                        <p>Reset your password</p>
-                                    </div>
-                                    <Box m="15px 0">
-                                        <TextField
-                                            id="email"
-                                            name="email"
-                                            label="Email"
-                                            variant="outlined"
-                                            fullWidth
-                                            value={values.email}
-                                            onChange={handleChange}
-                                            onBlur={handleBlur}
-                                            error={errors.email && touched.email}
-                                            helperText={errors.email && touched.email && errors.email}
-                                        />
-                                    </Box>
-                                    <Box m="15px 0">
-                                        <Button
-                                            variant="contained"
-                                            type="submit"
-                                            color="primary"
-                                        >
-                                            Update
-                                        </Button>
-                                    </Box>
-                                </form>
-                            );
-                        }}
-                    </Formik>
+                    <form onSubmit={this.handleReset} className="reset-form">
+                        <div>
+                            <p>Enter email to send the password</p>
+                        </div>
+                        <TextField
+                            id="email"
+                            name="email"
+                            label="Email"
+                            variant="outlined"
+                            fullWidth
+                            value={this.state.email}
+                            onChange={(e) => this.setState({email: e.target.value})}
+                            required
+                        />
+                        <button type="submit" className="login__create-container__form-container__form--submit">
+                            Send
+                        </button>
+                    </form>
                 </Box>
             </Box>
         );
