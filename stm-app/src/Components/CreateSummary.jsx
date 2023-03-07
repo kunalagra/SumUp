@@ -50,6 +50,14 @@ const CreateSummary = () => {
       setSummary(newsummary);
       setParagraph(response.data.para);
 
+      axios.post("http://127.0.0.1:8000/recent_data", {
+        email: localStorage.getItem("email"),
+        data: {
+          transcript: response.data.para,
+          summary: newsummary.summary
+        }
+      })
+
       setLoading(false);
       // console.log(newsummary);
       navigate("/summary");

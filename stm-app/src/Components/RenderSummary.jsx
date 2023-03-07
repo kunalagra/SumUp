@@ -62,12 +62,23 @@ const Summary = ({ summitem }) => {
               </IconButton>
             </Tooltip>
             <Tooltip title="Share">
-              <IconButton aria-label="share" className="card-action-btn share-btn">
+              <IconButton aria-label="share" className="card-action-btn share-btn" onClick={() => {
+                // gmail or whatsapp
+                const shareUrl = `mailto:?subject=Summary&body=${summitem.summary.join(" ")}`;
+                window.open(shareUrl, "_blank");
+              }}>
                 <ShareIcon />
               </IconButton>
             </Tooltip>
             <Tooltip title="Download">
-              <IconButton aria-label="download" className="card-action-btn dwnld-btn">
+              <IconButton aria-label="download" className="card-action-btn dwnld-btn" onClick={() => {
+                const element = document.createElement("a");
+                const file = new Blob([summitem.summary.join(" ")], {type: 'text/plain'});
+                element.href = URL.createObjectURL(file);
+                element.download = `${summitem.title}.txt`;
+                document.body.appendChild(element); // Required for this to work in FireFox
+                element.click();
+              }}>
                 <DownloadIcon />
               </IconButton>
             </Tooltip>
