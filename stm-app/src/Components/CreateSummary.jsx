@@ -19,12 +19,11 @@ const CreateSummary = () => {
     navigate("/login");
   }
 
-  const { addSummary } = useContext(commonContext);
-  const { addPara } = useContext(commonContext);
-  const { clearSummaries, clearPara } = useContext(commonContext);
+  const { setSummary, setParagraph } = useContext(commonContext);
 
   const [para, setPara] = useState("");
   const [transcript, setTranscript] = useState(null);
+  const [model, setModel] = useState("open-ai");
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -32,6 +31,7 @@ const CreateSummary = () => {
     let formData = new FormData();
     formData.append("para", para);
     formData.append("file", transcript);
+    formData.append("model", model);
 
     // console.log(formData);
     setLoading(true);
@@ -41,53 +41,17 @@ const CreateSummary = () => {
       },
     })
     .then((response) => {
-      const newsummaries = [
-        // {
-        //   title: "LexRank",
-        //   summary: response.data.extractive.LexRank,
-        //   stars: 0,
-        //   type: "Extractive"
-        // },
-        {
-          title: "LSA",
-          summary: response.data.extractive["LSA"],
-          stars: 0,
-          type: "Extractive"
-        },
-        {
-          title: "KL Sum",
-          summary: response.data.extractive["KL Sum"],
-          stars: 0,
-          type: "Extractive"
-        },
-        // {
-        //   title: "Luhn",
-        //   summary: response.data.extractive["Luhn"],
-        //   stars: 0,
-        //   type: "Extractive"
-        // },
-        {
-          title: "OpenAI",
-          summary: response.data.abstractive["OpenAI"],
-          stars: 0,
+      const newsummary = {
+          title: model==="open-ai"? "OpenAI":"BERT",
+          summary: model==="open-ai"? response.data["OpenAI"]: response.data["BERT"],
           type: "Abstractive"
-        },
-        {
-          title: "NLP",
-          summary: response.data.abstractive["NLP"],
-          stars: 0,
-          type: "Abstractive"
-        },
-      ]
+        }
 
-      clearSummaries();
-      clearPara();
-      newsummaries.forEach((summary) => {
-        addSummary(summary);
-      });
+      setSummary(newsummary);
+      setParagraph(response.data.para);
 
-      addPara(response.data.para);
       setLoading(false);
+      // console.log(newsummary);
       navigate("/summary");
     })
     .catch(e => {
@@ -129,7 +93,7 @@ const CreateSummary = () => {
               encType="multipart/form-data"
             >
               <Box className="create-summ-form" sx={{
-                "input, textarea": {
+                "input, textarea, select": {
                   "&:hover, &:active, &:focus" : {
                       outline: `3px solid ${theme.palette.mode==='dark'? colors.primary[800] : colors.primary[100]}`
                   }
@@ -197,6 +161,29 @@ const CreateSummary = () => {
                       disabled={para !== ""}
                       required
                     ></input>
+                  </Box>
+
+                  <Box className="mb-3 select-input-div" sx={{
+
+                  }}>
+                    <FormLabel htmlFor="formFile" className="form-label select-input-label">
+                      Select model {"(optional)"}
+                    </FormLabel>
+                    <select
+                      className="form-control select-input"
+                      id="model"
+                      name="model"
+                      style={{
+                        border: `2px solid ${colors.primary[700]}`,
+                        backgroundColor: "var(--light-color-5)",
+                        color: "var(--dark-color-6)",
+                      }}
+                      onChange={(e) => setModel(e.target.value)}
+                      value={model}
+                    >
+                      <option value="open-ai" className="select-input-option">OpenAI</option>
+                      <option value="bert" className="select-input-option">BERT</option>
+                    </select>
                   </Box>
                 </Box>
               </Box>

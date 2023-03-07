@@ -4,7 +4,7 @@ import commonReducer from './commonReducer';
 const commonContext = createContext();
 
 const initialState = {
-    summaries: [],
+    gen_summary: null,
     para: '',
     isLoading: false
 };
@@ -15,29 +15,17 @@ const CommonProvider = ({ children }) => {
     
     const [state, dispatch] = useReducer(commonReducer, initialState);
 
-    const addSummary = (summ) => {
+    const setSummary = (summ) => {
         return dispatch({
-            type: 'ADD_SUMMARIES',
+            type: 'SET_SUMMARY',
             payload: { summ }
         })
     }
 
-    const addPara = (para) => {
+    const setParagraph = (para) => {
         return dispatch({
-            type: 'ADD_PARA',
+            type: 'SET_PARA',
             payload: { para }
-        })
-    }
-
-    const clearSummaries = () => {
-        return dispatch({
-            type: 'CLEAR_SUMMARIES'
-        })
-    }
-
-    const clearPara = () => {
-        return dispatch({
-            type: 'CLEAR_PARA'
         })
     }
 
@@ -51,10 +39,8 @@ const CommonProvider = ({ children }) => {
     // Context values
     const values = {
         ...state,
-        addSummary,
-        addPara,
-        clearSummaries,
-        clearPara,
+        setSummary,
+        setParagraph,
         setLoading
     };
 

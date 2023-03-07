@@ -27,6 +27,27 @@
         .media-div {
             margin-top: 10px;
             width: 100%;
+
+            .select-input-div {
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
+                margin-top: 25px;
+
+                .select-input-label {
+                    margin-right: 20px;
+                }
+
+                .select-input {
+                    min-width: 150px;
+                    width: 40%;
+                    text-align: center;
+
+                    .select-input-option {
+                        background-color: var(--light-color-1);
+                    }
+                }
+            }
         }
 
     }

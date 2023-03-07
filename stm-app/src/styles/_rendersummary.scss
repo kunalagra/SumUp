@@ -24,22 +24,7 @@
     }
 
     
-    #render-summary-swiper {
-        
-        .swiper-button-prev, .swiper-button-next {
-            visibility: hidden;
-            opacity: 0;
-            font-weight: bolder;
-            color: var(--main-color-2);
-            transition: visibility 0.5s ease, opacity 1s ease;
-        }
-
-        &:hover {
-            .swiper-button-next, .swiper-button-prev {
-                visibility: visible;
-                opacity: 1;
-            }
-        }
+    #render-summary-cards {
 
         .summary-card {
 
@@ -52,7 +37,7 @@
                 box-shadow: 0 0 10px 0 var(--main-color-2);
             }
 
-            .text-to-speech-btn {
+            .card-action-btn {
                 position: absolute;
                 color: var(--light-color-3);
                 top: 18px;
@@ -62,6 +47,14 @@
                 &:hover {
                     color: var(--light-color-2);
                 }
+            }
+
+            .txt-to-speech-btn {
+                right: 90px;
+            }
+
+            .share-btn {
+                right: 55px;
             }
 
             .summary-header {
@@ -78,7 +71,6 @@
             }
 
         }
-
 
         .swiper-pagination-bullet {
             background-color: var(--main-color-2);

@@ -10,7 +10,8 @@ import { Box,
     InputAdornment,
     IconButton,
     FormHelperText,
-    useTheme
+    useTheme,
+    TextField
  } from "@mui/material";
  import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
@@ -38,34 +39,100 @@ class UpdatePassword extends Component {
             showPassword: false,
             showConfirmPassword: false,
             error: "",
+            isAlert: false,
+            alertCont: "",
+            alertType: "",
+            name: localStorage.getItem('name')
         };
     }
 
     handleUpdate = (values) => {
         values.preventDefault();
-        const { password, confirmPassword } = this.state;
+        const { password, confirmPassword, name } = this.state;
+        if(!(/^.{6,}$/.test(password))) {
+          this.setState({
+            alertCont: "Password should contain atleast 6 characters!!",
+            alertType: "danger",
+            isAlert: true
+          })
+
+          setTimeout(() => {
+            this.setState({
+              alertCont: "",
+              alertType: "",
+              isAlert: false
+            })
+          }, 2000);
+          return ;
+        }
+
         if (password !== confirmPassword) {
-            alert("Passwords do not match");
-            return;
+            this.setState({
+            alertCont: "Passwords do not match!!",
+            alertType: "danger",
+            isAlert: true
+          })
+
+          setTimeout(() => {
+            this.setState({
+              alertCont: "",
+              alertType: "",
+              isAlert: false
+            })
+          }, 2000);
+          return ;
         }
         axios.post("http://localhost:8000/update_user", {
             email: localStorage.getItem("email"),
             password: password,
+            name: name
         })
             .then((res) => {
                 if (res.status === 200) {
-                    alert("Password updated successfully");
-                    this.props.navigate("/login");
+                    this.setState({
+                      alertCont: "Profile Updated!!",
+                      alertType: "success",
+                      isAlert: true
+                    })
+
+                    setTimeout(() => {
+                      this.setState({
+                        alertCont: "",
+                        alertType: "",
+                        isAlert: false
+                      })
+                    }, 2000);
+                    
+                    setTimeout(() => {
+                      this.props.navigate("/login");
+                    }, 2000);
+
                 }
             }
             )
             .catch((err) => {
                 if (err.response.status === 401) {
-                    alert("User not found");
+                    this.setState({
+                      alertCont: "User not found!!",
+                      alertType: "danger",
+                      isAlert: true
+                    })
+                  }
+                  else {
+                    this.setState({
+                      alertCont: "Error in updating profile!!",
+                      alertType: "danger",
+                      isAlert: true
+                    })
                 }
-                else {
-                    alert("Error in updating password");
-                }
+
+                setTimeout(() => {
+                  this.setState({
+                    alertCont: "",
+                    alertType: "",
+                    isAlert: false
+                  })
+                }, 2000);
             }
             );
 
@@ -84,6 +151,11 @@ class UpdatePassword extends Component {
                 mt="70px"
                 minHeight="70vh"
             >
+              {this.state.isAlert && (
+                <div style={{position: "absolute", right: "10px", top: "80px", zIndex: 999}} className={`alert alert-${this.state.alertType}`}>
+                  {this.state.alertCont}
+                </div>
+              )}
                 <Box paddingRight={isNonMobile ? "100px" : "0"}>
                     <img
                         src="logo512.png"
@@ -96,11 +168,21 @@ class UpdatePassword extends Component {
               className="login__create-container__form-container__form"
               onSubmit={this.handleUpdate}
             >
+              <TextField id="outlined-username" label="Outlined" variant="outlined" sx={{ width: "min(270px, 90vw)" }} 
+                value={this.state.name}
+                onChange={(e) =>
+                  this.setState({
+                    name: e.target.value,
+                    email: this.state.email,
+                    password: this.state.password,
+                  })
+                }
+                required
+              />
               <FormControl sx={{ width: "min(270px, 90vw)" }} variant="outlined">
                 <InputLabel htmlFor="outlined-password-signup">Password</InputLabel>
                 <OutlinedInput
                   id="outlined-password-signup"
-                  className="login__create-container__form-container__form--password"
                   type={this.state.showPassword ? "text" : "password"}
                   autoComplete="current-password"
                   endAdornment={
@@ -134,9 +216,9 @@ class UpdatePassword extends Component {
                 />
               </FormControl>
                 <FormControl sx={{ width: "min(270px, 90vw)" }} variant="outlined">
-                <InputLabel htmlFor="outlined-password-signup">Confirm Password</InputLabel>
+                <InputLabel htmlFor="outlined-conf-password-signup">Confirm Password</InputLabel>
                 <OutlinedInput
-                    id="outlined-password-signup"
+                    id="outlined-conf-password-signup"
                     className="login__create-container__form-container__form--password"
                     type={this.state.showConfirmPassword ? "text" : "password"}
                     autoComplete="current-password"
@@ -172,7 +254,7 @@ class UpdatePassword extends Component {
                 <FormHelperText style={{fontSize:"0.8rem"}}>Password should contain atleast 6 characters</FormHelperText>
             </FormControl>
               <button className="login__create-container__form-container__form--submit">
-                Sign Up
+                Update
               </button>
             </form>
                 </Box>

@@ -172,29 +172,38 @@ def gen_summ(request):
 			return Response({"message":"Invalid file type"},status=status.HTTP_400_BAD_REQUEST)
 
 	# print(data["para"])
-	data['abstractive'] = {}
-	data['extractive'] = {}
-	m2 = models.openai_model(data['para'])
-	data["abstractive"]["OpenAI"] = m2
+
+	# data['abstractive'] = {}
+	# data['extractive'] = {}
+
+	# m2 = models.openai_model(data['para'])
+	# data["abstractive"]["OpenAI"] = m2
 	# print(m2)
 	
 	# m3 =  models.lexrank_model(data["para"])
 	# data["extractive"]["LexRank"] = m3
 	# print(m3)
 	
-	m4 =  models.latent_summary_analysis_model(data["para"])
-	data["extractive"]["LSA"] = m4
+	# m4 =  models.latent_summary_analysis_model(data["para"])
+	# data["extractive"]["LSA"] = m4
 	# print(m4)
 	
-	m5 =  models.klsum_model(data["para"])
-	data["extractive"]["KL Sum"] = m5
+	# m5 =  models.klsum_model(data["para"])
+	# data["extractive"]["KL Sum"] = m5
 	# print(m5)
 	
 	# m6 =  models.luhn_model(data["para"])
 	# data["extractive"]["Luhn"] = m6
 	# print(m6)
-	m7 =  models.nlp_model(data["para"])
-	data["abstractive"]["NLP"] = m7
+
+	# m7 =  models.nlp_model(data["para"])
+	# data["abstractive"]["NLP"] = m7
 	# print(data)
+
+	if data['model']=='open-ai':
+		data["OpenAI"] = models.openai_model(data['para'])
+	else:
+		data["BERT"] = models.nlp_model(data['para'])
+
 	# print(data.keys(), data["extractive"].keys(), data["abstractive"].keys())
 	return Response(data,status=status.HTTP_200_OK)
