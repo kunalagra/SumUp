@@ -396,7 +396,7 @@ const data = {
     {
       img: "img/testimonials/03.jpg",
       text: '"Summarization models like BERT and OPEN AI are very helpful to get a birds eye view of meeting"',
-      name: "Lis Truz",
+      name: "Joseph Thomas",
     },
     {
       img: "img/testimonials/02.jpg",
