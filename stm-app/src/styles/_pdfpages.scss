@@ -1,0 +1,30 @@
+#summary-page {
+
+    margin: 0 auto;
+    width: min(700px, 90vw);
+    padding: 60px 50px;
+
+    .summary-title {
+
+        text-align: center;
+
+        h2 {
+            font-size: 1.8em;
+            font-weight: bold;
+        }
+    }
+
+    .summary-items {
+
+        margin-top: 40px;
+
+        ul {
+            list-style: square;
+
+            li {
+                margin: 10px 0;
+                font-size: 1em;
+            }
+        }
+    }
+}
