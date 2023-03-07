@@ -22,8 +22,14 @@ const commonReducer = (state, action) => {
         case 'CLEAR_PARA':
             return {
                 ...state,
-                parag: ''
+                para: ''
             };
+        
+        case 'SET_LOADING':
+            return {
+                ...state,
+                isLoading: action.payload.load
+            }
 
         default:
             return state;

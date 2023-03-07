@@ -1,19 +1,11 @@
 import { ColorModeContext, useMode } from "./theme";
 import { CssBaseline, ThemeProvider } from "@mui/material";
-import { Routes, Route } from "react-router-dom";
 import Navbar from "./Components/Navbar";
-import NotFound from "./Components/NotFound";
 import Footer from "./Components/Footer";
-import CreateSummary from "./Components/CreateSummary";
-import RenderSummary from "./Components/RenderSummary";
-import Profile from "./Components/Profile";
-import Login from "./Components/Login";
-import UpdatePassword from "./Components/update";
-import ResetPassword from "./Components/reset";
-import HomePage from "./Components/HomePage";
 import { Component } from "react";
 import { withRouter } from "./ComponentWithRouter";
 import { CommonProvider } from "./Context/commonContext";
+import RouterRoutes from "./RouterRoutes";
 
 
 function withThemeProvider(Component) {
@@ -47,17 +39,7 @@ class App extends Component {
           <div className="app">
             <main className="content">
               { navbar }
-              <Routes>
-                <Route path="/" element={<HomePage />} />
-                <Route path="/summarize" element={<CreateSummary />} />
-                <Route path="/summary" element={<RenderSummary />} />
-                <Route path="/user" element={<Profile />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/update" element={<UpdatePassword />} />
-                <Route path="/reset" element={<ResetPassword />} />
-
-                <Route path="/*" element={<NotFound />} />
-              </Routes>
+              <RouterRoutes />
               <Footer />
             </main>
           </div>

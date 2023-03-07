@@ -1,0 +1,70 @@
+#preloader {
+    width: 100%;
+    min-height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+    @include centered;
+    
+    .loader {
+        @include dimension(12.5rem, 12.5rem);
+        border-radius: 50%;
+        animation: spin 1.4s linear infinite;
+    }
+    
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+    
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+    
+    .loader_content {
+        position: absolute;
+        top: 53.5%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        animation: text 1s linear infinite alternate;
+    
+        @include devices(xs) {
+            top: 53.2%;
+        }
+        
+        .loader_img {
+            background-image: url("../../public/logo.png");
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+            @include dimension(11.5rem, 11.5rem);
+            border-radius: 100%;
+        }
+        
+        .loader_text {
+            @include centered;
+            margin-top: 2rem;
+            font-size: medium;
+        }
+    
+    }
+    
+    @keyframes text {
+        0% {
+            opacity: 0.4;
+        }
+    
+        100% {
+            opacity: 1;
+        }
+    }
+}
+
+.preloader-extra-content {
+    font-size: medium;
+    position: absolute;
+    top: 530px;
+    padding: 0 20px;
+}

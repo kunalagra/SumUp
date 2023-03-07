@@ -6,6 +6,7 @@ const commonContext = createContext();
 const initialState = {
     summaries: [],
     para: '',
+    isLoading: false
 };
 
 
@@ -40,13 +41,21 @@ const CommonProvider = ({ children }) => {
         })
     }
 
+    const setLoading = (load) => {
+        return dispatch({
+            type: 'SET_LOADING',
+            payload: { load }
+        })
+    }
+
     // Context values
     const values = {
         ...state,
         addSummary,
         addPara,
         clearSummaries,
-        clearPara
+        clearPara,
+        setLoading
     };
 
     return (
