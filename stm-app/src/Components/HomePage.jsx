@@ -124,8 +124,7 @@ const HomePage = () => {
           <div className="section-title">
             <h2>Our Services</h2>
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit duis sed
-              dapibus leonec.
+              Sum-up intends to be a one stop solution for meet summarization needs
             </p>
           </div>
           <div className="row">
@@ -150,8 +149,7 @@ const HomePage = () => {
           <div className="section-title">
             <h2>Gallery</h2>
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit duis sed
-              dapibus leonec.
+              Proof of our work is attached below
             </p>
           </div>
           <div className="gallery-items-div">
@@ -212,7 +210,7 @@ const HomePage = () => {
           <div className="section-title">
             <h2>Meet the Team</h2>
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit duis sed dapibus leonec.
+              We are team Quad who have built this website together.
             </p>
           </div>
           <div className="team-div">
@@ -340,7 +338,7 @@ const data = {
     paragraph:
       "Team Quad has developed an extension which can be used to summarize team meetings effortlessly with high degree of precision",
     Why: [
-      "Best summarizer",
+      "Best summarization models OPEN AI and BERT",
       "Free to use",
       "Zero latency",
       "Available as an extension",
@@ -365,10 +363,18 @@ const data = {
   ],
   Services: [
     {
-      name: "Lorem ipsum dolor",
-      text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis sed dapibus leo nec ornare diam sedasd commodo nibh ante facilisis bibendum dolor feugiat at.",
+      name: "Audio/Video/Text file summarizer",
+      text: "We can take a .mp4,.mp3,text files as input and then summarize its contents in best way possible",
     },
     {
+      name: "Summarizing extension",
+      text: "To facilitate ease of use for user we also have an extension which can provide detailed summary of Google meet too!",
+    },
+    {
+      name: "Transcription and email services",
+      text: "With provide a feature to transcribe the entire meet, summarize it and email it to the participants too",
+    },
+    /* {
       name: "Consectetur adipiscing",
       text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis sed dapibus leo nec ornare diam sedasd commodo nibh ante facilisis bibendum dolor feugiat at.",
     },
@@ -379,51 +385,43 @@ const data = {
     {
       name: "Consectetur adipiscing",
       text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis sed dapibus leo nec ornare diam sedasd commodo nibh ante facilisis bibendum dolor feugiat at.",
-    },
-    {
-      name: "Lorem ipsum dolor",
-      text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis sed dapibus leo nec ornare diam sedasd commodo nibh ante facilisis bibendum dolor feugiat at.",
-    },
-    {
-      name: "Consectetur adipiscing",
-      text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis sed dapibus leo nec ornare diam sedasd commodo nibh ante facilisis bibendum dolor feugiat at.",
-    },
+    }, */
   ],
   Testimonials: [
     {
       img: "img/testimonials/01.jpg",
-      text: '"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis sed dapibus leo nec ornare diam sedasd commodo nibh ante facilisis bibendum dolor feugiat at."',
+      text: '"Excellent product with great functionalities"',
       name: "John Doe",
     },
     {
-      img: "img/testimonials/01.jpg",
-      text: '"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis sed dapibus leo nec ornare diam sedasd commodo nibh ante facilisis bibendum dolor feugiat at."',
-      name: "Johnathan Doe",
+      img: "img/testimonials/03.jpg",
+      text: '"Summarization models like BERT and OPEN AI are very helpful to get a birds eye view of meeting"',
+      name: "Lis Truz",
     },
     {
-      img: "img/testimonials/01.jpg",
-      text: '"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis sed dapibus leo nec ornare diam sedasd commodo nibh ante facilisis bibendum dolor feugiat at."',
-      name: "John Doe",
+      img: "img/testimonials/02.jpg",
+      text: '"Easy to use for non techy people too as summary is directly received by mail"',
+      name: "Rohan Sharma",
     },
   ],
   Team: [
     {
-      img: "img/team/01.jpg",
+      img: "img/team/Kunalpic.jpg",
       name: "Kunal Agrawal",
       job: "Director",
     },
     {
-      img: "img/team/02.jpg",
+      img: "img/team/Deexith.jpg",
       name: "Deexith Madas",
       job: "Senior Designer",
     },
     {
-      img: "img/team/02.jpg",
+      img: "img/team/Amantiw.jpeg",
       name: "Aman Tiwari",
       job: "Senior Designer",
     },
     {
-      img: "img/team/02.jpg",
+      img: "img/team/Ganesh.jpg",
       name: "Ganesh Utla",
       job: "Senior Designer",
     },
@@ -444,7 +442,7 @@ const data = {
     },
     {
       title: "Best summarization models.",
-      text: "We have used OpenAI model which has highest degree of precision.",
+      text: "We have used OpenAI and Bert models which have highest degree of precision.",
     },
     {
       title: "Extension for Google meet to create transcript.",
