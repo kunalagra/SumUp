@@ -8,25 +8,34 @@ import UpdatePassword from "./Components/update";
 import ResetPassword from "./Components/reset";
 import HomePage from "./Components/HomePage";
 import Preloader from "./Components/Preloader";
-// import Summary from "./Components/PDFPages";
+import RecentSummaries from "./Components/RecentSummaries";
+import RenderRecentSummary from "./Components/RenderRecentSummary";
+import commonContext from "./Context/commonContext";
+import { useContext } from "react";
 
-const RouterRoutes = () => {
+const RouterRoutes = () => {    
+
+    const { isLoading, loadCont } = useContext(commonContext);
 
     return (
         <>
-            <Routes>
-                <Route path="/" element={<HomePage />} />
-                <Route path="/summarize" element={<CreateSummary />} />
-                <Route path="/summary" element={<RenderSummary />} />
-                <Route path="/user" element={<Profile />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/update" element={<UpdatePassword />} />
-                <Route path="/reset" element={<ResetPassword />} />
-                <Route path="/load" element={<Preloader />} />
-                {/* <Route path="/pdfpage" element={<Summary />} /> */}
+            {
+                isLoading? <Preloader cont={loadCont} /> : (
+                    <Routes>
+                        <Route path="/" element={<HomePage />} />
+                        <Route path="/summarize" element={<CreateSummary />} />
+                        <Route path="/summary" element={<RenderSummary />} />
+                        <Route path="/user" element={<Profile />} />
+                        <Route path="/login" element={<Login />} />
+                        <Route path="/update" element={<UpdatePassword />} />
+                        <Route path="/reset" element={<ResetPassword />} />
+                        <Route path="/recent-summaries" element={<RecentSummaries />} />
+                        <Route path="/recent-summaries/:index" element={<RenderRecentSummary />} />
 
-                <Route path="/*" element={<NotFound />} />
-            </Routes>
+                        <Route path="/*" element={<NotFound />} />
+                    </Routes>
+                )
+            }
         </>
     )
 }

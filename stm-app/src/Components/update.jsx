@@ -147,6 +147,7 @@ class UpdatePassword extends Component {
                 alignItems="center"
                 justifyContent="center"
                 mt="70px"
+                mb="150px"
                 minHeight="70vh"
             >
               {this.state.isAlert && (

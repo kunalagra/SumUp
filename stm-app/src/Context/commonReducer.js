@@ -19,6 +19,24 @@ const commonReducer = (state, action) => {
                 isLoading: action.payload.load
             }
 
+        case 'SET_LOADING_CONT':
+            return {
+                ...state,
+                loadCont: action.payload.cont
+            }
+        
+        case 'SET_SUMMITEM':
+            return {
+                ...state,
+                mySummitem: action.payload.summ
+            }
+        
+        case 'SET_TRANSCRIPT':
+            return {
+                ...state,
+                myTranscript: action.payload.trans
+            }
+
         default:
             return state;
     }

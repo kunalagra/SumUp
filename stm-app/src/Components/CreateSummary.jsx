@@ -4,13 +4,12 @@ import commonContext from "../Context/commonContext";
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import Preloader from "./Preloader";
 
 const CreateSummary = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const navigate = useNavigate();
-  const { isLoading, setLoading } = useContext(commonContext); 
+  const { setLoading, setLoadCont } = useContext(commonContext); 
   const [alertType, setAlertType] = useState("");
   const [alertCont, setAlertCont] = useState("");
   const [isAlert, setIsAlert] = useState(false);
@@ -35,6 +34,7 @@ const CreateSummary = () => {
 
     // console.log(formData);
     setLoading(true);
+    setLoadCont("Please wait... It may take some time upto 15 minutes based on the file size");
     axios.post("http://localhost:8000/gen_summary", formData, {
       headers: {
         "Content-Type": "multipart/form-data",
@@ -59,11 +59,13 @@ const CreateSummary = () => {
       })
 
       setLoading(false);
+      setLoadCont("");
       // console.log(newsummary);
       navigate("/summary");
     })
     .catch(e => {
       setLoading(false);
+      setLoadCont("");
       setAlertCont("Something went wrong!!");
       setAlertType("danger");
       setIsAlert(true);
@@ -87,10 +89,6 @@ const CreateSummary = () => {
             {alertCont}
           </div>
       )}
-      {
-        isLoading? (
-          <Preloader cont="Please wait... It may take some time upto 15 minutes based on the file size" />
-        ) : (
           <Box m="20px auto" p="0 20px" id="create-summ-page">
             <Typography variant="h3" id="heading" className="text-center">
               Summarize your Meet!
@@ -203,8 +201,6 @@ const CreateSummary = () => {
               </button>
             </form>
           </Box>
-        )
-      }
     </>
   );
 };

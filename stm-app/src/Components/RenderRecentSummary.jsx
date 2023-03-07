@@ -1,4 +1,4 @@
-import React, {useContext, useRef} from "react";
+import React, {useRef, useContext} from "react";
 import {
   Box,
   Card,
@@ -15,16 +15,15 @@ import {
 } from "@mui/material";
 import LabelIcon from "@mui/icons-material/Label";
 import { tokens } from "../theme";
-import commonContext from "../Context/commonContext";
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import VolumeOffIcon from '@mui/icons-material/VolumeOff';
 import ShareIcon from '@mui/icons-material/Share';
 import DownloadIcon from '@mui/icons-material/Download';
-import { useNavigate } from "react-router-dom";
 import SummaryPrintPage from "./PDFPages";
 import html2canvas from "html2canvas";
 import { jsPDF } from "jspdf";
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import commonContext from "../Context/commonContext";
 
 
 const Summary = ({ summitem }) => {
@@ -41,13 +40,9 @@ const Summary = ({ summitem }) => {
     const utterThis = new SpeechSynthesisUtterance(summitem.summary.join(" "));
     utterThis.voice = voice;
     synth.speak(utterThis);
-    // after speech is done
     utterThis.onend = () => {
       setPlay(true);
     };
-    // const synth = window.speechSynthesis;
-    // const utterThis = new SpeechSynthesisUtterance(summitem.summary.join(" "));
-    // synth.speak(utterThis);
   };
 
   const handleStop = () => {
@@ -123,16 +118,10 @@ const Summary = ({ summitem }) => {
   );
 };
 
-const RenderSummary = () => {
-  const navigate = useNavigate();
+const RenderRecentSummary = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-
-  if (localStorage.length === 0){
-    navigate("/login");
-  }
-
-  const { gen_summary, para } = useContext(commonContext);
+  const {myTranscript, mySummitem} = useContext(commonContext);
 
   return (
     <Box
@@ -146,7 +135,7 @@ const RenderSummary = () => {
     >
       <Box maxWidth="calc(min(1000px, 95%))">
         <Typography variant="h2" textAlign="center">
-          Given Transcript
+          Transcript
         </Typography>
         <Box
           maxHeight="400px"
@@ -166,19 +155,19 @@ const RenderSummary = () => {
             }
           }}
         >
-          <p>{para}</p>
+          <p>{myTranscript}</p>
         </Box>
       </Box>
       <Box m="40px 0" maxWidth="calc(min(900px, 95%))">
         <Typography variant="h2" textAlign="center">
-          Generated Summary!!
+          Summary!!
         </Typography>
         <Box mt="10px" id="render-summary-cards">
-          <Summary summitem={gen_summary}/>
+          <Summary summitem={mySummitem}/>
         </Box>
       </Box>
     </Box>
   );
 };
 
-export default RenderSummary;
+export default RenderRecentSummary;

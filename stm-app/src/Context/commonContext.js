@@ -6,7 +6,10 @@ const commonContext = createContext();
 const initialState = {
     gen_summary: null,
     para: '',
-    isLoading: false
+    isLoading: false,
+    loadCont: "",
+    mySummitem: null,
+    myTranscript: "",
 };
 
 
@@ -36,12 +39,36 @@ const CommonProvider = ({ children }) => {
         })
     }
 
+    const setLoadCont = (cont) => {
+        return dispatch({
+            type: 'SET_LOADING_CONT',
+            payload: { cont }
+        })
+    }
+
+    const setSummitem = (summ) => {
+        return dispatch({
+            type: 'SET_SUMMITEM',
+            payload: { summ }
+        })
+    }
+
+    const setTranscript = (trans) => {
+        return dispatch({
+            type: 'SET_TRANSCRIPT',
+            payload: { trans }
+        })
+    }
+
     // Context values
     const values = {
         ...state,
         setSummary,
         setParagraph,
-        setLoading
+        setLoading,
+        setLoadCont,
+        setSummitem,
+        setTranscript
     };
 
     return (

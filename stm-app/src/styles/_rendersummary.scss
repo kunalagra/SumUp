@@ -50,6 +50,10 @@
             }
 
             .txt-to-speech-btn {
+                right: 125px;
+            }
+
+            .copy-btn {
                 right: 90px;
             }
 
@@ -60,13 +64,23 @@
             .summary-header {
 
                 text-align: center;
-
+                
+                @include devices(xs) {
+                    text-align: left;
+                }
+                
                 .MuiCardHeader-title {
                     color: var(--light-color-2);
+                    @include devices(xs) {
+                        margin-left: 20px;
+                    }
                 }
-
+                
                 .MuiCardHeader-subheader {
                     color: var(--light-color-3);
+                    @include devices(xs) {
+                        margin-left: 20px;
+                    }
                 }
             }
 

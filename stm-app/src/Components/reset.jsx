@@ -104,6 +104,7 @@ class ResetPassword extends Component {
                 alignItems="center"
                 justifyContent="center"
                 mt="70px"
+                mb="150px"
             >
                 {this.state.isAlert && (
                     <div style={{position: "absolute", right: "10px", top: "80px", zIndex: 999}} className={`alert alert-${this.state.alertType}`}>

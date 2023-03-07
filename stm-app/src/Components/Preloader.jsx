@@ -2,7 +2,7 @@ import React from 'react';
 import { useTheme } from '@mui/material';
 import { tokens } from "../theme";
 
-const Preloader = ({cont=""}) => {
+const Preloader = ({cont}) => {
 
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);

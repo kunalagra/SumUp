@@ -1,15 +1,33 @@
-import { Box, Typography} from "@mui/material";
+import { Box, Typography, useTheme } from "@mui/material";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useNavigate } from "react-router-dom";
+import { tokens } from "../theme";
+import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
+import commonContext from "../Context/commonContext";
+import { useContext } from "react";
 
 const Profile = () => {
+    const theme = useTheme();
+    const colors = tokens(theme.palette.mode);
     const isNonMobile = useMediaQuery("(min-width: 600px)");
+    const {setLoading} = useContext(commonContext);
     const navigate = useNavigate();
     if (localStorage.length === 0){
         navigate("/login");
     }
+
+    const handleViewSummaries = () => {
+        setLoading(true);
+
+        setTimeout(() => {
+            setLoading(false);
+            navigate("/recent-summaries/");
+        }, 1000);
+
+    }
+
     return (
-        <Box>
+        <Box mb="100px" id="profile-page">
             <Box 
                 m="20px"
                 display="flex"
@@ -17,7 +35,6 @@ const Profile = () => {
                 alignItems="center"
                 justifyContent="center"
                 mt="70px"
-                id="profile-page"
             >
                 <Box paddingRight={isNonMobile? "100px": "0"}>
                     <img 
@@ -36,11 +53,25 @@ const Profile = () => {
                         <Typography variant="h3">{localStorage.getItem('email')}</Typography>
                     </Box>
                     <Box m="15px 0">
-                        <button className="btn" onClick={()=>{
-                            navigate('/update')
-                        }}>Update</button>
+                        <button  className="login__create-container__form-container__form--submit"
+                            onClick={()=>{
+                                navigate('/update')
+                            }}
+                            style={{
+                                backgroundColor: colors.primary[400],
+                                marginTop: 0,
+                                width: "120px"
+                            }}
+                        >Update</button>
                     </Box>
                 </Box>
+            </Box>
+
+            <Box className="view-recent-summaries" style={{color: colors.primary[400]}} onClick={handleViewSummaries}>
+                <div className="view-recent-summaries-div">
+                    <h5>View Recent Summaries</h5>
+                    <KeyboardDoubleArrowRightIcon className="double-right-icon"/>
+                </div>
             </Box>
 
         </Box>

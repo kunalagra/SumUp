@@ -10,4 +10,25 @@
             background-color: var(--dark-color-1);
         }
     }
+
+    .view-recent-summaries {
+        margin-top: 70px;
+        cursor: pointer;
+
+        &:hover {
+            text-decoration: underline;
+        }
+
+        .view-recent-summaries-div {
+            @include flexbox(center, center);
+
+            .double-right-icon {
+                font-size: 1.8em;
+            }
+
+            h5 {
+                margin-bottom: 4px;
+            }
+        }
+    }
 }
