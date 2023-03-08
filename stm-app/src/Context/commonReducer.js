@@ -37,6 +37,12 @@ const commonReducer = (state, action) => {
                 myTranscript: action.payload.trans
             }
 
+        case 'SET_MY_SUMMARIES':
+            return {
+                ...state,
+                mySummaries: action.payload.summ
+            }
+
         default:
             return state;
     }
