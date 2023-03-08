@@ -14,7 +14,7 @@ const RecentSummaries = () => {
     const { setSummitem, setTranscript, setLoading, mySummaries } = useContext(commonContext);
     const navigate = useNavigate();
 
-    const summaries = mySummaries;
+    const summaries = [...mySummaries].reverse();
 
     const handleSummitem = (summ, index) => {
         setSummitem(summ.summitem);
