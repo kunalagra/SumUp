@@ -1,4 +1,4 @@
-import React, {useRef, useContext} from "react";
+import React, {useRef, useContext, useState} from "react";
 import {
   Box,
   Card,
@@ -24,12 +24,19 @@ import html2canvas from "html2canvas";
 import { jsPDF } from "jspdf";
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import commonContext from "../Context/commonContext";
+import MailIcon from '@mui/icons-material/Mail';
+import WhatsAppIcon from '@mui/icons-material/WhatsApp';
+import TwitterIcon from '@mui/icons-material/Twitter';
 
 
 const Summary = ({ summitem }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [play, setPlay] = React.useState(true);
+  const [alertType, setAlertType] = useState("");
+  const [alertCont, setAlertCont] = useState("");
+  const [isAlert, setIsAlert] = useState(false);
+  const [shareAlert, setShareAlert] = useState(false);
 
   const handleSpeech = () => {
     setPlay(false);
@@ -68,53 +75,99 @@ const Summary = ({ summitem }) => {
   };
 
   return (
-    <Card sx={{ maxWidth: "900px", marginTop: "20px" }} className="summary-card">
-      <div ref={summaryPrintRef} style={{position: "absolute", top: "-1000px", left: "-1000px"}}>
-        <SummaryPrintPage summary={summitem.summary}/>
-      </div>
-      <CardHeader title={summitem.title} subheader={summitem.type} className="summary-header" style={{background: `${colors.primary[700]}`}} 
-        action={
-          <Box>
-            <Tooltip title={play? "Play" : "Pause"}>
-              <IconButton aria-label="play" onClick={play? handleSpeech : handleStop} className="card-action-btn txt-to-speech-btn">
-                {play? <VolumeUpIcon /> : <VolumeOffIcon />}
-              </IconButton>
-            </Tooltip>
-            <Tooltip title="Copy">
-              <IconButton aria-label="copy" className="card-action-btn copy-btn">
-                <ContentCopyIcon />
-              </IconButton>
-            </Tooltip>
-            <Tooltip title="Share">
-              <IconButton aria-label="share" className="card-action-btn share-btn" onClick={() => {
-                // gmail or whatsapp
-                const shareUrl = `mailto:?subject=Summary&body=${summitem.summary.join(" ")}`;
+    <>
+      <Card sx={{ maxWidth: "900px", marginTop: "20px" }} className="summary-card">
+        {isAlert && (
+            <div style={{position: "absolute", right: "35px", top: "60px", zIndex: 999}} className={`alert alert-${alertType}`}>
+              {alertCont}
+            </div>
+        )}
+        {shareAlert && (
+            <div className="alert alert-secondary" id="share-alert">
+              <IconButton onClick={() => {
+                const shareUrl = `mailto:?subject=Summary&body=${
+                    "Meeting Summary :%0A%0A" + summitem.summary.map((item, index) => `${index+1}. ${item}`).join("%0A")
+                  }`;
                 window.open(shareUrl, "_blank");
               }}>
-                <ShareIcon />
+                <MailIcon />
               </IconButton>
-            </Tooltip>
-            <Tooltip title="Download">
-              <IconButton aria-label="download" className="card-action-btn dwnld-btn" onClick={handleDownloadPdf}>
-                <DownloadIcon />
+              <IconButton onClick={() => {
+                const shareUrl = `https://wa.me/?text=${
+                  "Meeting Summary :%0A" + summitem.summary.map((item, index) => `${index+1}. ${item}`).join("%0A")
+                }`;
+                window.open(shareUrl, "_blank");
+              }}>
+                <WhatsAppIcon />
               </IconButton>
-            </Tooltip>
-          </Box>
-        }
-      />
-      <CardContent>
-        <List className="summary-list">
-          {summitem.summary.map((item, index) => (
-            <ListItem disablePadding key={index}>
-                <ListItemIcon className="summary-list-icon" style={{color: `${colors.primary[700]}`}}>
-                  <LabelIcon />
-                </ListItemIcon>
-                <ListItemText  className="summary-list-text">{item}</ListItemText>
-            </ListItem>
-          ))}
-        </List>
-      </CardContent>
-    </Card>
+              <IconButton onClick={() => {
+                const shareUrl = `https://twitter.com/intent/tweet?text=${
+                    "Meeting Summary :%0A%0A" + summitem.summary.map((item, index) => `${index+1}. ${item}`).join("%0A")
+                  }`;
+                window.open(shareUrl, "_blank");
+              }}>
+                <TwitterIcon />
+              </IconButton>                  
+            </div>
+        )}
+        <div ref={summaryPrintRef} style={{position: "absolute", top: "-1000px", left: "-1000px"}}>
+          <SummaryPrintPage summary={summitem.summary}/>
+        </div>
+        <CardHeader title={summitem.title} subheader={summitem.type} className="summary-header" style={{background: `${colors.primary[700]}`}} 
+          action={
+            <Box>
+              <Tooltip title={play? "Play" : "Pause"}>
+                <IconButton aria-label="play" onClick={play? handleSpeech : handleStop} className="card-action-btn txt-to-speech-btn">
+                  {play? <VolumeUpIcon /> : <VolumeOffIcon />}
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Copy">
+                <IconButton aria-label="copy" className="card-action-btn copy-btn" onClick={() => {
+                      setAlertCont("Copied to Clipboard!!");
+                      setAlertType("success");
+                      setIsAlert(true);
+                      navigator.clipboard.writeText(summitem.summary.map((item) => `• ${item}`).join("\n"));
+                      setTimeout(() => {
+                        setAlertCont("");
+                        setAlertType("");
+                        setIsAlert(false);
+                      }, 2000);
+                  }}>
+                  <ContentCopyIcon />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Share">
+                <IconButton aria-label="share" className="card-action-btn share-btn" onClick={() => {
+                    setShareAlert(true);
+                    setTimeout(() => {
+                      setShareAlert(false);
+                    }, 4000);
+                  }}>
+                  <ShareIcon />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Download">
+                <IconButton aria-label="download" className="card-action-btn dwnld-btn" onClick={handleDownloadPdf}>
+                  <DownloadIcon />
+                </IconButton>
+              </Tooltip>
+            </Box>
+          }
+        />
+        <CardContent>
+          <List className="summary-list">
+            {summitem.summary.map((item, index) => (
+              <ListItem disablePadding key={index}>
+                  <ListItemIcon className="summary-list-icon" style={{color: `${colors.primary[700]}`}}>
+                    <LabelIcon />
+                  </ListItemIcon>
+                  <ListItemText  className="summary-list-text">{item}</ListItemText>
+              </ListItem>
+            ))}
+          </List>
+        </CardContent>
+      </Card>
+    </>
   );
 };
 

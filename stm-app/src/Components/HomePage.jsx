@@ -421,7 +421,7 @@ const data = {
       job: "Senior Designer",
     },
     {
-      img: "img/team/Ganesh.jpg",
+      img: "img/team/Ganesh_Utla.jpg",
       name: "Ganesh Utla",
       job: "Senior Designer",
     },

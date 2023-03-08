@@ -76,6 +76,8 @@ const RecentSummaries = () => {
         }
     ];
 
+
+
     const handleSummitem = (summ, index) => {
         setSummitem(summ.summitem);
         setTranscript(summ.transcript);

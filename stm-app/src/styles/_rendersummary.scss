@@ -37,6 +37,18 @@
                 box-shadow: 0 0 10px 0 var(--main-color-2);
             }
 
+            #share-alert {
+                position: absolute;
+                right: 10px;
+                top: 70px;
+                z-index: 999;
+                display: flex;
+                align-items: center;
+                justify-content: space-evenly;
+                height: 50px;
+                border-radius: 20px;
+            }
+
             .card-action-btn {
                 position: absolute;
                 color: var(--light-color-3);
