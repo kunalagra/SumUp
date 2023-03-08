@@ -10,6 +10,7 @@ const initialState = {
     loadCont: "",
     mySummitem: null,
     myTranscript: "",
+    mySummaries: [],
 };
 
 
@@ -60,6 +61,13 @@ const CommonProvider = ({ children }) => {
         })
     }
 
+    const setMySummaries = (summ) => {
+        return dispatch({
+            type: 'SET_MY_SUMMARIES',
+            payload: { summ }
+        })
+    }
+
     // Context values
     const values = {
         ...state,
@@ -68,7 +76,8 @@ const CommonProvider = ({ children }) => {
         setLoading,
         setLoadCont,
         setSummitem,
-        setTranscript
+        setTranscript,
+        setMySummaries
     };
 
     return (

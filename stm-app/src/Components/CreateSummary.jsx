@@ -4,6 +4,7 @@ import commonContext from "../Context/commonContext";
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import httpClient from "../httpClient";
 
 const CreateSummary = () => {
   const theme = useTheme();
@@ -18,7 +19,7 @@ const CreateSummary = () => {
     navigate("/login");
   }
 
-  const { setSummary, setParagraph } = useContext(commonContext);
+  const { setSummary, setParagraph, setMySummaries } = useContext(commonContext);
 
   const [para, setPara] = useState("");
   const [transcript, setTranscript] = useState(null);
@@ -57,8 +58,12 @@ const CreateSummary = () => {
         data: {
           date : `${d.getDate()}-${d.getMonth()}-${d.getFullYear()}/${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`,
           transcript: response.data.para,
-          summary: newsummary.summary
+          summitem: newsummary
         }
+      }).then((response) => {
+        httpClient.get('/get_data').then((response) => {
+          setMySummaries(response.data.recents_sum);
+        })
       })
 
       setLoading(false);
@@ -81,7 +86,6 @@ const CreateSummary = () => {
         setAlertType("");
       }, 2000);
     });
-    
     // event.preventDefault();
   };
 

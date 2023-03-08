@@ -5,18 +5,27 @@ import { tokens } from "../theme";
 import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
 import commonContext from "../Context/commonContext";
 import { useContext } from "react";
+import httpClient from "../httpClient";
 
 const Profile = () => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
     const isNonMobile = useMediaQuery("(min-width: 600px)");
-    const {setLoading} = useContext(commonContext);
+    const {setLoading, setMySummaries} = useContext(commonContext);
     const navigate = useNavigate();
     if (localStorage.length === 0){
         navigate("/login");
     }
 
     const handleViewSummaries = () => {
+
+        httpClient.get('/get_data').then((response) => {
+            setMySummaries(response.data.recents_sum);
+        }).catch((error) => {
+            console.log(error);
+        })
+
+
         setLoading(true);
 
         setTimeout(() => {
