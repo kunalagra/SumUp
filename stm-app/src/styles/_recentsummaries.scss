@@ -1,9 +1,13 @@
+#recent-summary-page {
+    @include flexbox(space-evenly, flex-start);
+    margin-top: 60px;
+    margin-bottom: 160px;
+    transition: all 0.5s ease;
+}
 
 #recent-summaries {
 
     width: min(500px, 90vw);
-    margin: 0 auto;
-    margin-top: 60px;
     border-radius: 15px;
     padding: 20px 0;
     color: var(--light-color-1);
@@ -19,7 +23,9 @@
     }
 
     .summaries-list {
-        
+        max-height: 500px;
+        overflow: auto;
+
         .summaries-list-item {
             background-color: var(--light-color-3);
             padding: 15px 0 15px 40px;
@@ -33,5 +39,85 @@
             }
         }
 
+    }
+
+}
+
+#recent-selected-summary {
+
+    .summary-card {
+
+        ::-webkit-scrollbar {
+            width: 5px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background-color: var(--light-color-3);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background-color: var(--light-color-7);
+            border-radius: 50px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background-color: var(--light-color-6);
+        }
+
+        color: var(--dark-color-6);
+        background-color: var(--light-color-5);
+        border-radius: 15px;
+        position: relative;
+        max-width: 500px;
+        margin-top: 0;
+
+        &:hover {
+            box-shadow: 0 0 10px 0 var(--main-color-2);
+        }
+
+        .summary-content {
+            max-height: 400px;
+            overflow: auto;
+        }
+
+        .card-action-btn {
+            position: absolute;
+            color: var(--light-color-3);
+            top: 18px;
+            right: 20px;
+            transition: all 0.5s ease;
+
+            &:hover {
+                color: var(--light-color-2);
+            }
+        }
+
+        .summary-header {
+
+            text-align: center;
+            
+            @include devices(xs) {
+                text-align: left;
+            }
+            
+            .MuiCardHeader-title {
+                color: var(--light-color-2);
+                @include devices(xs) {
+                    margin-left: 20px;
+                }
+            }
+            
+            .MuiCardHeader-subheader {
+                color: var(--light-color-3);
+                @include devices(xs) {
+                    margin-left: 20px;
+                }
+            }
+        }
+
+    }
+
+    .swiper-pagination-bullet {
+        background-color: var(--main-color-2);
     }
 }
