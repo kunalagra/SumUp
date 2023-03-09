@@ -346,19 +346,19 @@ const data = {
   },
   Gallery: [
     {
-      title: "Project Title",
-      largeImage: "img/portfolio/01-large.jpg",
-      smallImage: "img/portfolio/01-small.jpg",
+      title: "Input",
+      largeImage: "img/portfolio/ip.png",
+      smallImage: "img/portfolio/ip.png",
     },
     {
-      title: "Project Title",
-      largeImage: "img/portfolio/02-large.jpg",
-      smallImage: "img/portfolio/02-small.jpg",
+      title: "BERT Model",
+      largeImage: "img/portfolio/Bert2.png",
+      smallImage: "img/portfolio/Bert2.png",
     },
     {
-      title: "Project Title",
-      largeImage: "img/portfolio/03-large.jpg",
-      smallImage: "img/portfolio/03-small.jpg",
+      title: "OPENAI Model",
+      smallImage: "img/portfolio/OpenAi2.png",
+      largeImage: "img/portfolio/OpenAi2.png",
     },
   ],
   Services: [
