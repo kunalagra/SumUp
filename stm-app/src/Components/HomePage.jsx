@@ -351,12 +351,12 @@ const data = {
       smallImage: "img/portfolio/ip.png",
     },
     {
-      title: "BERT Model",
+      title: "Model-1",
       largeImage: "img/portfolio/Bert2.png",
       smallImage: "img/portfolio/Bert2.png",
     },
     {
-      title: "OPENAI Model",
+      title: "Model-2",
       smallImage: "img/portfolio/OpenAi2.png",
       largeImage: "img/portfolio/OpenAi2.png",
     },
