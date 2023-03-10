@@ -229,9 +229,9 @@ def gen_summ(request):
 	# print(data)
 
 	if data['model']=='open-ai':
-		data["OpenAI"] = models.openai_model(data['para'])
+		data["Model-1"] = models.openai_model(data['para'])
 	else:
-		data["BERT"] = models.nlp_model(data['para'])
+		data["Model-2"] = models.nlp_model(data['para'])
 
 	# print(data.keys(), data["extractive"].keys(), data["abstractive"].keys())
 	return Response(data,status=status.HTTP_200_OK)
