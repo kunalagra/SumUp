@@ -19,19 +19,15 @@ const Profile = () => {
 
     const handleViewSummaries = () => {
 
+        setLoading(true);
         httpClient.get('/get_data').then((response) => {
             setMySummaries(response.data.recents_sum);
+            setLoading(false);
         }).catch((error) => {
             console.log(error);
         })
 
-
-        setLoading(true);
-
-        setTimeout(() => {
-            setLoading(false);
-            navigate("/recent-summaries/");
-        }, 1000);
+        navigate("/recent-summaries/");
 
     }
 
