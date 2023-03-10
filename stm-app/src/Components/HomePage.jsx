@@ -338,7 +338,7 @@ const data = {
     paragraph:
       "Team Quad has developed an extension which can be used to summarize team meetings effortlessly with high degree of precision",
     Why: [
-      "Best summarization models OPEN AI and BERT",
+      "Best summarization without any hassles",
       "Free to use",
       "Zero latency",
       "Available as an extension",
