@@ -28,6 +28,9 @@ import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import MailIcon from '@mui/icons-material/Mail';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import TwitterIcon from '@mui/icons-material/Twitter';
+import Modal from '@mui/material/Modal';
+import CloseIcon from '@mui/icons-material/Close';
+import axios from "axios";
 
 
 const Summary = ({ summitem }) => {
@@ -38,6 +41,16 @@ const Summary = ({ summitem }) => {
   const [alertCont, setAlertCont] = useState("");
   const [isAlert, setIsAlert] = useState(false);
   const [shareAlert, setShareAlert] = useState(false);
+
+  const [message, setMessage] = useState(summitem.summary.join("\n"));
+  const [subject, setSubject] = useState("Meeting Summary");
+  const [open, setOpen] = useState(false);
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const handleOpen = () => {
+    setOpen(true);
+  }
 
   const handleSpeech = () => {
     setPlay(false);
@@ -81,6 +94,7 @@ const Summary = ({ summitem }) => {
 
   return (
     <>
+      <Card sx={{ maxWidth: "900px", marginTop: "20px" }} className="summary-card">
       {isAlert && (
           <div style={{position: "absolute", right: "100px", top: "450px", zIndex: 999}} className={`alert alert-${alertType}`}>
             {alertCont}
@@ -88,12 +102,7 @@ const Summary = ({ summitem }) => {
       )}
       {shareAlert && (
             <div className="alert alert-secondary" id="share-alert">
-              <IconButton onClick={() => {
-                const shareUrl = `mailto:?subject=Summary&body=${
-                    "Meeting Summary :%0A%0A" + summitem.summary.map((item, index) => `${index+1}. ${item}`).join("%0A")
-                  }`;
-                window.open(shareUrl, "_blank");
-              }}>
+              <IconButton onClick={handleOpen}>
                 <MailIcon />
               </IconButton>
               <IconButton onClick={() => {
@@ -114,7 +123,6 @@ const Summary = ({ summitem }) => {
               </IconButton>                  
             </div>
         )}
-      <Card sx={{ maxWidth: "900px", marginTop: "20px" }} className="summary-card">
         <div ref={summaryPrintRef} style={{position: "absolute", top: "-1000px", left: "-1000px"}}>
           <SummaryPrintPage summary={summitem.summary}/>
         </div>
@@ -172,6 +180,43 @@ const Summary = ({ summitem }) => {
           </List>
         </CardContent>
       </Card>
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box id="mail-modal">
+          <div onClick={handleClose} style={{textAlign: "right", cursor: "pointer", padding: "5px 10px"}}>
+            <CloseIcon />
+          </div>
+          <input placeholder="Subject/Title" value={subject} onChange={e => setSubject(e.target.value)} className="subject-input"/>
+          <textarea placeholder="Message body..." value={message} onChange={e => setMessage(e.target.value)} className="message-input" rows="10"></textarea>
+          <div className="mail-modal-btn-div">
+          <button className="login__create-container__form-container__form--submit" onClick={
+            () => {
+              axios.post("http://localhost:8000/send_mail", {
+                email: localStorage.getItem("email"),
+                subject: subject,
+                message: message,
+              }
+              ).then((res) => {
+                if(res.data.success){
+                  alert("Mail sent successfully");
+                  setSubject("");
+                  setMessage("");
+                  handleClose();
+                }
+              }).catch((err) => {
+                alert("Error sending mail");
+                console.log(err);
+              }
+              );
+            }
+          }>Send</button>
+          </div>
+        </Box>
+      </Modal>
     </>
   );
 };

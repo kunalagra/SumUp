@@ -1,0 +1,72 @@
+#my-teams {
+    width: min(90vw, 400px);
+    text-align: center;
+    margin: 0 auto;
+    margin-bottom: 100px;
+    margin-top: 8rem;
+
+
+    .join-team-div {
+        max-width: 300px;
+        margin: 0 auto;
+        padding: 20px 0;
+        font-size: 1.2em;
+
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--main-color-2);
+            border-radius: 5px;
+            text-align: center;
+        }
+    }
+
+    .create-team-div {
+        margin: 0 auto;
+        padding: 20px 0;
+        border-top: 1px solid var(--main-color-2);
+
+
+        .team-list-div {
+            
+        }
+
+        .team-details-div {
+            text-align: left;
+            margin-left: 20px;
+        }
+
+        .team-list {
+            max-height: 500px;
+            overflow: auto;
+        }
+    }
+}
+
+#member-modal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: min(90vw, 400px);
+    background-color: var(--light-color-1);
+    padding: 15px 10px;
+    border-radius: 12px;
+
+    input {
+        width: 100%;
+        padding: 10px;
+        background-color: var(--light-color-1);
+        border: none;
+        border-radius: 5px;
+        margin-bottom: 10px;
+        font-size: 1.4em;
+    }
+
+    .member-modal-btn-div {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+}

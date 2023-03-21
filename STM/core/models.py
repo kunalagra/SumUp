@@ -7,6 +7,7 @@ import nltk
 import heapq
 import json
 import requests
+import uuid
 # import whisper
 
 
@@ -138,3 +139,11 @@ class user(models.Model):
     id = models.IntegerField(primary_key=True)
     username = models.CharField(max_length=100)
     recent_sum = models.JSONField(default=dict)
+
+class gmail_group(models.Model):
+    id = models.UUIDField(
+     default = uuid.uuid4,
+     editable = False)
+    group_code = models.CharField(primary_key=True, default=uuid.uuid4().hex[:5].upper(), max_length=50, editable=False)
+    group_leader = models.CharField(max_length=100)
+    group_members = models.JSONField(default=dict)

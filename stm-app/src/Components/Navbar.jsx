@@ -23,6 +23,7 @@ import MenuOpenIcon from "@mui/icons-material/MenuOpen";
 import MenuIcon from "@mui/icons-material/Menu";
 import HomeIcon from '@mui/icons-material/Home';
 import httpClient from "../httpClient";
+import ControlPointIcon from '@mui/icons-material/ControlPoint';
 
 const Sidebar = () => {
   const theme = useTheme();
@@ -48,6 +49,13 @@ const Sidebar = () => {
           <ListItemButton sx={{ pl: 4, pb: 1 }} onClick={() => navigate("/")} className="list-item">
             <ListItemIcon className="list-item-icon">
               <HomeIcon />
+            </ListItemIcon>
+            <ListItemText primary="Home" className="list-item-text" />
+          </ListItemButton>
+
+          <ListItemButton sx={{ pl: 4, pb: 1 }} onClick={() => navigate("/my-teams")} className="list-item">
+            <ListItemIcon className="list-item-icon">
+              <ControlPointIcon />
             </ListItemIcon>
             <ListItemText primary="Home" className="list-item-text" />
           </ListItemButton>
@@ -150,6 +158,12 @@ const Navbar = () => {
             <Tooltip title="Home">
               <IconButton onClick={() => navigate("/")} className="nav-links-btn">
                 <HomeIcon />
+              </IconButton>
+            </Tooltip>
+
+            <Tooltip title="My Teams">
+              <IconButton onClick={() => navigate("/my-teams")} className="nav-links-btn">
+                <ControlPointIcon />
               </IconButton>
             </Tooltip>
 

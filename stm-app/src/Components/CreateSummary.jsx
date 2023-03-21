@@ -4,7 +4,7 @@ import commonContext from "../Context/commonContext";
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import httpClient from "../httpClient";
+// import httpClient from "../httpClient";
 
 const CreateSummary = () => {
   const theme = useTheme();
@@ -19,7 +19,7 @@ const CreateSummary = () => {
     navigate("/login");
   }
 
-  const { setSummary, setParagraph, setMySummaries } = useContext(commonContext);
+  const { setSummary, setParagraph } = useContext(commonContext);
 
   const [para, setPara] = useState("");
   const [transcript, setTranscript] = useState(null);
@@ -60,10 +60,6 @@ const CreateSummary = () => {
           transcript: response.data.para,
           summitem: newsummary
         }
-      }).then((response) => {
-        httpClient.get('/get_data').then((response) => {
-          setMySummaries(response.data.recents_sum);
-        })
       })
 
       setLoading(false);

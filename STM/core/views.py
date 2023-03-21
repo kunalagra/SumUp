@@ -90,7 +90,78 @@ def recent_data(request):
 		user = models.user.objects.create(username=username, recent_sum=[data['data']], id= models.user.objects.count()+1)
 		user.save()
 	return Response({"message":"Data updated", "user":username})
-	
+
+@api_view(['POST'])
+def create_group(request):
+	data = json.loads(request.body)
+	username = data['email']
+	if models.gmail_group.objects.filter(group_leader=username).exists():
+		return Response({"message":"Group already exists"}, status=status.HTTP_200_OK)
+	else:
+		group = models.gmail_group.objects.create(group_members=[], group_leader=username)
+		group.save()
+		return Response({"message":"Group created", "group_code":group.group_code}, status=status.HTTP_200_OK)
+
+@api_view(['POST'])
+def add_members(request):
+	data = json.loads(request.body)
+	code = data['group_code']
+	members = data['members']
+	if models.gmail_group.objects.filter(group_code=code).exists():
+		group = models.gmail_group.objects.get(group_code=code)
+		# append all members to the group
+		for member in members:
+			group.group_members.append(member)
+		group.save()
+		return Response({"message":"Members added"})
+	else:
+		return Response({"message":"Group not found"})
+
+@api_view(['POST'])
+def delete_members(request):
+	data = json.loads(request.body)
+	code = data['group_code']
+	member = data['member']
+	if models.gmail_group.objects.filter(group_code=code).exists():
+		group = models.gmail_group.objects.get(group_code=code)
+		group.group_members.remove(member)
+		group.save()
+		return Response({"message":"Members deleted"})
+	else:
+		return Response({"message":"Group not found"})
+
+@api_view(['GET'])
+def get_groups(request):
+	if request.user.is_authenticated:
+		if models.gmail_group.objects.filter(group_leader=request.user.username).exists():
+			group = models.gmail_group.objects.get(group_leader=request.user.username)
+			return Response({"message":"Groups fetched", "code":group.group_code, "groups":group.group_members}, status=status.HTTP_200_OK)
+		else:
+			return Response({"message":"Groups not found", "groups":None}, status=status.HTTP_200_OK)
+	else:
+		return Response({"message":"User not logged in"}, status=status.HTTP_401_UNAUTHORIZED)
+
+
+@api_view(['POST'])
+def send_group_mails(request):
+	data = json.loads(request.body)
+	username = data['email']
+	subject = data['subject']
+	message = data['message']
+	if models.gmail_group.objects.filter(group_leader=username).exists():
+		group = models.gmail_group.objects.get(group_leader=username)
+		for member in group.group_members:
+			send_mail(
+				subject,
+				"Hi "+member['name']+"\n"+message,
+				'deexithmadas277@gamil.com',
+				[member['email']],
+				fail_silently=False,
+			)
+
+		return Response({"message":"Mail sent"}, status=status.HTTP_200_OK)
+	else:
+		return Response({"message":"Group not found"}, status=status.HTTP_200_OK)
 	
 
 @api_view(['POST'])

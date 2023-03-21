@@ -104,3 +104,36 @@
 
     }
 }
+
+#mail-modal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: min(90vw, 600px);
+    background-color: var(--light-color-1);
+    padding: 15px 10px;
+    border-radius: 12px;
+
+    input, textarea {
+        width: 100%;
+        padding: 10px;
+        background-color: var(--light-color-1);
+        border: none;
+        border-radius: 5px;
+        margin-bottom: 10px;
+        font-size: 1.4em;
+    }
+
+    .message-input {
+        max-height: 500px;
+        overflow: auto;
+    }
+
+    .mail-modal-btn-div {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+}

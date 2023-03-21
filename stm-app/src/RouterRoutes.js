@@ -12,6 +12,7 @@ import RecentSummaries from "./Components/RecentSummaries";
 import RenderRecentSummary from "./Components/RenderRecentSummary";
 import commonContext from "./Context/commonContext";
 import { useContext } from "react";
+import MyTeams from "./Components/MyTeams";
 
 const RouterRoutes = () => {    
 
@@ -31,6 +32,7 @@ const RouterRoutes = () => {
                         <Route path="/reset" element={<ResetPassword />} />
                         <Route path="/recent-summaries" element={<RecentSummaries />} />
                         <Route path="/recent-summaries/:index" element={<RenderRecentSummary />} />
+                        <Route path="/my-teams" element={<MyTeams />} />
 
                         <Route path="/*" element={<NotFound />} />
                     </Routes>
