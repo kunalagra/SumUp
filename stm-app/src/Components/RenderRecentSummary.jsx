@@ -199,8 +199,6 @@ const Summary = ({ summitem }) => {
               ).then((res) => {
                 if(res.data.message === "Mail sent"){
                   alert("Mail sent successfully");
-                  setSubject("");
-                  setMessage("");
                   handleClose();
                 }
                 else{
