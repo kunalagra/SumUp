@@ -107,15 +107,16 @@ def add_members(request):
 	data = json.loads(request.body)
 	code = data['group_code']
 	members = data['members']
+	print(members)
 	if code=="":
 		return Response({"message": "Invalid Team Code"}, status=status.HTTP_400_BAD_REQUEST)
 	if models.gmail_group.objects.filter(group_code=code).exists():
 		group = models.gmail_group.objects.get(group_code=code)
 		# append all members to the group
-		for member in members:
-			group.group_members.append(member)
+		if members not in group.group_members:
+			group.group_members.append(members)
 		group.save()
-		return Response({"message":"Members added"})
+		return Response({"message":"Members added"}, status=status.HTTP_200_OK)
 	else:
 		return Response({"message":"Group not found"})
 

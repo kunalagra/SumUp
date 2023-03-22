@@ -65,10 +65,10 @@ const MyTeams = () => {
     };
     
     const handleJoinTeam = () => {
-        axios.post("http://localhost:8000/add_members", {group_code: joinTeamCode, members: [{
+        axios.post("http://localhost:8000/add_members", {group_code: joinTeamCode, members: {
             name: localStorage.getItem("name"),
             email: localStorage.getItem("email")
-        }]})
+        }})
         .then((res) => {
             setIsAlert(true);
             if(res.status===200) {
@@ -78,13 +78,14 @@ const MyTeams = () => {
                 setAlertCont("Invalid Team Code!!");
                 setAlertType("danger");
             }
+            setTimeout(() => [setIsAlert(false), setJoinTeamCode("")], 2000);
         })
         .catch(() => {
             setIsAlert(true);
             setAlertCont("Invalid Team Code!!");
             setAlertType("danger");
+            setTimeout(() => [setIsAlert(false), setJoinTeamCode("")], 2000);
         });
-        setTimeout(() => setIsAlert(false), 2000);
     };
 
     const handleDeleteMember = (member) => {
@@ -128,10 +129,10 @@ const MyTeams = () => {
         setIsAlert(true);
         setAlertCont("Adding...");
         setAlertType("success");
-        axios.post("http://localhost:8000/add_members", {group_code: TeamCode, members: [{
+        axios.post("http://localhost:8000/add_members", {group_code: TeamCode, members: {
             name: memberName,
             email: memberMail
-        }]})
+        }})
         .then((res) => {
             if(res.status===200) {
                 let curTeam = team;
@@ -163,7 +164,7 @@ const MyTeams = () => {
                 <div className="join-team">
                     <h3>Join a team</h3>
                     <div className="join-team-div">
-                        <TextField id="outlined-teamcode" label="Team Code eg. ABC12345" variant="outlined" 
+                        <TextField id="outlined-teamcode" label="Team Code eg. ABC12" variant="outlined" 
                             value={joinTeamCode}
                             onChange={(e) => setJoinTeamCode(e.target.value)}
                         />
