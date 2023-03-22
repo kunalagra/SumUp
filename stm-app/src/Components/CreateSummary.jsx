@@ -88,8 +88,10 @@ const CreateSummary = () => {
   return (
     <>
       {isAlert && (
-          <div style={{position: "absolute", right: "10px", top: "80px", zIndex: 999}} className={`alert alert-${alertType}`}>
-            {alertCont}
+          <div style={{position: "fixed", top: "0px", right: "0px"}}>
+              <div style={{position: "absolute", right: "10px", top: "80px", zIndex: 999, width: "max-content"}} className={`alert alert-${alertType}`}>
+                  {alertCont}
+              </div>
           </div>
       )}
           <Box m="20px auto" p="0 20px" id="create-summ-page">

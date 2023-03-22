@@ -151,8 +151,10 @@ class UpdatePassword extends Component {
                 minHeight="70vh"
             >
               {this.state.isAlert && (
-                <div style={{position: "absolute", right: "10px", top: "80px", zIndex: 999}} className={`alert alert-${this.state.alertType}`}>
-                  {this.state.alertCont}
+                <div style={{position: "fixed", top: "0px", right: "0px"}}>
+                    <div style={{position: "absolute", right: "10px", top: "80px", zIndex: 999, width: "max-content"}} className={`alert alert-${this.state.alertType}`}>
+                        {this.state.alertCont}
+                    </div>
                 </div>
               )}
                 <Box paddingRight={isNonMobile ? "100px" : "0"}>
@@ -164,7 +166,7 @@ class UpdatePassword extends Component {
                 </Box>
                 <Box>
                 <form
-              className="login__create-container__form-container__form"
+              className="login__create-container__form-container__form update-form"
               onSubmit={this.handleUpdate}
             >
               <TextField id="outlined-username" label="Username" variant="outlined" sx={{ width: "min(270px, 90vw)" }} 

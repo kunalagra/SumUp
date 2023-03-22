@@ -202,8 +202,10 @@ class Login extends Component {
     return (
       <div className="login" id="login-page">
         {this.state.isAlert && (
-          <div style={{position: "absolute", right: "10px", top: "10px", zIndex: 999}} className={`alert alert-${this.state.alertType}`}>
-            {this.state.alertCont}
+          <div style={{position: "fixed", top: "0px", right: "0px"}}>
+              <div style={{position: "absolute", right: "10px", top: "80px", zIndex: 999, width: "max-content"}} className={`alert alert-${this.state.alertType}`}>
+                  {this.state.alertCont}
+              </div>
           </div>
         )}
         {/* Side Banner Left or Right */}

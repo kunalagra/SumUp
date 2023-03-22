@@ -197,7 +197,7 @@ $base-color: var(--main-color-1);
                 input {
                     border-radius: 3px;
                     background-color: #f1f1f1;
-                    color: #242424;
+                    // color: #242424;
 
                 }
 
@@ -318,7 +318,7 @@ $base-color: var(--main-color-1);
                     input {
                         border-radius: 3px;
                         background-color: #f1f1f1;
-                        color: #242424;
+                        // color: #242424;
                     }
 
                     &--submit {
@@ -416,10 +416,9 @@ $base-color: var(--main-color-1);
     }
 }
 
-.reset-form {
-    input {
-        border-radius: 3px;
-        background-color: #f1f1f1;
-        color: #242424;
+.update-form, .reset-form {
+    // color: var(--light-color-1);
+    .MuiOutlinedInput-root, input {
+        background-color: transparent;
     }
 }

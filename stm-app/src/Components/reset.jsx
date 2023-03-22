@@ -107,8 +107,10 @@ class ResetPassword extends Component {
                 mb="150px"
             >
                 {this.state.isAlert && (
-                    <div style={{position: "absolute", right: "10px", top: "80px", zIndex: 999}} className={`alert alert-${this.state.alertType}`}>
-                    {this.state.alertCont}
+                    <div style={{position: "fixed", top: "0px", right: "0px"}}>
+                        <div style={{position: "absolute", right: "10px", top: "80px", zIndex: 999, width: "max-content"}} className={`alert alert-${this.state.alertType}`}>
+                            {this.state.alertCont}
+                        </div>
                     </div>
                 )}
                 <Box paddingRight={this.props.isNonMobile ? "100px" : "0"}>

@@ -1,35 +1,62 @@
 #my-teams {
-    width: min(90vw, 400px);
     text-align: center;
     margin: 0 auto;
     margin-bottom: 100px;
     margin-top: 8rem;
+    @include flexbox(space-evenly, center);
+    flex-wrap: wrap;
 
 
-    .join-team-div {
-        max-width: 300px;
-        margin: 0 auto;
-        padding: 20px 0;
-        font-size: 1.2em;
+    ::-webkit-scrollbar {
+        width: 5px;
+    }
+    
+    ::-webkit-scrollbar-track {
+        background-color: var(--light-color-3);
+        border-radius: 50px;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+        background-color: var(--light-color-6);
+        border-radius: 50px;
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+        background-color: var(--light-color-6);
+    }
 
-        input {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid var(--main-color-2);
-            border-radius: 5px;
-            text-align: center;
+    .join-team {
+        border-right: 2px solid var(--main-color-2);
+        
+        @include devices(md) {
+            border-right: none;
+            border-bottom: 2px solid var(--main-color-2);
+            padding-bottom: 2rem;
         }
     }
 
+
+    .join-team-div {
+        width: min(90vw, 400px);
+        margin: 0 auto;
+        padding: 20px 50px;
+        font-size: 1.2em;
+        
+        .MuiTextField-root {
+            width: 90%;
+        }
+    }
+
+    .create-team {
+        @include devices(md) {
+            margin-top: 3rem;
+        }
+    }
+    
     .create-team-div {
+        width: min(90vw, 400px);
         margin: 0 auto;
         padding: 20px 0;
-        border-top: 1px solid var(--main-color-2);
-
-
-        .team-list-div {
-            
-        }
 
         .team-details-div {
             text-align: left;
@@ -37,9 +64,24 @@
         }
 
         .team-list {
-            max-height: 500px;
+            max-height: 300px;
             overflow: auto;
+            margin-top: 2rem;
+
+            .team-list-item {
+                border-bottom: 1px solid var(--main-color-2);
+                border-radius: 10px;
+            }
         }
+
+        .create-team-btn {
+            margin-top: 0;
+        }        
+
+        .add-member-btn {
+            margin-top: 2rem;
+        }
+        
     }
 }
 
@@ -49,18 +91,25 @@
     left: 50%;
     transform: translate(-50%, -50%);
     width: min(90vw, 400px);
-    background-color: var(--light-color-1);
+    background-color: var(--light-color-3);
     padding: 15px 10px;
     border-radius: 12px;
+    box-shadow: 0 1px 4px 1px var(--main-color-2);
 
     input {
-        width: 100%;
+        width: 95%;
         padding: 10px;
-        background-color: var(--light-color-1);
+        background-color: var(--light-color-3);
         border: none;
         border-radius: 5px;
         margin-bottom: 10px;
         font-size: 1.4em;
+
+        &:focus {
+            outline: 2px solid var(--main-color-2);
+            // outline: none;
+            // border-bottom: 2px solid var(--main-color-2);
+        }
     }
 
     .member-modal-btn-div {
