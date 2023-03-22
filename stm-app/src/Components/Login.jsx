@@ -67,7 +67,6 @@ class Login extends Component {
         httpClient
         .post("/login", { email, password })
         .then((res) => {
-          
           if (res.data.message) {
             localStorage.setItem("name", res.data.name);
             localStorage.setItem("email", res.data.user);
@@ -90,10 +89,9 @@ class Login extends Component {
             setTimeout(() => {
               const { navigate } = this.props;
               navigate("/");
-            }, 1000);
+            }, 2000);
           } 
           else {
-
             this.setState({
               alertCont: "Invalid Credentials",
               alertType: "danger",
@@ -106,8 +104,7 @@ class Login extends Component {
                 alertType: "",
                 isAlert: false
               })
-            }, 2000);
-               
+            }, 2000); 
           }
         })
         .catch((err) => {
@@ -134,7 +131,7 @@ class Login extends Component {
         httpClient
         .post("/signup", {name, email, password})
         .then((res) => {
-          if (res.data.message) {
+          if (res.status===200) {
             this.setState({
               alertCont: "SignUp Successfull!! You can SignIn now!!",
               alertType: "success",
@@ -202,7 +199,7 @@ class Login extends Component {
     return (
       <div className="login" id="login-page">
         {this.state.isAlert && (
-          <div style={{position: "fixed", top: "0px", right: "0px"}}>
+          <div style={{position: "absolute", top: "0px", right: "0px"}}>
               <div style={{position: "absolute", right: "10px", top: "80px", zIndex: 999, width: "max-content"}} className={`alert alert-${this.state.alertType}`}>
                   {this.state.alertCont}
               </div>

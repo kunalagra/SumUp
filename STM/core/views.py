@@ -37,7 +37,7 @@ def login_user(request):
 		if request.user.is_authenticated:
 			return Response({"sessionid":django.middleware.csrf.get_token(request), "message":"User logged in", "user":request.user.username, "name":request.user.first_name},status=status.HTTP_200_OK)
 		else:
-			return Response({"message":"User not logged in"},status=status.HTTP_401_UNAUTHORIZED)
+			return Response({"message":False},status=status.HTTP_401_UNAUTHORIZED)
 	else:
 		return Response({"message":False},status=status.HTTP_401_UNAUTHORIZED)
 	
@@ -206,7 +206,7 @@ def signup(request):
 	password = data['password']
 	name = data['name']
 	if User.objects.filter(username=email).exists():
-		return Response({"message":"User Already Exist"},status=status.HTTP_406_NOT_ACCEPTABLE)
+		return Response({"message":"User Already Exist"},status=status.HTTP_204_NO_CONTENT)
 	else:
 		user = User.objects.create_user(username=email, password=password, first_name=name, email=email)
 		user.save()
