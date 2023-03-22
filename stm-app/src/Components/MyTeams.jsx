@@ -6,7 +6,7 @@ import Modal from '@mui/material/Modal';
 import CloseIcon from "@mui/icons-material/Close";
 import axios from "axios";
 import httpClient from "../httpClient";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 // import commonContext from "../Context/commonContext";
 
 const MyTeams = () => {
@@ -200,13 +200,11 @@ const MyTeams = () => {
                                                 className="team-list-item"
                                             >
                                             <ListItemAvatar>
-                                                <Link to={`//https://mailto:${member.email}`}>
                                                     <Tooltip title={member.name}>
                                                         <Avatar>
                                                             <AccountCircleIcon />
                                                         </Avatar>
                                                     </Tooltip>
-                                                </Link>
                                             </ListItemAvatar>
                                             <ListItemText
                                                 primary={member.name}
