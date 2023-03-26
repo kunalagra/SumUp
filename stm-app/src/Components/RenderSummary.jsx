@@ -12,6 +12,8 @@ import {
   Tooltip,
   IconButton,
   ListItemIcon,
+  Collapse,
+  Switch
 } from "@mui/material";
 import LabelIcon from "@mui/icons-material/Label";
 import { tokens } from "../theme";
@@ -65,9 +67,6 @@ const Summary = ({ summitem }) => {
     utterThis.onend = () => {
       setPlay(true);
     };
-    // const synth = window.speechSynthesis;
-    // const utterThis = new SpeechSynthesisUtterance(summitem.summary.join(" "));
-    // synth.speak(utterThis);
   };
 
   const handleStop = () => {
@@ -225,6 +224,7 @@ const RenderSummary = () => {
   const navigate = useNavigate();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const [open, setOpen] = useState(false);
 
   if (localStorage.length === 0){
     navigate("/login");
@@ -242,31 +242,6 @@ const RenderSummary = () => {
       alignItems="center"
       id="render-summary-page"
     >
-      <Box maxWidth="calc(min(1000px, 95%))">
-        <Typography variant="h2" textAlign="center">
-          Given Transcript
-        </Typography>
-        <Box
-          maxHeight="400px"
-          overflow="auto"
-          m="20px 0"
-          p="10px"
-          borderRadius="10px 0 0 10px"
-          className="given-transcript-box"
-
-          style={{
-            border: `2px solid ${colors.primary[700]}`,
-          }}
-    
-          sx={{
-            "&:hover": {
-              outline: `3px solid ${theme.palette.mode==='dark'? colors.light[100] : colors.primary[100]}`
-            }
-          }}
-        >
-          <p>{para}</p>
-        </Box>
-      </Box>
       <Box m="40px 0" maxWidth="calc(min(900px, 95%))">
         <Typography variant="h2" textAlign="center">
           Generated Summary!!
@@ -274,6 +249,42 @@ const RenderSummary = () => {
         <Box mt="10px" id="render-summary-cards">
           <Summary summitem={gen_summary}/>
         </Box>
+      </Box>
+
+      <Box margin="20px 0">
+        Show Transcript 
+        <Switch
+          onChange={() => setOpen(!open)}
+        />
+        Hide Transcript
+      </Box>
+
+      <Box maxWidth="calc(min(1000px, 95%))">
+        <Collapse in={open} timeout="auto" unmountOnExit>
+          <Typography variant="h2" textAlign="center">
+            Given Transcript
+          </Typography>
+          <Box
+            maxHeight="400px"
+            overflow="auto"
+            m="20px 0"
+            p="10px"
+            borderRadius="10px 0 0 10px"
+            className="given-transcript-box"
+
+            style={{
+              border: `2px solid ${colors.primary[700]}`,
+            }}
+      
+            sx={{
+              "&:hover": {
+                outline: `3px solid ${theme.palette.mode==='dark'? colors.light[100] : colors.primary[100]}`
+              }
+            }}
+          >
+            <p>{para}</p>
+          </Box>
+        </Collapse>
       </Box>
     </Box>
   );

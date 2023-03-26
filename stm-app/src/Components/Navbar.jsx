@@ -16,7 +16,7 @@ import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 import LogoutIcon from "@mui/icons-material/Logout";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
-import SummarizeOutlinedIcon from "@mui/icons-material/SummarizeOutlined";
+import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined';
 import { useNavigate } from "react-router-dom";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import MenuOpenIcon from "@mui/icons-material/MenuOpen";
@@ -55,14 +55,14 @@ const Sidebar = () => {
 
           <ListItemButton sx={{ pl: 4, pb: 1 }} onClick={() => navigate("/my-teams")} className="list-item">
             <ListItemIcon className="list-item-icon">
-              <ControlPointIcon />
+              <PeopleAltOutlinedIcon />
             </ListItemIcon>
             <ListItemText primary="Home" className="list-item-text" />
           </ListItemButton>
 
           <ListItemButton sx={{ pl: 4, pb: 1 }} onClick={() => navigate("/summarize")} className="list-item">
             <ListItemIcon className="list-item-icon">
-              <SummarizeOutlinedIcon />
+              <ControlPointIcon />
             </ListItemIcon>
             <ListItemText primary="Summarize" className="list-item-text" />
           </ListItemButton>
@@ -163,13 +163,13 @@ const Navbar = () => {
 
             <Tooltip title="My Teams">
               <IconButton onClick={() => navigate("/my-teams")} className="nav-links-btn">
-                <ControlPointIcon />
+                <PeopleAltOutlinedIcon />
               </IconButton>
             </Tooltip>
 
             <Tooltip title="Summarize">
               <IconButton onClick={() => navigate("/summarize")} className="nav-links-btn">
-                <SummarizeOutlinedIcon />
+                <ControlPointIcon />
               </IconButton>
             </Tooltip>
 

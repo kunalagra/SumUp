@@ -12,6 +12,8 @@ import {
   Tooltip,
   IconButton,
   ListItemIcon,
+  Collapse,
+  Switch
 } from "@mui/material";
 import LabelIcon from "@mui/icons-material/Label";
 import { tokens } from "../theme";
@@ -222,6 +224,7 @@ const RenderRecentSummary = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const {myTranscript, mySummitem} = useContext(commonContext);
+  const [open, setOpen] = useState(false);
 
   return (
     <Box
@@ -233,31 +236,6 @@ const RenderRecentSummary = () => {
       alignItems="center"
       id="render-summary-page"
     >
-      <Box maxWidth="calc(min(1000px, 95%))">
-        <Typography variant="h2" textAlign="center">
-          Transcript
-        </Typography>
-        <Box
-          maxHeight="400px"
-          overflow="auto"
-          m="20px 0"
-          p="10px"
-          borderRadius="10px 0 0 10px"
-          className="given-transcript-box"
-
-          style={{
-            border: `2px solid ${colors.primary[700]}`,
-          }}
-    
-          sx={{
-            "&:hover": {
-              outline: `3px solid ${theme.palette.mode==='dark'? colors.light[100] : colors.primary[100]}`
-            }
-          }}
-        >
-          <p>{myTranscript}</p>
-        </Box>
-      </Box>
       <Box m="40px 0" maxWidth="calc(min(900px, 95%))">
         <Typography variant="h2" textAlign="center">
           Summary!!
@@ -266,7 +244,42 @@ const RenderRecentSummary = () => {
           <Summary summitem={mySummitem}/>
         </Box>
       </Box>
+
+      <Box margin="20px 0">
+        Show Transcript 
+        <Switch
+          onChange={() => setOpen(!open)}
+        />
+        Hide Transcript
+      </Box>
+
+      <Box maxWidth="calc(min(1000px, 95%))">
+        <Collapse in={open} timeout="auto" unmountOnExit>
+          <Typography variant="h2" textAlign="center">
+            Transcript
+          </Typography>
+          <Box
+            maxHeight="400px"
+            overflow="auto"
+            m="20px 0"
+            p="10px"
+            borderRadius="10px 0 0 10px"
+            className="given-transcript-box"
+
+            style={{
+              border: `2px solid ${colors.primary[700]}`,
+            }}
       
+            sx={{
+              "&:hover": {
+                outline: `3px solid ${theme.palette.mode==='dark'? colors.light[100] : colors.primary[100]}`
+              }
+            }}
+          >
+            <p>{myTranscript}</p>
+          </Box>
+        </Collapse>
+      </Box>
     </Box>
   );
 };

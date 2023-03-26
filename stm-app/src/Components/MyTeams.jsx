@@ -4,8 +4,10 @@ import { List, ListItem, ListItemAvatar, Avatar, ListItemText, IconButton, TextF
 import DeleteIcon from '@mui/icons-material/Delete';
 import Modal from '@mui/material/Modal';
 import CloseIcon from "@mui/icons-material/Close";
+import MailIcon from "@mui/icons-material/Mail";
 import axios from "axios";
 import httpClient from "../httpClient";
+import { Link } from "react-router-dom";
 // import { Link } from "react-router-dom";
 // import commonContext from "../Context/commonContext";
 
@@ -191,11 +193,23 @@ const MyTeams = () => {
                                         team.map((member,index) => (
                                             <ListItem key={index}
                                                 secondaryAction={
-                                                    <Tooltip title="Delete Member">
-                                                        <IconButton edge="end" aria-label="delete" onClick={() => handleDeleteMember(member)}>
-                                                            <DeleteIcon />
-                                                        </IconButton>
-                                                    </Tooltip>
+                                                    <div>
+                                                        <Tooltip title="Mail">
+                                                            <Link to="#" onClick={e => {
+                                                                window.location.href = `mailto:${member.email}`;
+                                                                e.preventDefault();
+                                                            }}>
+                                                                <IconButton edge="end" aria-label="mail" style={{marginRight: "0"}}>
+                                                                    <MailIcon />
+                                                                </IconButton>
+                                                            </Link>
+                                                        </Tooltip>
+                                                        <Tooltip title="Delete Member">
+                                                            <IconButton edge="end" aria-label="delete" onClick={() => handleDeleteMember(member)} style={{marginRight: "0"}}>
+                                                                <DeleteIcon />
+                                                            </IconButton>
+                                                        </Tooltip>
+                                                    </div>
                                                 }
                                                 className="team-list-item"
                                             >
