@@ -1,9 +1,10 @@
+import fitz
 import django
 from django.shortcuts import render,redirect
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
-from django.http import Http404, HttpResponse
+from django.http import Http404, HttpResponse, JsonResponse
 from docx import Document
 from . import models
 import json
@@ -146,6 +147,24 @@ def get_groups(request):
 	else:
 		return Response({"message":"User not logged in"}, status=status.HTTP_401_UNAUTHORIZED)
 
+@api_view(['GET'])
+def get_member_of_group(request):
+	email = request.user.username
+	groups = models.gmail_group.objects.values()
+	group_part_of = []
+	if len(groups)>0:
+		for group in groups:
+			if group['group_members']:
+				for member in group['group_members']:
+					if member['email']==email:
+						group_part_of.append({
+							"group_code":group['group_code'],
+							"group_leader":group['group_leader'],
+						})
+		return Response({"message":"Groups fetched", "groups":group_part_of}, status=status.HTTP_200_OK)
+	else:
+		return Response({"message":"Groups not found", "groups":None}, status=status.HTTP_200_OK)
+
 
 @api_view(['POST'])
 def send_group_mails(request):
@@ -158,7 +177,7 @@ def send_group_mails(request):
 		for member in group.group_members:
 			send_mail(
 				subject,
-				"Hi "+member['name']+"\n"+message,
+				f"Hello {member['name']}, \nHere is the summary for the meet:\n\n{message}\n\nRegards,\nSTM",
 				'deexithmadas277@gamil.com',
 				[member['email']],
 				fail_silently=False,
@@ -225,10 +244,11 @@ def gen_summ(request):
 	data = request.POST.dict()
 	session = data.get("sessionid",None)
 	useremail = data.get("email",None)
+	# print(session)
 	if request.FILES:
 		f = request.FILES['file']
 		ext = f.name.split(".")[-1]
-		if ext in ['txt', 'docx']:
+		if ext in ['txt', 'docx', 'pdf']:
 			# print(ext)
 			if ext=="docx":
 				doc = Document(f)
@@ -240,6 +260,15 @@ def gen_summ(request):
 				data["para"] = content
 			elif ext=="txt":
 				data["para"] = f.read().decode("utf-8")
+			elif ext=="pdf":
+				doc = fitz.open(stream=f.read(), filetype="pdf")
+				text = ""
+				for page in doc:
+					print(page.get_text('words'))
+					for word in page.get_text('words'):
+						text += ' ' + word[4]
+				data["para"] = text
+				# print(text.strip())
 			else:
 				return Response({"message":"Invalid file format"},status=status.HTTP_400_BAD_REQUEST)
 		elif ext in ['mp3', 'wav', 'flac']:
@@ -305,6 +334,8 @@ def gen_summ(request):
 	# m7 =  models.nlp_model(data["para"])
 	# data["abstractive"]["NLP"] = m7
 	# print(data)
+	if data['para'] == "":
+		return Response({"message":"Input format is not correct"},status=status.HTTP_400_BAD_REQUEST)
 
 	if data['model']=='open-ai':
 		data["Model-1"] = models.openai_model(data['para'])
@@ -313,6 +344,7 @@ def gen_summ(request):
 
 	# print(data.keys(), data["extractive"].keys(), data["abstractive"].keys())
 	if session:
+		# print(session)
 		session_key = session
 		session = Session.objects.get(session_key=session_key)
 		uid = session.get_decoded().get('_auth_user_id')

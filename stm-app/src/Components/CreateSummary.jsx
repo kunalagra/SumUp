@@ -156,14 +156,14 @@ const CreateSummary = () => {
                     }
                   }}>
                     <FormLabel htmlFor="formFile" className="form-label">
-                      Upload the Transcript File {"(.txt / .docx / .mp3 / .wav / .mp4 / etc)"}
+                      Upload the Transcript File {"(.txt / .docx / .pdf / .mp3 / .wav / .mp4 / etc)"}
                     </FormLabel>
                     <input
                       className="form-control"
                       type="file"
                       id="formFile"
                       name="formFile"
-                      accept=".doc, .txt, .docx, .mp3, .mp4, .mkv, .wav, .flac, .avi"
+                      accept=".doc, .txt, .docx, .mp3, .mp4, .mkv, .wav, .flac, .avi, .pdf"
                       style={{
                         border: `2px solid ${colors.primary[700]}`,
                         backgroundColor: "var(--light-color-5)",

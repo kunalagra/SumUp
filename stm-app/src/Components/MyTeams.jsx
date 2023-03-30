@@ -16,6 +16,7 @@ const MyTeams = () => {
     const [team, setTeam] = useState(null);
     const [joinTeamCode, setJoinTeamCode] = useState("");
     const [TeamCode, setTeamCode] = useState("");
+    const [groups, setGroups] = useState([]);
 
     const [isAlert, setIsAlert] = useState(false);
     const [alertCont, setAlertCont] = useState("");
@@ -37,6 +38,7 @@ const MyTeams = () => {
 
     useEffect(() => {
         fetchTeam();
+        groupsmembersof();
         //eslint-disable-next-line
     }, [isAlert]);
 
@@ -46,6 +48,12 @@ const MyTeams = () => {
         setTeam(res.data.groups);
         setTeamCode(res.data.code);
     };
+
+    const groupsmembersof = async () => {
+        const res = await httpClient.get("http://localhost:8000/get_group_data");
+        // console.log(res.data.groups);
+        setGroups(res.data.groups);
+    }
 
     const handleCreateTeam = () => {
         setIsAlert(true);
@@ -235,6 +243,32 @@ const MyTeams = () => {
                         )}
                     </div>
                 </div>
+                <div className="part-of-team">
+                    <h3>{groups===null? "Be a Part of Any Team" : "Your a Part Of Teams"}</h3>
+                    <div className="part-of-team-div">
+                        {groups===null? (
+                            <div>
+                                <p>Be a part of any team!!</p>
+                            </div>
+                        ) : (
+                            <div className="team-list-div">
+                                <List className="team-list">
+                                    {
+                                        groups.map((group,index) => (
+                                            <ListItem key={index} className="team-list-item">
+                                            <ListItemText
+                                                primary={group.group_code}
+                                                secondary={group.group_leader}
+                                            />
+                                            </ListItem>
+                                        ))
+                                    }
+                                </List>
+                            </div>
+                        )}
+                    </div>
+                </div>
+
                 <Modal
                     open={open}
                     onClose={handleClose}
