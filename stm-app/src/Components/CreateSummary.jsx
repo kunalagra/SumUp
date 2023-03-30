@@ -32,6 +32,7 @@ const CreateSummary = () => {
     formData.append("para", para);
     formData.append("file", transcript);
     formData.append("model", model);
+    formData.append("email", localStorage.getItem("email") ? localStorage.getItem("email") : null);
 
     // console.log(formData);
     setLoading(true);
@@ -51,16 +52,16 @@ const CreateSummary = () => {
       setSummary(newsummary);
       setParagraph(response.data.para);
 
-      let d = new Date();
+      // let d = new Date();
 
-      axios.post("http://127.0.0.1:8000/recent_data", {
-        email: localStorage.getItem("email"),
-        data: {
-          date : `${d.getDate()}-${d.getMonth()}-${d.getFullYear()}/${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`,
-          transcript: response.data.para,
-          summitem: newsummary
-        }
-      })
+      // axios.post("http://127.0.0.1:8000/recent_data", {
+      //   email: localStorage.getItem("email"),
+      //   data: {
+      //     date : `${d.getDate()}-${d.getMonth()}-${d.getFullYear()}/${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`,
+      //     transcript: response.data.para,
+      //     summitem: newsummary
+      //   }
+      // })
 
       setLoading(false);
       setLoadCont("");
