@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import { List, ListItem, ListItemAvatar, Avatar, ListItemText, IconButton, TextField, Tooltip, Box, Switch, Collapse } from "@mui/material";
+import { List, ListItem, ListItemAvatar, Avatar, ListItemText, IconButton, TextField, Tooltip, Box, Switch, Collapse, useTheme } from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
 import Modal from '@mui/material/Modal';
 import CloseIcon from "@mui/icons-material/Close";
@@ -12,6 +12,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 
 const MyTeams = () => {
 
+    const theme = useTheme();
     const [team, setTeam] = useState(null);
     const [joinTeamCode, setJoinTeamCode] = useState("");
     const [TeamCode, setTeamCode] = useState("");
@@ -21,8 +22,6 @@ const MyTeams = () => {
     const [isAlert, setIsAlert] = useState(false);
     const [alertCont, setAlertCont] = useState("");
     const [alertType, setAlertType] = useState("");
-
-    // const { setLoading } = useContext(commonContext); 
 
     const [memberName, setMemberName] = useState("");
     const [memberMail, setMemberMail] = useState("");
@@ -90,7 +89,6 @@ const MyTeams = () => {
             setAlertCont("Error in creating team!!");
             setAlertType("danger");
         });
-        // setIsAlert(false);
         setTimeout(() => setIsAlert(false), 2000);
     };
     
@@ -229,11 +227,12 @@ const MyTeams = () => {
                                                     <li key={index}>
                                                         <div className="list-item">
                                                             <div className="item-code">
-                                                                <p>{group.group_code}</p>
+                                                                <p style={{color: `${theme.palette.mode==="dark"? "rgba(255, 255, 255, 0.7)": "rgba(0, 0, 0, 0.6)"}`}}>
+                                                                    {group.group_code}</p>
                                                             </div>
                                                             <div className="item-details">
                                                                 <div className="leader-name">{group.leader_name}</div>
-                                                                <div className="leader-mail">{group.group_leader}</div>
+                                                                <div className="leader-mail" style={{color: `${theme.palette.mode==="dark"? "rgba(255, 255, 255, 0.7)": "rgba(0, 0, 0, 0.6)"}`}}>{group.group_leader}</div>
                                                             </div>
                                                             <div className="item-actions">
                                                                 <Tooltip title="Mail Leader">
