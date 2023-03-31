@@ -122,7 +122,7 @@ def add_members(request):
 		group.save()
 		return Response({"message":"Members added"}, status=status.HTTP_200_OK)
 	else:
-		return Response({"message":"Group not found"})
+		return Response({"message":"Group not found"}, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
 def delete_members(request):
