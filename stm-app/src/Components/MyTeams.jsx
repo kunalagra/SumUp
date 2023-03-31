@@ -55,12 +55,11 @@ const MyTeams = () => {
     }
 
     const deletememberof = async (group_code, member) => {
-        console.log(group_code, member);
+        setIsAlert(true);
+        setAlertCont("Leaving Team...");
+        setAlertType("success");
         axios.post("http://localhost:8000/delete_group", {group_code: group_code, member: member})
-        .then((res) => {
-            setIsAlert(true);
-            setAlertCont("Team deleted successfully!!");
-            setAlertType("success");
+        .then(() => {
             setTimeout(() => setIsAlert(false), 2000);
         }
         )

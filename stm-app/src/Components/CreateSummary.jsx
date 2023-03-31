@@ -10,10 +10,7 @@ const CreateSummary = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const navigate = useNavigate();
-  const { setLoading, setLoadCont } = useContext(commonContext); 
-  const [alertType, setAlertType] = useState("");
-  const [alertCont, setAlertCont] = useState("");
-  const [isAlert, setIsAlert] = useState(false);
+  const { setLoading, setLoadCont, isError, setError } = useContext(commonContext); 
 
   if (localStorage.length === 0){
     navigate("/login");
@@ -37,6 +34,8 @@ const CreateSummary = () => {
     // console.log(formData);
     setLoading(true);
     setLoadCont("Please wait... It may take some time upto 15 minutes based on the file size");
+    setError(true);
+
     axios.post("http://localhost:8000/gen_summary", formData, {
       headers: {
         "Content-Type": "multipart/form-data",
@@ -52,46 +51,29 @@ const CreateSummary = () => {
       setSummary(newsummary);
       setParagraph(response.data.para);
 
-      // let d = new Date();
-
-      // axios.post("http://127.0.0.1:8000/recent_data", {
-      //   email: localStorage.getItem("email"),
-      //   data: {
-      //     date : `${d.getDate()}-${d.getMonth()}-${d.getFullYear()}/${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`,
-      //     transcript: response.data.para,
-      //     summitem: newsummary
-      //   }
-      // })
-
       setLoading(false);
       setLoadCont("");
-      // console.log(newsummary);
+      
       navigate("/summary");
     })
-    .catch(e => {
+    .catch(() => {
       setLoading(false);
       setLoadCont("");
-      setAlertCont("Something went wrong!!");
-      setAlertType("danger");
-      setIsAlert(true);
+      setTimeout(() => {
+        setError(false);
+      }, 4000);
+
       setPara("");
       setTranscript(null);
-
-      setTimeout(() => {
-        setIsAlert(false);
-        setAlertCont("");
-        setAlertType("");
-      }, 2000);
     });
-    // event.preventDefault();
   };
 
   return (
     <>
-      {isAlert && (
+      {isError && (
           <div style={{position: "fixed", top: "0px", right: "0px"}}>
-              <div style={{position: "absolute", right: "10px", top: "80px", zIndex: 999, width: "max-content"}} className={`alert alert-${alertType}`}>
-                  {alertCont}
+              <div style={{position: "absolute", right: "10px", top: "80px", zIndex: 999, width: "max-content"}} className="alert alert-danger">
+                  Something went wrong!!
               </div>
           </div>
       )}

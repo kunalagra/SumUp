@@ -11,6 +11,7 @@ const initialState = {
     mySummitem: null,
     myTranscript: "",
     mySummaries: [],
+    isError: false
 };
 
 
@@ -68,6 +69,13 @@ const CommonProvider = ({ children }) => {
         })
     }
 
+    const setError = (err) => {
+        return dispatch({
+            type: 'SET_ERROR',
+            payload: { err }
+        })
+    }
+
     // Context values
     const values = {
         ...state,
@@ -77,7 +85,8 @@ const CommonProvider = ({ children }) => {
         setLoadCont,
         setSummitem,
         setTranscript,
-        setMySummaries
+        setMySummaries,
+        setError
     };
 
     return (

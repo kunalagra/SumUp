@@ -43,6 +43,12 @@ const commonReducer = (state, action) => {
                 mySummaries: action.payload.summ
             }
 
+        case 'SET_ERROR':
+            return {
+                ...state,
+                isError: action.payload.err
+            }
+
         default:
             return state;
     }
