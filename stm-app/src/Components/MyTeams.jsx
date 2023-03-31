@@ -9,12 +9,10 @@ import axios from "axios";
 import httpClient from "../httpClient";
 import { Link } from "react-router-dom";
 import LogoutIcon from '@mui/icons-material/Logout';
-// import { tokens } from "../theme";
 
 const MyTeams = () => {
 
     const theme = useTheme();
-    // const colors = tokens(theme.palette.mode);
     const [team, setTeam] = useState(null);
     const [joinTeamCode, setJoinTeamCode] = useState("");
     const [TeamCode, setTeamCode] = useState("");
@@ -234,7 +232,7 @@ const MyTeams = () => {
                                                             </div>
                                                             <div className="item-details">
                                                                 <div className="leader-name">{group.leader_name}</div>
-                                                                <div className="leader-mail">{group.group_leader}</div>
+                                                                <div className="leader-mail" style={{color: `${theme.palette.mode==="dark"? "rgba(255, 255, 255, 0.7)": "rgba(0, 0, 0, 0.6)"}`}}>{group.group_leader}</div>
                                                             </div>
                                                             <div className="item-actions">
                                                                 <Tooltip title="Mail Leader">
