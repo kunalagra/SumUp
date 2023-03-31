@@ -146,4 +146,5 @@ class gmail_group(models.Model):
      editable = False)
     group_code = models.CharField(primary_key=True, default=uuid.uuid4().hex[:5].upper(), max_length=50, editable=False)
     group_leader = models.CharField(max_length=100)
+    leader_name = models.CharField(max_length=100)
     group_members = models.JSONField(default=dict)

@@ -98,10 +98,11 @@ def get_recent_data(request):
 def create_group(request):
 	data = json.loads(request.body)
 	username = data['email']
+	name = data['name']
 	if models.gmail_group.objects.filter(group_leader=username).exists():
 		return Response({"message":"Group already exists"}, status=status.HTTP_200_OK)
 	else:
-		group = models.gmail_group.objects.create(group_members=[], group_leader=username)
+		group = models.gmail_group.objects.create(group_members=[], group_leader=username, leader_name=name)
 		group.save()
 		return Response({"message":"Group created", "group_code":group.group_code}, status=status.HTTP_200_OK)
 
@@ -160,10 +161,25 @@ def get_member_of_group(request):
 						group_part_of.append({
 							"group_code":group['group_code'],
 							"group_leader":group['group_leader'],
+							"leader_name":group['leader_name'],
 						})
 		return Response({"message":"Groups fetched", "groups":group_part_of}, status=status.HTTP_200_OK)
 	else:
 		return Response({"message":"Groups not found", "groups":None}, status=status.HTTP_200_OK)
+
+@api_view(['POST'])
+def delete_member_of_group(request):
+	data = json.loads(request.body)
+	code = data['group_code']
+	member = data['member']
+	if models.gmail_group.objects.filter(group_code=code).exists():
+		group = models.gmail_group.objects.get(group_code=code)
+		print(group.group_members)
+		group.group_members.remove(member)
+		group.save()
+		return Response({"message":"Member deleted"}, status=status.HTTP_200_OK)
+	else:
+		return Response({"message":"Group not found"}, status=status.HTTP_200_OK)
 
 
 @api_view(['POST'])
@@ -266,7 +282,7 @@ def gen_summ(request):
 				for page in doc:
 					print(page.get_text('words'))
 					for word in page.get_text('words'):
-						text += ' ' + word[4]
+						text += ' ' + word[4].replace("•","").replace("’","'").replace("‘","'").replace('“','"').replace('”','"').replace("…",".")
 				data["para"] = text
 				# print(text.strip())
 			else:

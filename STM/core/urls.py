@@ -23,4 +23,5 @@ urlpatterns = [
     path('delete_members', views.delete_members, name='delete_members'),
     path('send_mail', views.send_group_mails, name='send_mail'),
     path('get_group_data', views.get_member_of_group, name='get_member_of_group'),
+    path('delete_group', views.delete_member_of_group, name='delete_member_of_group'),
 ]
