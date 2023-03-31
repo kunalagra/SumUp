@@ -246,11 +246,11 @@ const RenderRecentSummary = () => {
       </Box>
 
       <Box margin="20px 0">
-        Show Transcript 
+        Hide Transcript
         <Switch
           onChange={() => setOpen(!open)}
-        />
-        Hide Transcript
+          />
+        Show Transcript 
       </Box>
 
       <Box maxWidth="calc(min(1000px, 95%))">

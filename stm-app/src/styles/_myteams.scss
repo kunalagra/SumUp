@@ -84,6 +84,63 @@
         }
         
     }
+
+    .part-of-team-div {
+        width: min(90vw, 350px);
+        margin: 0 auto;
+        padding: 20px 0;
+
+
+        ul {
+            max-height: 300px;
+            overflow: auto;
+            margin-top: 0.5rem;
+            padding-left: 0;
+
+            li {
+                border-bottom: 1px solid var(--main-color-2);
+                border-top: 1px solid var(--main-color-2);
+                background-color: inherit;
+                border-radius: 10px;
+
+                .list-item {
+                    @include flexbox(flex-start, center);
+                    width: 100%;
+                    padding: 10px 0;
+                    .item-code {
+                        width: 25%;
+                        p {
+                            margin: auto;
+                            font-size: 1.1em;
+                        }
+                    }
+
+                    .item-details {
+                        width: 60%;
+                        .leader-name {
+                            font-size: 1.2em;   
+                        }
+                        .leader-mail {
+                            font-size: 0.9em;
+                        }
+                    }
+
+                    .item-actions {
+                        @include flexbox(flex-start, center);
+                    }
+                }
+            }
+        }
+
+        .create-team-btn {
+            margin-top: 0;
+        }        
+
+        .add-member-btn {
+            margin-top: 2rem;
+        }
+        
+    }
 }
 
 #member-modal {

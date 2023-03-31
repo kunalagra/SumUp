@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import { List, ListItem, ListItemAvatar, Avatar, ListItemText, IconButton, TextField, Tooltip } from "@mui/material";
+import { List, ListItem, ListItemAvatar, Avatar, ListItemText, IconButton, TextField, Tooltip, Box, Switch, Collapse } from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
 import Modal from '@mui/material/Modal';
 import CloseIcon from "@mui/icons-material/Close";
@@ -8,8 +8,7 @@ import MailIcon from "@mui/icons-material/Mail";
 import axios from "axios";
 import httpClient from "../httpClient";
 import { Link } from "react-router-dom";
-// import { Link } from "react-router-dom";
-// import commonContext from "../Context/commonContext";
+import LogoutIcon from '@mui/icons-material/Logout';
 
 const MyTeams = () => {
 
@@ -17,6 +16,7 @@ const MyTeams = () => {
     const [joinTeamCode, setJoinTeamCode] = useState("");
     const [TeamCode, setTeamCode] = useState("");
     const [groups, setGroups] = useState([]);
+    const [showJoinedTeams, setShowJoinedTeams] = useState(false);
 
     const [isAlert, setIsAlert] = useState(false);
     const [alertCont, setAlertCont] = useState("");
@@ -180,6 +180,68 @@ const MyTeams = () => {
                         />
                         <button className="login__create-container__form-container__form--submit" onClick={handleJoinTeam}>Join</button>
                     </div>
+
+                    <Box margin="20px 0">
+                        Hide Joined Teams
+                        <Switch
+                            onChange={() => setShowJoinedTeams(!showJoinedTeams)}
+                        />
+                        Show Joined Teams
+                    </Box>
+
+                    <Collapse in={showJoinedTeams} timeout="auto" unmountOnExit>
+                        <div className="part-of-team" style={{marginTop: `${groups.length===0? "0": "1rem"}`}}>
+                            <h3>{(groups.length===0)? "Haven't joined any team!" : "Joined Teams"}</h3>
+                            <div className="part-of-team-div">
+                                {(groups.length===0)? (
+                                    <div>
+                                        <p>Be a part of any team by entering the team code!!</p>
+                                    </div>
+                                ) : (
+                                    <div className="team-list-div">
+                                        <div style={{display:"flex", alignItems: "center", padding: "5px 0"}}>
+                                            <div style={{width: "25%"}}>Team Code</div>
+                                            <div style={{width: "50%"}}>Team Leader</div>
+                                        </div>
+                                        <ul>
+                                            {
+                                                groups.map((group,index) => (
+                                                    <li key={index}>
+                                                        <div className="list-item">
+                                                            <div className="item-code">
+                                                                <p>{group.group_code}</p>
+                                                            </div>
+                                                            <div className="item-details">
+                                                                <div className="leader-name">Leader Name</div>
+                                                                <div className="leader-mail">{group.group_leader}</div>
+                                                            </div>
+                                                            <div className="item-actions">
+                                                                <Tooltip title="Mail Leader">
+                                                                    <Link to="#" onClick={e => {
+                                                                        window.location.href = `mailto:${group.group_leader}`;
+                                                                        e.preventDefault();
+                                                                    }}>
+                                                                        <IconButton edge="end" aria-label="mail" style={{marginRight: "0"}}>
+                                                                            <MailIcon />
+                                                                        </IconButton>
+                                                                    </Link>
+                                                                </Tooltip>
+                                                                <Tooltip title="Leave Team">
+                                                                    <IconButton edge="end" aria-label="delete" onClick={() => console.log(group.group_code, group.group_leader)} style={{marginRight: "0"}}>
+                                                                        <LogoutIcon />
+                                                                    </IconButton>
+                                                                </Tooltip>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                ))
+                                            }
+                                        </ul>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    </Collapse>
                 </div>
                 <div className="create-team">
                     <h3>{team===null? "Create a Team" : "Your Team"}</h3>
@@ -239,31 +301,6 @@ const MyTeams = () => {
                                 <div className="add-button-div">
                                     <button className="login__create-container__form-container__form--submit add-member-btn" onClick={handleOpen}>Add Member</button>
                                 </div>
-                            </div>
-                        )}
-                    </div>
-                </div>
-                <div className="part-of-team">
-                    <h3>{groups===null? "Be a Part of Any Team" : "Your a Part Of Teams"}</h3>
-                    <div className="part-of-team-div">
-                        {groups===null? (
-                            <div>
-                                <p>Be a part of any team!!</p>
-                            </div>
-                        ) : (
-                            <div className="team-list-div">
-                                <List className="team-list">
-                                    {
-                                        groups.map((group,index) => (
-                                            <ListItem key={index} className="team-list-item">
-                                            <ListItemText
-                                                primary={group.group_code}
-                                                secondary={group.group_leader}
-                                            />
-                                            </ListItem>
-                                        ))
-                                    }
-                                </List>
                             </div>
                         )}
                     </div>
