@@ -56,6 +56,26 @@ const MyTeams = () => {
         setGroups(res.data.groups);
     }
 
+    const deletememberof = async (group_code, member) => {
+        console.log(group_code, member);
+        axios.post("http://localhost:8000/delete_group", {group_code: group_code, member: member})
+        .then((res) => {
+            setIsAlert(true);
+            setAlertCont("Team deleted successfully!!");
+            setAlertType("success");
+            setTimeout(() => setIsAlert(false), 2000);
+        }
+        )
+        .catch(() => {
+            setIsAlert(true);
+            setAlertCont("Error in deleting team member!!");
+            setAlertType("danger");
+            setTimeout(() => setIsAlert(false), 2000);
+        }
+        );
+
+    }
+
     const handleCreateTeam = () => {
         setIsAlert(true);
         setAlertCont("Creating team...");
@@ -213,9 +233,8 @@ const MyTeams = () => {
                                                                     {group.group_code}</p>
                                                             </div>
                                                             <div className="item-details">
-                                                                <div className="leader-name">Leader Name</div>
-                                                                <div className="leader-mail" style={{color: `${theme.palette.mode==="dark"? "rgba(255, 255, 255, 0.7)": "rgba(0, 0, 0, 0.6)"}`}}>
-                                                                    {group.group_leader}</div>
+                                                                <div className="leader-name">{group.leader_name}</div>
+                                                                <div className="leader-mail">{group.group_leader}</div>
                                                             </div>
                                                             <div className="item-actions">
                                                                 <Tooltip title="Mail Leader">
@@ -229,7 +248,10 @@ const MyTeams = () => {
                                                                     </Link>
                                                                 </Tooltip>
                                                                 <Tooltip title="Leave Team">
-                                                                    <IconButton edge="end" aria-label="delete" onClick={() => console.log(group.group_code, group.group_leader)} style={{marginRight: "0"}}>
+                                                                    <IconButton edge="end" aria-label="delete" onClick={() => deletememberof(group.group_code,{
+                                                                        name: localStorage.getItem("name"),
+                                                                        email: localStorage.getItem("email")
+                                                                    })} style={{marginRight: "0"}}>
                                                                         <LogoutIcon />
                                                                     </IconButton>
                                                                 </Tooltip>

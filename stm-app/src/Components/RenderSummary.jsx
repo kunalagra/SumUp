@@ -24,7 +24,7 @@ import ShareIcon from '@mui/icons-material/Share';
 import DownloadIcon from '@mui/icons-material/Download';
 import { useNavigate } from "react-router-dom";
 import SummaryPrintPage from "./PDFPages";
-import html2canvas from "html2canvas";
+// import html2canvas from "html2canvas";
 import { jsPDF } from "jspdf";
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import MailIcon from '@mui/icons-material/Mail';
@@ -77,18 +77,32 @@ const Summary = ({ summitem }) => {
   const summaryPrintRef = useRef();
 
   const handleDownloadPdf = async () => {
-    const element = summaryPrintRef.current;
-    const canvas = await html2canvas(element);
-    const data = canvas.toDataURL('image/png');
-
-    const pdf = new jsPDF();
-    const imgProperties = pdf.getImageProperties(data);
-    const pdfWidth = pdf.internal.pageSize.getWidth();
-    const pdfHeight =
-      (imgProperties.height * pdfWidth) / imgProperties.width;
-
-    pdf.addImage(data, 'PNG', 0, 0, pdfWidth, pdfHeight);
-    pdf.save('sum-up-summary.pdf'); 
+    // const input = summaryPrintRef.current;
+    // convert html to pdf with poroper styling and fonts
+    const pdf = new jsPDF("p", "pt", "a4");
+    pdf.setFont("Roboto");
+    pdf.setFontSize(20);
+    pdf.setTextColor(0, 0, 0);
+    // align text to center
+    pdf.text(70, 40, "\t\t\t\tMeeting Summary");
+    // add line break
+    pdf.line(40, 50, 560, 50);
+    pdf.setFontSize(15);
+    pdf.setTextColor(0, 0, 0);
+    // text wrap for summary if it exceeds 500px width of pdf page
+    // if page is full then add new page
+    let y = 100;
+    const summary = summitem.summary.map((item) => `•  ${item}`);
+    const summaryText = pdf.splitTextToSize(summary.join("\n\n"), 500);
+    for (let i = 0; i < summaryText.length; i++) {
+      if (y > 800) {
+        pdf.addPage();
+        y = 40;
+      }
+      pdf.text(40, y, summaryText[i]);
+      y += 20;
+    }
+    pdf.save("sum-up-summary.pdf");
   };
 
   return (
@@ -252,11 +266,11 @@ const RenderSummary = () => {
       </Box>
 
       <Box margin="20px 0">
-        Hide Transcript
+        Hide Transcript 
         <Switch
           onChange={() => setOpen(!open)}
-          />
-        Show Transcript 
+        />
+        Show Transcript
       </Box>
 
       <Box maxWidth="calc(min(1000px, 95%))">
