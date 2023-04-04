@@ -34,14 +34,14 @@ const RecentSummaries = () => {
     const [isError, setIsError] = useState(0);
 
     useEffect(() => {
-        setLoading(false);
         httpClient.get('/get_data').then((response) => {
             setMySummaries(response.data.recents_sum);
         }).catch((error) => {
             console.log(error);
         })
         // eslint-disable-next-line
-    }, [isError])
+    }, [isError]);
+    
 
     const handleSummitem = (summ, index) => {
         if(isNonMobile) {

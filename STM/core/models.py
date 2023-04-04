@@ -39,7 +39,7 @@ def plaraphy_model(data):
 
 def openai_model(data):
     # print(data)
-    openai.api_key = "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"
+    openai.api_key = "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"
     data = data.split()
     paras = [' '.join(data[i:i+3000]) for i in range(0, len(data), 3000)]
     # print(paras)
