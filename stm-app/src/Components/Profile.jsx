@@ -27,9 +27,10 @@ const Profile = () => {
             >
                 <Box paddingRight={isNonMobile? "100px": "0"}>
                     <img 
-                    src="logo512.png"
+                    src="stm-logo.png"
                     height="300px"
                     alt="profile-pic"
+                    style={{borderRadius: "50%"}}
                     />
                 </Box>
                 <Box>

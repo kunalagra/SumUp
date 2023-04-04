@@ -1,7 +1,7 @@
 import { Box, FormLabel, Typography, useTheme } from "@mui/material";
 import { tokens } from "../theme";
 import commonContext from "../Context/commonContext";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -14,6 +14,13 @@ const CreateSummary = () => {
   if (localStorage.length === 0){
     navigate("/login");
   }
+
+  useEffect(() => {
+    setTimeout(() => {
+      setError(false);
+    }, 4000);
+    //eslint-disable-next-line
+  }, [isError]);
 
   const { setSummary, setParagraph } = useContext(commonContext);
 

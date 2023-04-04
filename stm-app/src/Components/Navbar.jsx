@@ -119,10 +119,11 @@ const Navbar = () => {
         >
           <Box>
             <img
-              src="logo192.png"
+              src="stm-logo.png"
               width="fit-content"
               height="35px"
               alt="Logo"
+              style={{borderRadius: "50px"}}
             />
           </Box>
           <Typography variant="h3" ml="10px">
