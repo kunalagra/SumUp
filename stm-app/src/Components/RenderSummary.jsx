@@ -13,7 +13,8 @@ import {
   IconButton,
   ListItemIcon,
   Collapse,
-  Switch
+  Switch,
+  useMediaQuery
 } from "@mui/material";
 import LabelIcon from "@mui/icons-material/Label";
 import { tokens } from "../theme";
@@ -24,7 +25,6 @@ import ShareIcon from '@mui/icons-material/Share';
 import DownloadIcon from '@mui/icons-material/Download';
 import { useNavigate } from "react-router-dom";
 import SummaryPrintPage from "./PDFPages";
-// import html2canvas from "html2canvas";
 import { jsPDF } from "jspdf";
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import MailIcon from '@mui/icons-material/Mail';
@@ -33,6 +33,7 @@ import TwitterIcon from '@mui/icons-material/Twitter';
 import Modal from '@mui/material/Modal';
 import CloseIcon from '@mui/icons-material/Close';
 import axios from "axios";
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 
 const Summary = ({ summitem }) => {
@@ -43,6 +44,8 @@ const Summary = ({ summitem }) => {
   const [alertCont, setAlertCont] = useState("");
   const [isAlert, setIsAlert] = useState(false);
   const [shareAlert, setShareAlert] = useState(false);
+  const isSmallMobile = useMediaQuery("(max-width: 480px)")
+  const [isMore, setIsMore] = useState(false);
 
   const [message, setMessage] = useState(summitem.summary.join("\n"));
   const [subject, setSubject] = useState("Meeting Summary");
@@ -139,44 +142,57 @@ const Summary = ({ summitem }) => {
         <div ref={summaryPrintRef} style={{position: "absolute", top: "-1000px", left: "-1000px"}}>
           <SummaryPrintPage summary={summitem.summary}/>
         </div>
-        <CardHeader title={summitem.title} subheader={summitem.type} className="summary-header" style={{background: `${colors.primary[700]}`}} 
+        <CardHeader title={isSmallMobile && isMore? "~" : summitem.title} subheader={isSmallMobile && isMore? "~" : summitem.type} className="summary-header" style={{background: `${colors.primary[700]}`}} 
           action={
             <Box>
-              <Tooltip title={play? "Play" : "Pause"}>
-                <IconButton aria-label="play" onClick={play? handleSpeech : handleStop} className="card-action-btn txt-to-speech-btn">
-                  {play? <VolumeUpIcon /> : <VolumeOffIcon />}
-                </IconButton>
-              </Tooltip>
-              <Tooltip title="Copy">
-                <IconButton aria-label="copy" className="card-action-btn copy-btn" onClick={() => {
-                    setAlertCont("Copied to Clipboard!!");
-                    setAlertType("success");
-                    setIsAlert(true);
-                    navigator.clipboard.writeText(summitem.summary.map((item, index) => `${index+1}. ${item}`).join("%0A"));
-                    setTimeout(() => {
-                      setAlertCont("");
-                      setAlertType("");
-                      setIsAlert(false);
-                    }, 2000);
-                }}>
-                  <ContentCopyIcon />
-                </IconButton>
-              </Tooltip>
-              <Tooltip title="Share">
-                <IconButton aria-label="share" className="card-action-btn share-btn" onClick={() => {
-                    setShareAlert(true);
-                    setTimeout(() => {
-                      setShareAlert(false);
-                    }, 4000);
-                  }}>
-                  <ShareIcon />
-                </IconButton>
-              </Tooltip>
-              <Tooltip title="Download">
-                <IconButton aria-label="download" className="card-action-btn dwnld-btn" onClick={handleDownloadPdf}>
-                  <DownloadIcon />
-                </IconButton>
-              </Tooltip>
+              {
+                (!isSmallMobile || (isSmallMobile && isMore)) && (
+                  <>
+                  <Tooltip title={play? "Play" : "Pause"}>
+                    <IconButton aria-label="play" onClick={play? handleSpeech : handleStop} className="card-action-btn txt-to-speech-btn">
+                      {play? <VolumeUpIcon /> : <VolumeOffIcon />}
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title="Copy">
+                    <IconButton aria-label="copy" className="card-action-btn copy-btn" onClick={() => {
+                        setAlertCont("Copied to Clipboard!!");
+                        setAlertType("success");
+                        setIsAlert(true);
+                        navigator.clipboard.writeText(summitem.summary.map((item, index) => `${index+1}. ${item}`).join("%0A"));
+                        setTimeout(() => {
+                          setAlertCont("");
+                          setAlertType("");
+                          setIsAlert(false);
+                        }, 2000);
+                    }}>
+                      <ContentCopyIcon />
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title="Share">
+                    <IconButton aria-label="share" className="card-action-btn share-btn" onClick={() => {
+                        setShareAlert(true);
+                        setTimeout(() => {
+                          setShareAlert(false);
+                        }, 4000);
+                      }}>
+                      <ShareIcon />
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title="Download">
+                    <IconButton aria-label="download" className="card-action-btn dwnld-btn" onClick={handleDownloadPdf}>
+                      <DownloadIcon />
+                    </IconButton>
+                  </Tooltip>
+                  </>
+                )
+              }
+              {
+                isSmallMobile && (
+                  <IconButton className="card-action-btn" onClick={() => setIsMore(!isMore)}>
+                      <MoreVertIcon />
+                  </IconButton>
+                )
+              }
             </Box>
           }
         />
@@ -296,7 +312,11 @@ const RenderSummary = () => {
               }
             }}
           >
-            <p>{para}</p>
+            {
+              para.split("\n").map((par, ind) => (
+                <p key={ind}>{par}</p>
+              ))
+            }
           </Box>
         </Collapse>
       </Box>

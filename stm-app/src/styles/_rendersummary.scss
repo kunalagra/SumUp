@@ -35,6 +35,12 @@
 
             &:hover {
                 box-shadow: 0 0 10px 0 var(--main-color-2);
+
+                .summ-edit-button {
+                    visibility: visible;
+                    opacity: 1;
+                    bottom: 30px;
+                }
             }
 
             #share-alert {
@@ -71,6 +77,25 @@
 
             .share-btn {
                 right: 55px;
+            }
+
+            @include devices(xs) {
+                .dwnld-btn {
+                    right: 55px;
+                }
+
+                .share-btn {
+                    right: 90px;
+                }
+
+                .copy-btn {
+                    right: 125px;
+                }
+
+                .txt-to-speech-btn {
+                    right: 160px;
+                }
+
             }
 
             .summary-header {
@@ -136,4 +161,15 @@
         align-items: center;
     }
 
+}
+
+.summ-edit-button {
+    color: var(--light-color-3);
+    padding: 10px;
+    border-radius: 50px;
+    cursor: pointer;
+    visibility: hidden;
+    opacity: 0;
+    bottom: 0;
+    transition: all 0.3s ease;
 }

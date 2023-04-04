@@ -4,7 +4,6 @@ import commonContext from "../Context/commonContext";
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-// import httpClient from "../httpClient";
 
 const CreateSummary = () => {
   const theme = useTheme();
@@ -157,10 +156,8 @@ const CreateSummary = () => {
                     ></input>
                   </Box>
 
-                  <Box className="mb-3 select-input-div" sx={{
-
-                  }}>
-                    <FormLabel htmlFor="formFile" className="form-label select-input-label">
+                  <Box className="mb-3 select-input-div">
+                    <FormLabel className="form-label select-input-label">
                       Select model {"(optional)"}
                     </FormLabel>
                     <select

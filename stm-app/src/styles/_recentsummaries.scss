@@ -33,12 +33,65 @@
             color: var(--dark-color-2);
             transition: all 0.5s ease;
             cursor: pointer;
+            position: relative;
 
             &:hover {
                 color: var(--dark-color-6);
             }
+
+            @include devices(sm) {
+                padding: 15px 0 15px 20px;
+            }
+
+            .summaries-list-text {
+                margin: auto 0;
+                max-width: min(220px, 25vw);
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                overflow: hidden;
+            }
+
+            .summaries-view-icon {
+                position: absolute;
+                top: 22px;
+                right: 0px;
+            }
+
         }
 
+    }
+
+}
+
+#rename-modal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: min(90vw, 400px);
+    background-color: var(--light-color-1);
+    padding: 15px 10px;
+    border-radius: 12px;
+
+    input, textarea {
+        width: 100%;
+        padding: 10px;
+        background-color: var(--light-color-1);
+        border: none;
+        border-radius: 5px;
+        margin-bottom: 10px;
+        font-size: 1.4em;
+    }
+
+    .message-input {
+        max-height: 500px;
+        overflow: auto;
+    }
+
+    .rename-modal-btn-div {
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
 }

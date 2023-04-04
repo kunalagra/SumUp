@@ -8,10 +8,20 @@ import heapq
 import json
 import requests
 import uuid
+from transformers import pipeline
 # import whisper
 
 
 # Create your models here.
+
+summarizer = pipeline("summarization", model="facebook/bart-large-cnn")
+
+def bart_large_cnn(data):
+    # print(data)
+    res = summarizer(data, min_length=100)
+    # print(res)
+    return res[0]['summary_text'].split(".")
+
 def plaraphy_model(data):
     url = 'https://app.plaraphy.com/api/summarizer'
     payload = 'text='+data["para"]+'&output_percent=10'

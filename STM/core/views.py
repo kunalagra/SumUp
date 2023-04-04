@@ -354,7 +354,8 @@ def gen_summ(request):
 		return Response({"message":"Input format is not correct"},status=status.HTTP_400_BAD_REQUEST)
 
 	if data['model']=='open-ai':
-		data["Model-1"] = models.openai_model(data['para'])
+		# data["Model-1"] = models.openai_model(data['para'])
+		data["Model-1"] = models.bart_large_cnn(data['para'])
 	else:
 		data["Model-2"] = models.nlp_model(data['para'])
 
@@ -391,3 +392,49 @@ def gen_summ(request):
 		user = models.user.objects.create(username=user.username, recent_sum=[sumdata],id= models.user.objects.count()+1)
 		user.save()
 	return Response(data,status=status.HTTP_200_OK)
+
+
+@api_view(['POST'])
+def rename_sumtitle(request):
+	data = json.loads(request.body)
+	user = models.user.objects.get(username=data["username"])
+	ind = 0
+	r = user.recent_sum
+	for i in range(len(r)):
+		if r[i]['date']==data['date']:
+			ind = i
+			break
+	user.recent_sum[ind]['title'] = data["newName"]
+	user.save()
+	return Response(status=status.HTTP_200_OK)
+
+
+@api_view(['POST'])
+def update_summary(request):
+	data = json.loads(request.body)
+	user = models.user.objects.get(username=data["username"])
+	ind = 0
+	r = user.recent_sum
+	for i in range(len(r)):
+		if r[i]['date']==data['date']:
+			ind = i
+			break
+	user.recent_sum[ind]['summitem']['summary'] = data["newSumm"].split("\n")
+	user.save()
+	return Response(data=user.recent_sum[ind], status=status.HTTP_200_OK)
+
+
+@api_view(['POST'])
+def delete_summary(request):
+	data = json.loads(request.body)
+	user = models.user.objects.get(username=data["username"])
+	ind = 0
+	r = user.recent_sum
+	for i in range(len(r)):
+		if r[i]['date']==data['date']:
+			ind = i
+			break
+	user.recent_sum.pop(ind)
+	user.save()
+	return Response(status=status.HTTP_200_OK)
+
