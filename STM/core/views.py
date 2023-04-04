@@ -398,13 +398,7 @@ def gen_summ(request):
 def rename_sumtitle(request):
 	data = json.loads(request.body)
 	user = models.user.objects.get(username=data["username"])
-	ind = 0
-	r = user.recent_sum
-	for i in range(len(r)):
-		if r[i]['date']==data['date']:
-			ind = i
-			break
-	user.recent_sum[ind]['title'] = data["newName"]
+	user.recent_sum[data['ind']]['title'] = data["newName"]
 	user.save()
 	return Response(status=status.HTTP_200_OK)
 
@@ -413,12 +407,7 @@ def rename_sumtitle(request):
 def update_summary(request):
 	data = json.loads(request.body)
 	user = models.user.objects.get(username=data["username"])
-	ind = 0
-	r = user.recent_sum
-	for i in range(len(r)):
-		if r[i]['date']==data['date']:
-			ind = i
-			break
+	ind = int(data['ind'])
 	user.recent_sum[ind]['summitem']['summary'] = data["newSumm"].split("\n")
 	user.save()
 	return Response(data=user.recent_sum[ind], status=status.HTTP_200_OK)
@@ -428,13 +417,7 @@ def update_summary(request):
 def delete_summary(request):
 	data = json.loads(request.body)
 	user = models.user.objects.get(username=data["username"])
-	ind = 0
-	r = user.recent_sum
-	for i in range(len(r)):
-		if r[i]['date']==data['date']:
-			ind = i
-			break
-	user.recent_sum.pop(ind)
+	user.recent_sum.pop(data['ind'])
 	user.save()
 	return Response(status=status.HTTP_200_OK)
 

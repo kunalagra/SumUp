@@ -26,12 +26,14 @@ const RecentSummaries = () => {
     const isSmallMobile = useMediaQuery("(max-width: 768px)")
     
     const summaries = [...mySummaries].reverse();
+    const sumlen = summaries.length;
     const [summ, setSumm] = useState(null);
     const [ind, setInd] = useState(0);
     const [isNameEdit, setIsNameEdit] = useState(false);
     const [newName, setNewName] = useState("");
     const [editItem, setEditItem] = useState(null);
     const [isError, setIsError] = useState(0);
+    const [ediind, setEdiind] = useState(0);
 
     useEffect(() => {
         setLoading(false);
@@ -62,7 +64,10 @@ const RecentSummaries = () => {
     }
 
 
-    const handleEditName = (item) => {
+    const handleEditName = (item,index) => {
+        // console.log(summaries.length-index-1);
+        // console.log(sumlen);
+        setEdiind(sumlen-index-1);
         setNewName(item.title? item.title : item.date);
         setEditItem(item);
         setIsNameEdit(true);
@@ -72,16 +77,17 @@ const RecentSummaries = () => {
         setIsNameEdit(false);
     }
 
-    const handleDeleteSumm = (item) => {
+    const handleDeleteSumm = (item,index) => {
         setIsError(2);
         axios.post("http://localhost:8000/delete_summary", {
+            ind: sumlen-index-1,
             date: item.date,
             username: localStorage.getItem("email")
         })
         .catch(() => {
             setIsError(1);
         });   
-        setTimeout(() => setIsError(0), 2000);
+        setTimeout(() => setIsError(0), 4000);
     }
 
 
@@ -113,7 +119,7 @@ const RecentSummaries = () => {
                                     </ListItemIcon>
                                     <p className="summaries-list-text" onClick={() => handleSummitem(item, index)}>{item.title? item.title : item.date}</p>
                                     <Tooltip title="Rename">
-                                        <IconButton className="rename-icon" style={{color: `${colors.primary[400]}`}} onClick={() => handleEditName(item)}>
+                                        <IconButton className="rename-icon" style={{color: `${colors.primary[400]}`}} onClick={() => handleEditName(item,index)}>
                                             <DriveFileRenameOutlineIcon />
                                         </IconButton>
                                     </Tooltip>
@@ -125,7 +131,7 @@ const RecentSummaries = () => {
                                         </Tooltip>
                                     )}
                                     <Tooltip title="Delete Summary">
-                                        <IconButton className="delete-icon" style={{color: `${colors.primary[400]}`}} onClick={() => handleDeleteSumm(item)}>
+                                        <IconButton className="delete-icon" style={{color: `${colors.primary[400]}`}} onClick={() => handleDeleteSumm(item,index)}>
                                             <DeleteIcon />
                                         </IconButton>
                                     </Tooltip>
@@ -161,7 +167,7 @@ const RecentSummaries = () => {
                                                 setLoading(true);
                                                 setTimeout(() => {
                                                     setLoading(false);
-                                                    navigate(`/recent-summaries/${ind+1}`);
+                                                    navigate(`/recent-summaries/${sumlen-ind-1}`);
                                                 }, 1000);
                                             }}>
                                                 <OpenInFullIcon />
@@ -200,12 +206,14 @@ const RecentSummaries = () => {
                                 // console.log(newName);
                                 setIsError(2);
                                 axios.post("http://localhost:8000/rename_sumtitle", {
+                                    ind: ediind,
                                     date: editItem.date,
                                     newName: newName,
                                     username: localStorage.getItem("email")
                                 })
                                 .catch(() => {
                                     setIsError(1);
+                                    setTimeout(() => setIsError(0), 2000);
                                 });
                                 setTimeout(() => setIsError(0), 2000);
                                 setIsNameEdit(false);
