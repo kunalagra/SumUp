@@ -72,6 +72,9 @@ const CreateSummary = () => {
       setPara("");
       setTranscript(null);
     });
+    setTimeout(() => {
+      setError(false);
+    }, 4000);
   };
 
   return (
