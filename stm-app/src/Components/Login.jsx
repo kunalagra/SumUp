@@ -234,10 +234,10 @@ class Login extends Component {
                 <div className="login__welcome-back__logo-container">
                     <img
                     className="login__welcome-back__logo-container--image"
-                    src="logo.png"
-                    alt="Budwriter"
+                    src="stm-logo-circle.png"
+                    alt="Sum-Up"
                     />
-                    <h5>STM-Quad</h5>
+                    <h5 style={{marginTop: "auto", marginLeft: "5px"}}>Sum-Up</h5>
                 </div>
                 <div className="login__welcome-back__main-container">
                     <div className="login__welcome-back__main-container__text-container">
@@ -274,23 +274,6 @@ class Login extends Component {
           }`}
         >
           Create an Account
-          <div className="login__create-container__social-container">
-            <img
-              className="login__create-container__social-container--facebook-icon"
-              src="facebook.svg"
-              alt=""
-            />
-            <img
-              className="login__create-container__social-container--google-icon"
-              src="google.svg"
-              alt=""
-            />
-            <img
-              className="login__create-container__social-container--linkedin-icon"
-              src="linkedin.svg"
-              alt=""
-            />
-          </div>
           <span className="login__create-container--info-text">
             Use email for your registration
           </span>
@@ -415,29 +398,13 @@ class Login extends Component {
           <div className="login__login-container__logo-container">
             <img
               className="login__login-container__logo-container--image"
-              src="logo.png"
-              alt="Budwriter"
+              src="stm-logo-circle.png"
+              alt="Sum-Up"
+              style={{marginRight: "10px"}}
             />
-            STM-Quad
+            Sum-Up
           </div>
           <div className="login__login-container__main-container">
-            <div className="login__login-container__main-container__social-container">
-              <img
-                className="login__login-container__main-container__social-container--facebook-icon"
-                src="facebook.svg"
-                alt=""
-              />
-              <img
-                className="login__login-container__main-container__social-container--google-icon"
-                src="google.svg"
-                alt=""
-              />
-              <img
-                className="login__login-container__main-container__social-container--linkedin-icon"
-                src="linkedin.svg"
-                alt=""
-              />
-            </div>
             <span className="login__login-container__main-container--info-text">
               Use email for your login
             </span>

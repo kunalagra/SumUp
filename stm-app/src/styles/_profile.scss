@@ -31,4 +31,9 @@
             }
         }
     }
+
+    .person-details > .person-detail {
+        @include flexbox(flex-start, flex-end);
+        flex-wrap: wrap;
+    }
 }

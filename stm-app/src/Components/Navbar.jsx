@@ -131,7 +131,29 @@ const Navbar = () => {
           </Typography>
         </Box>
 
-        {isNonMobile ? (
+        {
+          (localStorage.getItem("name")===null || localStorage.getItem("name")===undefined) ? (
+            <Box 
+              display="flex"
+              justifyContent="space-evenly"
+              alignItems="center"
+              width="calc(max(15%, 150px))"
+              id="nav-links"
+            >
+              <Tooltip title="Change Theme">
+                <IconButton onClick={colorMode.toggleColorMode} className="nav-links-btn">
+                  {theme.palette.mode === "dark" ? (
+                    <LightModeOutlinedIcon />
+                  ) : (
+                    <DarkModeOutlinedIcon />
+                  )}
+                </IconButton>
+              </Tooltip>
+              <button className="get-started-btn" onClick={() => navigate("/login")}>Get Started</button>
+            </Box>
+          ) : (
+
+        isNonMobile ? (
           <Box
             display="flex"
             justifyContent="space-evenly"
@@ -192,9 +214,11 @@ const Navbar = () => {
           <IconButton onClick={handleClick} className="nav-links-btn">
             {open ? <MenuIcon /> : <MenuOpenIcon />}
           </IconButton>
+        )
+        
         )}
       </Box>
-      {open && <Sidebar />}
+      {!(localStorage.getItem("name")===null || localStorage.getItem("name")===undefined) && open && <Sidebar />}
     </React.Fragment>
   );
 };

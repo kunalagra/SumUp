@@ -5,18 +5,11 @@ import FacebookIcon from "@mui/icons-material/Facebook";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import InstagramIcon from "@mui/icons-material/Instagram";
-import { useNavigate } from "react-router-dom";
 import HomeWorkIcon from '@mui/icons-material/HomeWork';
 import LocalPostOfficeIcon from '@mui/icons-material/LocalPostOffice';
 import CallIcon from '@mui/icons-material/Call';
 
 const HomePage = () => {
-  const navigate = useNavigate();
-
-  if (localStorage.length === 0) {
-    navigate("/login");
-  }
-
 
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);  
