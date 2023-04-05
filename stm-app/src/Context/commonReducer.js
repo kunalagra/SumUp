@@ -26,12 +26,14 @@ const commonReducer = (state, action) => {
             }
         
         case 'SET_SUMMITEM':
+            localStorage.setItem("summary", JSON.stringify(action.payload.summ));
             return {
                 ...state,
                 mySummitem: action.payload.summ
             }
         
         case 'SET_TRANSCRIPT':
+            localStorage.setItem("transcript", action.payload.trans);
             return {
                 ...state,
                 myTranscript: action.payload.trans

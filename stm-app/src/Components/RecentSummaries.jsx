@@ -46,15 +46,13 @@ const RecentSummaries = () => {
     
 
     const handleSummitem = (summ, index) => {
+        setSummitem(summ);
+        setTranscript(summ.transcript);
         if(isNonMobile) {
-            setSummitem(summ);
-            setTranscript(summ.transcript);
             setSumm(summ);
             setInd(index);
         }
         else {
-            setSummitem(summ);
-            setTranscript(summ.transcript);
             setLoading(true);
             setTimeout(() => {
                 setLoading(false);
@@ -65,8 +63,6 @@ const RecentSummaries = () => {
 
 
     const handleEditName = (item,index) => {
-        // console.log(summaries.length-index-1);
-        // console.log(sumlen);
         setEdiind(sumlen-index-1);
         setNewName(item.title? item.title : item.date);
         setEditItem(item);

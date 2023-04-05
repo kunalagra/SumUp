@@ -8,8 +8,8 @@ const initialState = {
     para: '',
     isLoading: false,
     loadCont: "",
-    mySummitem: null,
-    myTranscript: "",
+    mySummitem: JSON.parse(localStorage.getItem("summary", "{}")),
+    myTranscript: localStorage.getItem("transcript", ""),
     mySummaries: [],
     isError: false
 };
