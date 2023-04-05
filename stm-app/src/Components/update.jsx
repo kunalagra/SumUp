@@ -10,7 +10,9 @@ import { Box,
     IconButton,
     FormHelperText,
     useTheme,
-    TextField
+    TextField,
+    Select,
+    MenuItem
  } from "@mui/material";
  import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
@@ -40,7 +42,11 @@ class UpdatePassword extends Component {
             isAlert: false,
             alertCont: "",
             alertType: "",
-            name: localStorage.getItem('name')
+            name: localStorage.getItem('name'),
+            age: "",
+            company: "",
+            role: "",
+            gender: "male"
         };
     }
 
@@ -159,7 +165,7 @@ class UpdatePassword extends Component {
               )}
                 <Box paddingRight={isNonMobile ? "100px" : "0"}>
                     <img
-                        src="logo512.png"
+                        src="stm-logo-circle.png"
                         height="300px"
                         alt="profile-pic"
                     />
@@ -176,6 +182,53 @@ class UpdatePassword extends Component {
                     name: e.target.value,
                     email: this.state.email,
                     password: this.state.password,
+                  })
+                }
+                required
+              />
+              <TextField id="outlined-age" label="Age" variant="outlined" sx={{ width: "min(270px, 90vw)" }} 
+                value={this.state.age}
+                onChange={(e) =>
+                  this.setState({
+                    ...this.state,
+                    age: e.target.value
+                  })
+                }
+                required
+              />
+              <FormControl fullWidth>
+                <InputLabel id="outlined-gender">Gender</InputLabel>
+                <Select
+                  labelId="outlined-gender"
+                  id="outlined-gender-select"
+                  value={this.state.gender}
+                  label="Gender"
+                  onChange={(e) => this.setState({
+                    ...this.state,
+                    gender: e.target.value
+                  })}
+                >
+                  <MenuItem value="male">Male</MenuItem>
+                  <MenuItem value="female">Female</MenuItem>
+                  <MenuItem value="trans">Trans</MenuItem>
+                </Select>
+              </FormControl>
+              <TextField id="outlined-company" label="Compnay" variant="outlined" sx={{ width: "min(270px, 90vw)" }} 
+                value={this.state.company}
+                onChange={(e) =>
+                  this.setState({
+                    ...this.state,
+                    company: e.target.value
+                  })
+                }
+                required
+              />
+              <TextField id="outlined-role" label="Role" variant="outlined" sx={{ width: "min(270px, 90vw)" }} 
+                value={this.state.role}
+                onChange={(e) =>
+                  this.setState({
+                    ...this.state,
+                    role: e.target.value
                   })
                 }
                 required

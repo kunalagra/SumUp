@@ -115,7 +115,7 @@ class ResetPassword extends Component {
                 )}
                 <Box paddingRight={this.props.isNonMobile ? "100px" : "0"}>
                     <img
-                        src="logo512.png"
+                        src="stm-logo-circle.png"
                         height="300px"
                         alt="profile-pic"
                     />
