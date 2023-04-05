@@ -34,9 +34,10 @@ import CloseIcon from "@mui/icons-material/Close";
 import axios from "axios";
 import EditIcon from '@mui/icons-material/Edit';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { useParams } from "react-router-dom";
 
 
-const Summary = ({ summ, setErrorType }) => {
+const Summary = ({ summ, setErrorType, upind }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [play, setPlay] = React.useState(true);
@@ -284,6 +285,7 @@ const Summary = ({ summ, setErrorType }) => {
             () => {
               setErrorType(2);
               axios.post("http://localhost:8000/update_summary", {
+                ind: upind,
                 date: summ.date,
                 username: localStorage.getItem("email"),
                 newSumm: newSumm
@@ -312,6 +314,7 @@ const Summary = ({ summ, setErrorType }) => {
 const RenderRecentSummary = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const params = useParams();
   const {myTranscript, mySummitem} = useContext(commonContext);
   const [open, setOpen] = useState(false);
   const [errType, setErrorType] = useState(0);
@@ -339,7 +342,7 @@ const RenderRecentSummary = () => {
             Summary!!
           </Typography>
           <Box mt="10px" id="render-summary-cards">
-            {mySummitem.summitem &&  mySummitem.summitem.summary && <Summary summ={mySummitem} setErrorType={setErrorType} />}
+            {mySummitem.summitem &&  mySummitem.summitem.summary && <Summary summ={mySummitem} setErrorType={setErrorType} upind={params.index} />}
           </Box>
         </Box>
 
