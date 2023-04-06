@@ -43,16 +43,17 @@ class UpdatePassword extends Component {
             alertCont: "",
             alertType: "",
             name: localStorage.getItem('name'),
-            age: "",
-            company: "",
-            role: "",
-            gender: "male"
+            age: localStorage.getItem("age"),
+            company: localStorage.getItem("company"),
+            role: localStorage.getItem("role"),
+            gender: localStorage.getItem("gender"),
+            otherRole: localStorage.getItem("otherRole")
         };
     }
 
     handleUpdate = (values) => {
         values.preventDefault();
-        const { password, confirmPassword, name } = this.state;
+        const { password, confirmPassword, name, role, gender, age, company, otherRole } = this.state;
         if(!(/^.{6,}$/.test(password))) {
           this.setState({
             alertCont: "Password should contain atleast 6 characters!!",
@@ -89,7 +90,12 @@ class UpdatePassword extends Component {
         axios.post("http://localhost:8000/update_user", {
             email: localStorage.getItem("email"),
             password: password,
-            name: name
+            name: name,
+            gender: gender,
+            age: age,
+            company: company,
+            role: role,
+            otherRole: otherRole
         })
             .then((res) => {
                 if (res.status === 200) {
@@ -197,7 +203,7 @@ class UpdatePassword extends Component {
                 required
               />
               <FormControl fullWidth>
-                <InputLabel id="outlined-gender">Gender</InputLabel>
+                <InputLabel id="outlined-gender" required>Gender</InputLabel>
                 <Select
                   labelId="outlined-gender"
                   id="outlined-gender-select"
@@ -207,13 +213,14 @@ class UpdatePassword extends Component {
                     ...this.state,
                     gender: e.target.value
                   })}
+                  required
                 >
-                  <MenuItem value="male">Male</MenuItem>
-                  <MenuItem value="female">Female</MenuItem>
-                  <MenuItem value="trans">Trans</MenuItem>
+                  <MenuItem value="Male">Male</MenuItem>
+                  <MenuItem value="Female">Female</MenuItem>
+                  <MenuItem value="Trans">Trans</MenuItem>
                 </Select>
               </FormControl>
-              <TextField id="outlined-company" label="Compnay" variant="outlined" sx={{ width: "min(270px, 90vw)" }} 
+              <TextField id="outlined-company" label="Company" variant="outlined" sx={{ width: "min(270px, 90vw)" }} 
                 value={this.state.company}
                 onChange={(e) =>
                   this.setState({
@@ -223,16 +230,37 @@ class UpdatePassword extends Component {
                 }
                 required
               />
-              <TextField id="outlined-role" label="Role" variant="outlined" sx={{ width: "min(270px, 90vw)" }} 
-                value={this.state.role}
+              <FormControl fullWidth>
+                <InputLabel id="outlined-role" required>Role</InputLabel>
+                <Select
+                  labelId="outlined-role"
+                  id="outlined-role-select"
+                  value={this.state.role}
+                  label="Role"
+                  onChange={(e) => this.setState({
+                    ...this.state,
+                    role: e.target.value
+                  })}
+                  required
+                >
+                  <MenuItem value="Scrum Master">Scrum Master</MenuItem>
+                  <MenuItem value="Team Lead">Team Lead</MenuItem>
+                  <MenuItem value="Moderator">Moderator</MenuItem>
+                  <MenuItem value="Minute-Taker">Minute-Taker</MenuItem>
+                  <MenuItem value="Other">Other</MenuItem>
+                </Select>
+              </FormControl>
+              {this.state.role==="Other" && <TextField id="standard-other" label="Other" variant="standard"
+                sx={{ width: "min(270px, 90vw)" }} 
+                value={this.state.otherRole}
                 onChange={(e) =>
                   this.setState({
                     ...this.state,
-                    role: e.target.value
+                    otherRole: e.target.value
                   })
                 }
                 required
-              />
+              />}
               <FormControl sx={{ width: "min(270px, 90vw)" }} variant="outlined">
                 <InputLabel htmlFor="outlined-password-signup">Password</InputLabel>
                 <OutlinedInput
