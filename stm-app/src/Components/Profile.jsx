@@ -51,22 +51,22 @@ const Profile = () => {
                     <Box m="15px 0" className="person-detail">
                         <Typography variant="h4" style={{color: `${theme.palette.mode==="dark"? "rgba(255, 255, 255, 0.6)": "rgba(0, 0, 0, 0.7)"}`}}>
                             <CalendarMonthIcon style={{fontSize: "1.1em"}} /> Age: </Typography>
-                        <Typography variant="h3" style={{marginLeft: "5px"}}>__</Typography>
+                        <Typography variant="h3" style={{marginLeft: "5px"}}>{localStorage.getItem('age') ? localStorage.getItem('age') : "__"}</Typography>
                     </Box>
                     <Box m="15px 0" className="person-detail">
                         <Typography variant="h4" style={{color: `${theme.palette.mode==="dark"? "rgba(255, 255, 255, 0.6)": "rgba(0, 0, 0, 0.7)"}`}}>
                             <TransgenderIcon style={{fontSize: "1.1em"}} /> Gender: </Typography>
-                        <Typography variant="h3" style={{marginLeft: "5px"}}>__</Typography>
+                        <Typography variant="h3" style={{marginLeft: "5px"}}>{localStorage.getItem('gender') ? localStorage.getItem('gender') : "__"}</Typography>
                     </Box>
                     <Box m="15px 0" className="person-detail">
                         <Typography variant="h4" style={{color: `${theme.palette.mode==="dark"? "rgba(255, 255, 255, 0.6)": "rgba(0, 0, 0, 0.7)"}`}}>
                             <BusinessIcon style={{fontSize: "1.1em"}} /> Company: </Typography>
-                        <Typography variant="h3" style={{marginLeft: "5px"}}>__</Typography>
+                        <Typography variant="h3" style={{marginLeft: "5px"}}>{localStorage.getItem('company') ? localStorage.getItem('company') : "__"}</Typography>
                     </Box>
                     <Box m="15px 0" className="person-detail">
                         <Typography variant="h4" style={{color: `${theme.palette.mode==="dark"? "rgba(255, 255, 255, 0.6)": "rgba(0, 0, 0, 0.7)"}`}}>
                             <PersonSearchIcon style={{fontSize: "1.1em"}} /> Role: </Typography>
-                        <Typography variant="h3" style={{marginLeft: "5px"}}>__</Typography>
+                        <Typography variant="h3" style={{marginLeft: "5px"}}>{localStorage.getItem('role') ? localStorage.getItem('role') : "__"}</Typography>
                     </Box>
                     <Box m="15px 0">
                         <button  className="login__create-container__form-container__form--submit"

@@ -46,7 +46,7 @@ class UpdatePassword extends Component {
             age: "",
             company: "",
             role: "",
-            gender: "male"
+            gender: "Male"
         };
     }
 
@@ -89,10 +89,18 @@ class UpdatePassword extends Component {
         axios.post("http://localhost:8000/update_user", {
             email: localStorage.getItem("email"),
             password: password,
-            name: name
+            name: name,
+            age: this.state.age,
+            company: this.state.company,
+            role: this.state.role,
+            gender: this.state.gender
         })
             .then((res) => {
                 if (res.status === 200) {
+                  localStorage.setItem("age", this.state.age);
+                  localStorage.setItem("company", this.state.company);
+                  localStorage.setItem("role", this.state.role);
+                  localStorage.setItem("gender", this.state.gender)
                     this.setState({
                       alertCont: "Profile Updated!!",
                       alertType: "success",
