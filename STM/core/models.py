@@ -62,6 +62,27 @@ def openai_model(data):
     # print(responses)
     return responses
 
+def openai_model_gpt(data):
+    # print(data)
+    openai.api_key = "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"
+    data = data.split()
+    paras = [' '.join(data[i:i+3000]) for i in range(0, len(data), 3000)]
+    # print(paras)
+    responses = []
+    for i in range(len(paras)):
+        response = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo",
+        messages=[
+            {"role": "user", "content": "summarize the content \n" + paras[i]},
+        ]
+        )
+        print(response)
+        for i in response.choices[0].message.content.split('.'):
+            if i != '':
+                responses.append(i+'.')
+    print(responses)
+    return responses
+
 
     # print(response, type(response))
     # print(response.choices[0].text, type(response.choices[0].text))

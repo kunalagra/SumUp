@@ -62,10 +62,10 @@ def update_user(request):
 		user = User.objects.get(username=username)
 		user.set_password(password)
 		user.first_name = name
-		user.age = data['age']
-		user.gender = data['gender']
-		user.company = data['company']
-		user.role = data['role']
+		user.Age = data['age']
+		user.Gender = data['gender']
+		user.Company = data['company']
+		user.Role = data['role']
 		user.save()
 		return Response({"message":"Password updated", "user":username, "name": user.first_name})
 	
