@@ -70,6 +70,10 @@ class Login extends Component {
           if (res.data.message) {
             localStorage.setItem("name", res.data.name);
             localStorage.setItem("email", res.data.user);
+            localStorage.setItem("age", res.data.age);
+            localStorage.setItem("company", res.data.company);
+            localStorage.setItem("gender",res.data.gender);
+            localStorage.setItem("role", res.data.role);
             // console.log(Cookies.get("csrftoken"))
 
             this.setState({

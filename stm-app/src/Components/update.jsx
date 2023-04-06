@@ -99,10 +99,6 @@ class UpdatePassword extends Component {
         })
             .then((res) => {
                 if (res.status === 200) {
-                  localStorage.setItem("age", this.state.age);
-                  localStorage.setItem("company", this.state.company);
-                  localStorage.setItem("role", this.state.role);
-                  localStorage.setItem("gender", this.state.gender)
                     this.setState({
                       alertCont: "Profile Updated!!",
                       alertType: "success",

@@ -38,7 +38,7 @@ def login_user(request):
 	if user is not None:
 		login(request, user)
 		if request.user.is_authenticated:
-			return Response({"sessionid":django.middleware.csrf.get_token(request), "message":"User logged in", "user":request.user.username, "name":request.user.first_name},status=status.HTTP_200_OK)
+			return Response({"sessionid":django.middleware.csrf.get_token(request), "message":"User logged in", "user":request.user.username, "name":request.user.first_name, "age":request.user.Age, "gender":request.user.Gender, "company":request.user.Company, "role":request.user.Role}, status=status.HTTP_200_OK)
 		else:
 			return Response({"message":False},status=status.HTTP_401_UNAUTHORIZED)
 	else:
