@@ -9,18 +9,33 @@ import json
 import requests
 import uuid
 from transformers import pipeline
-# import whisper
-
+import asyncio
+from EdgeGPT import Chatbot, ConversationStyle
 
 # Create your models here.
 
 summarizer = pipeline("summarization", model="facebook/bart-large-cnn")
 
-def bart_large_cnn(data):
-    # print(data)
-    res = summarizer(data, min_length=100)
-    # print(res)
-    return res[0]['summary_text'].split(".")
+def bingai(data):
+    async def main(data):
+        bot = Chatbot(cookiePath='cookies.json')
+        data = data.split()
+        paras = [' '.join(data[i:i+1500]) for i in range(0, len(data), 1500)]
+        # print((await bot.ask(prompt="Could you provide short and precise takeaways, do not search the web and only use the content from the document. The factual information should be literally from the document. Please also highlight important tasks if there any.  Here is the document:", conversation_style=ConversationStyle.creative, wss_link="wss://sydney.bing.com/sydney/ChatHub"))["item"]["messages"][1]["adaptiveCards"][0]["body"][0]["text"])
+        result = []
+        for para in paras:
+            res = (await bot.ask(prompt="Could you provide short and precise takeaways, do not search the web and only use the content from the document. The factual information should be literally from the document. Please also highlight important tasks if there any.  Here is the document: "+para, conversation_style=ConversationStyle.creative, wss_link="wss://sydney.bing.com/sydney/ChatHub"))["item"]["messages"][1]["adaptiveCards"][0]["body"][0]["text"]
+            result.append(res.replace("-","").replace("\n","").replace("Here are some possible takeaways from the document:",""))
+        await bot.close()
+        return result
+# ["item"]["messages"][1]["adaptiveCards"][0]["body"][0]["text"]
+    return asyncio.run(main(data))
+
+# def bart_large_cnn(data):
+#     # print(data)
+#     res = summarizer(data, min_length=100)
+#     # print(res)
+#     return res[0]['summary_text'].split(".")
 
 def plaraphy_model(data):
     url = 'https://app.plaraphy.com/api/summarizer'

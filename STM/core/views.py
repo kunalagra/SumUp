@@ -360,7 +360,8 @@ def gen_summ(request):
 	if data['model']=='open-ai':
 		data["Model-1"] = models.openai_model(data['para'])
 	else:
-		data["Model-2"] = models.bart_large_cnn(data['para'])
+		data["Model-2"] = models.bingai(data['para'])
+		# data["Model-2"] = models.bart_large_cnn(data['para'])
 		# data["Model-2"] = models.nlp_model(data['para'])
 
 	# print(data.keys(), data["extractive"].keys(), data["abstractive"].keys())
