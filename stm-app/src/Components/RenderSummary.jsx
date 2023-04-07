@@ -443,7 +443,7 @@ const RenderSummary = () => {
     >
       <Box m="40px 0" maxWidth="calc(min(900px, 95%))">
         <Typography variant="h2" textAlign="center">
-          Generated Summary!!
+          Generated Summary
         </Typography>
         <Box mt="10px" id="render-summary-cards">
           <Summary summitem={gen_summary}/>

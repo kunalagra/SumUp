@@ -499,7 +499,7 @@ const RenderRecentSummary = () => {
       >
         <Box m="40px 0" maxWidth="calc(min(900px, 95%))">
           <Typography variant="h2" textAlign="center">
-            Summary!!
+            Summary
           </Typography>
           <Box mt="10px" id="render-summary-cards">
             {mySummitem.summitem &&  mySummitem.summitem.summary && <Summary summ={mySummitem} setErrorType={setErrorType} upind={params.index} />}

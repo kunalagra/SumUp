@@ -35,11 +35,7 @@ def login_user(request):
 	username = data['email']
 	password = data['password']
 	user = authenticate(data, username=username, email=username, password=password)
-	if models.user.objects.filter(username=username).exists():
-		profile = models.user.objects.get(username=username)
-	else:
-		profile = models.user.objects.create(username=username, recent_sum=[],id= models.user.objects.count()+1)
-		profile.save()
+	profile = models.user.objects.get(username=username)
 	age = profile.Age
 	gender = profile.Gender
 	company = profile.Company
@@ -272,6 +268,8 @@ def signup(request):
 	else:
 		user = User.objects.create_user(username=email, password=password, first_name=name, email=email)
 		user.save()
+		profile = models.user.objects.create(username=email, recent_sum=[],id= models.user.objects.count()+1)
+		profile.save()
 		login(request, user)
 		logout(request)
 		return Response({"message":"User created", "user":email, "name": name},status=status.HTTP_200_OK)
@@ -505,15 +503,11 @@ def gen_summ(request):
 		}
 	}
 
-	if models.user.objects.filter(username=user.username).exists():
-		print("User exists")
-		user = models.user.objects.get(username=user.username)
-		user.recent_sum.append(sumdata)
-		user.save()
-	else:
-		print("User does not exist")
-		user = models.user.objects.create(username=user.username, recent_sum=[sumdata],id= models.user.objects.count()+1)
-		user.save()
+	
+	print("User exists")
+	user = models.user.objects.get(username=user.username)
+	user.recent_sum.append(sumdata)
+	user.save()
 	return Response(data,status=status.HTTP_200_OK)
 
 
