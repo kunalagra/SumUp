@@ -77,7 +77,7 @@ const MyTeams = () => {
         setIsAlert(true);
         setAlertCont("Creating team...");
         setAlertType("success");
-        axios.post("http://localhost:8000/create_group", {email: localStorage.getItem("email")} )
+        axios.post("http://localhost:8000/create_group", {email: localStorage.getItem("email"), name: localStorage.getItem("name")})
         .then((res) => {
             if(res.status===200) {
                 setTeamCode(res.group_code);
