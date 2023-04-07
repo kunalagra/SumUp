@@ -235,7 +235,7 @@ class Login extends Component {
                     : "login__welcome-back--inactive"
                 }`}
                 >
-                <div className="login__welcome-back__logo-container">
+                <div className="login__welcome-back__logo-container" onClick={() => this.props.navigate("/")}>
                     <img
                     className="login__welcome-back__logo-container--image"
                     src="stm-logo-circle.png"
@@ -399,7 +399,7 @@ class Login extends Component {
               : "login__login-container--inactive"
           }`}
         >
-          <div className="login__login-container__logo-container">
+          <div className="login__login-container__logo-container" onClick={() => this.props.navigate("/")}>
             <img
               className="login__login-container__logo-container--image"
               src="stm-logo-circle.png"
