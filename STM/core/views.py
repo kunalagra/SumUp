@@ -77,12 +77,12 @@ def update_user(request):
 		user.set_password(password)
 		user.first_name = name
 		user.save()
-		user = models.user.objects.get(username=username)
-		user.Age = data['age']
-		user.Gender = data['gender']
-		user.Company = data['company']
-		user.Role = data['role']
-		user.save()
+		profile = models.user.objects.get(username=username)
+		profile.Age = data['age']
+		profile.Gender = data['gender']
+		profile.Company = data['company']
+		profile.Role = data['role']
+		profile.save()
 		return Response({"message":"Password updated", "user":username, "name": user.first_name})
 	
 	else:
