@@ -324,7 +324,7 @@ const Image = ({ largeImage, title, smallImage }) => {
 
 const data = {
   Header: {
-    title: "STM - QUAD",
+    title: "SUM - UP",
     paragraph: "Summarising Team Meetings",
   },
   About: {

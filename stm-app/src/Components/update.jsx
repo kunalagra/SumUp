@@ -12,7 +12,8 @@ import { Box,
     useTheme,
     TextField,
     Select,
-    MenuItem
+    MenuItem,
+    Typography
  } from "@mui/material";
  import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
@@ -281,6 +282,7 @@ class UpdatePassword extends Component {
                 }
                 required
               />}
+              <Typography style={{marginTop: "15px"}}>Only if you want to update password *</Typography>
               <FormControl sx={{ width: "min(270px, 90vw)" }} variant="outlined">
                 <InputLabel htmlFor="outlined-password-signup">Password</InputLabel>
                 <OutlinedInput

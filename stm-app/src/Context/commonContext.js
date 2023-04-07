@@ -4,8 +4,8 @@ import commonReducer from './commonReducer';
 const commonContext = createContext();
 
 const initialState = {
-    gen_summary: null,
-    para: '',
+    gen_summary: JSON.parse(localStorage.getItem("gen_summary", "[]")),
+    para: localStorage.getItem("para", ""),
     isLoading: false,
     loadCont: "",
     mySummitem: JSON.parse(localStorage.getItem("summary", "{}")),
