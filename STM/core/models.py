@@ -184,6 +184,10 @@ def nlp_model(data):
 class user(models.Model):
     id = models.IntegerField(primary_key=True)
     username = models.CharField(max_length=100)
+    Age = models.IntegerField(blank=True)
+    Gender = models.CharField(max_length=100, blank=True)
+    Role = models.CharField(max_length=100, blank=True)
+    Company = models.CharField(max_length=150, blank=True)
     recent_sum = models.JSONField(default=dict)
 
 class gmail_group(models.Model):
