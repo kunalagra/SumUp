@@ -35,10 +35,24 @@ def login_user(request):
 	username = data['email']
 	password = data['password']
 	user = authenticate(data, username=username, email=username, password=password)
+	if models.user.objects.filter(username=username).exists():
+		profile = models.user.objects.get(username=username)
+	else:
+		profile = models.user.objects.create(username=username, recent_sum=[],id= models.user.objects.count()+1)
+		profile.save()
+	age = profile.Age
+	gender = profile.Gender
+	company = profile.Company
+	role = profile.Role
+	if age == None:
+		age = ""
+		gender = ""
+		company = ""
+		role = ""
 	if user is not None:
 		login(request, user)
 		if request.user.is_authenticated:
-			return Response({"sessionid":django.middleware.csrf.get_token(request), "message":"User logged in", "user":request.user.username, "name":request.user.first_name, "age":request.user.Age, "gender":request.user.Gender, "company":request.user.Company, "role":request.user.Role}, status=status.HTTP_200_OK)
+			return Response({"sessionid":django.middleware.csrf.get_token(request), "message":"User logged in", "user":request.user.username, "name":request.user.first_name, "age":age, "gender": gender, "company":company, "role":role}, status=status.HTTP_200_OK)
 		else:
 			return Response({"message":False},status=status.HTTP_401_UNAUTHORIZED)
 	else:
@@ -62,11 +76,13 @@ def update_user(request):
 		user = User.objects.get(username=username)
 		user.set_password(password)
 		user.first_name = name
-		user.Age = data['age']
-		user.Gender = data['gender']
-		user.Company = data['company']
-		user.Role = data['role']
 		user.save()
+		profile = models.user.objects.get(username=username)
+		profile.Age = data['age']
+		profile.Gender = data['gender']
+		profile.Company = data['company']
+		profile.Role = data['role']
+		profile.save()
 		return Response({"message":"Password updated", "user":username, "name": user.first_name})
 	
 	else:
@@ -120,11 +136,15 @@ def add_members(request):
 		return Response({"message": "Invalid Team Code"}, status=status.HTTP_400_BAD_REQUEST)
 	if models.gmail_group.objects.filter(group_code=code).exists():
 		group = models.gmail_group.objects.get(group_code=code)
+		if group.group_leader == members['email']:
+			return Response({"message":"Leader cannot be added as member"}, status=status.HTTP_226_IM_USED)
 		# append all members to the group
 		if members not in group.group_members:
 			group.group_members.append(members)
-		group.save()
-		return Response({"message":"Members added"}, status=status.HTTP_200_OK)
+			group.save()
+			return Response({"message":"Members added"}, status=status.HTTP_200_OK)
+		else:
+			return Response({"message":"Member already exists"}, status=status.HTTP_202_ACCEPTED)
 	else:
 		return Response({"message":"Group not found"}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -250,6 +270,8 @@ def signup(request):
 		return Response({"message":"User Already Exist"},status=status.HTTP_204_NO_CONTENT)
 	else:
 		user = User.objects.create_user(username=email, password=password, first_name=name, email=email)
+		user.save()
+		user = models.user.objects.create(username=email, recent_sum=[],id= models.user.objects.count()+1)
 		user.save()
 		login(request, user)
 		logout(request)
