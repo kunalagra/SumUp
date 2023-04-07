@@ -272,8 +272,6 @@ def signup(request):
 	else:
 		user = User.objects.create_user(username=email, password=password, first_name=name, email=email)
 		user.save()
-		user = models.user.objects.create(username=email, recent_sum=[],id= models.user.objects.count()+1)
-		user.save()
 		login(request, user)
 		logout(request)
 		return Response({"message":"User created", "user":email, "name": name},status=status.HTTP_200_OK)

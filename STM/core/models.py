@@ -24,8 +24,9 @@ def bingai(data):
         # print((await bot.ask(prompt="share the duration of meeting, tasks and persion assigned to it and summarize it:", conversation_style=ConversationStyle.precise, wss_link="wss://sydney.bing.com/sydney/ChatHub",))["item"]["messages"][1]["adaptiveCards"][0]["body"][0]["text"])
         result = []
         for para in paras:
-            res = (await bot.ask(prompt="For following transcript of team meeting, please find duration, task assignment if any and summarize it: "+para, conversation_style=ConversationStyle.precise, wss_link="wss://sydney.bing.com/sydney/ChatHub"))["item"]["messages"][1]["adaptiveCards"][0]["body"][0]["text"]
+            res = (await bot.ask(prompt="Provide a short and precise takeaways, do not search the web and only use the content from the document. The factual information should be literally from the document. List down important tasks memberwise if there any. The document is: "+para, conversation_style=ConversationStyle.precise, wss_link="wss://sydney.bing.com/sydney/ChatHub"))["item"]["messages"][1]["adaptiveCards"][0]["body"][0]["text"]
             result.append(res.replace("Is there anything else you would like to know?","").replace("The transcript you provided is from a team meeting.","").replace("The duration of the meeting is not mentioned in the transcript.",""))
+            # print(res)
         await bot.close()
         return result
 # ["item"]["messages"][1]["adaptiveCards"][0]["body"][0]["text"]
