@@ -340,13 +340,13 @@ const data = {
   Gallery: [
     {
       title: "Input",
-      largeImage: "img/portfolio/ip.png",
-      smallImage: "img/portfolio/ip.png",
+      largeImage: "img/portfolio/summaryip.jpeg",
+      smallImage: "img/portfolio/summaryip.jpeg",
     },
     {
       title: "Model-1",
-      largeImage: "img/portfolio/Bert2.png",
-      smallImage: "img/portfolio/Bert2.png",
+      largeImage: "img/portfolio/model2.jpeg",
+      smallImage: "img/portfolio/model2.jpeg",
     },
     {
       title: "Model-2",
