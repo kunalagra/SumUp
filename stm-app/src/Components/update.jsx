@@ -45,9 +45,9 @@ class UpdatePassword extends Component {
             name: localStorage.getItem('name'),
             age: localStorage.getItem("age"),
             company: localStorage.getItem("company"),
-            role: localStorage.getItem("role"),
+            role: ["Scrum Master", "Team Lead", "Moderator", "Minute-Taker"].includes(localStorage.getItem("role"))? localStorage.getItem("role") : "Other",
             gender: localStorage.getItem("gender"),
-            otherRole: localStorage.getItem("otherRole")
+            otherRole: ["Scrum Master", "Team Lead", "Moderator", "Minute-Taker"].includes(localStorage.getItem("role"))? "" : localStorage.getItem("role")
         };
     }
 
@@ -252,11 +252,17 @@ class UpdatePassword extends Component {
               {this.state.role==="Other" && <TextField id="standard-other" label="Other" variant="standard"
                 sx={{ width: "min(270px, 90vw)" }} 
                 value={this.state.otherRole}
-                onChange={(e) =>
-                  this.setState({
-                    ...this.state,
-                    otherRole: e.target.value
-                  })
+                onChange={(e) => {
+                    if(localStorage.getItem("otherRole")===undefined) {
+                      localStorage.setItem("otherRole", e.target.value)
+                    }
+                    else {
+                      this.setState({
+                        ...this.state,
+                        otherRole: e.target.value
+                      })
+                    }
+                  }
                 }
                 required
               />}
