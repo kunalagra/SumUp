@@ -333,7 +333,6 @@ const data = {
     Why: [
       "Best summarization without any hassles",
       "Free to use",
-      "Zero latency",
       "Available as an extension",
     ]
   },
@@ -435,7 +434,7 @@ const data = {
     },
     {
       title: "Best summarization models.",
-      text: "We have used OpenAI and Bert models which have highest degree of precision.",
+      text: "We have used various models which have highest degree of precision.",
     },
     {
       title: "Google meet extension for live transcript.",
