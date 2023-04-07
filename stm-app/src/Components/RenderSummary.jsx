@@ -244,16 +244,21 @@ const Summary = ({ summitem }) => {
               }
               ).then((res) => {
                 if(res.data.success){
-                  alert("Mail sent successfully");
+                  setAlertCont("Mail Sent Successfully!!");
+                  setAlertType("success");
+                  setIsAlert(true);
                   setSubject("");
                   setMessage("");
                   handleClose();
                 }
               }).catch((err) => {
-                alert("Error sending mail");
+                setAlertCont("Error Occured!!");
+                setAlertType("danger");
+                setIsAlert(true);
                 console.log(err);
               }
               );
+              setTimeout(() => {setAlertCont(""); setAlertType(""); setIsAlert(false);}, 3000);
             }
           }>Send</button>
           </div>
