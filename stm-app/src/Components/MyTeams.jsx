@@ -97,11 +97,21 @@ const MyTeams = () => {
             email: localStorage.getItem("email")
         }})
         .then((res) => {
+            console.log(res.status)
             setIsAlert(true);
             if(res.status===200) {
                 setAlertCont("Team joined successfully!!");
                 setAlertType("success");
-            } else {
+            } 
+            else if (res.status===202) {
+                setAlertCont("Already a member of this team!!");
+                setAlertType("warning");
+            }
+            else if (res.status===226) {
+                setAlertCont("Leader cannot be added as member!!");
+                setAlertType("warning");
+            }
+            else {
                 setAlertCont("Invalid Team Code!!");
                 setAlertType("danger");
             }

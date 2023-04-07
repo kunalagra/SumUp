@@ -136,11 +136,15 @@ def add_members(request):
 		return Response({"message": "Invalid Team Code"}, status=status.HTTP_400_BAD_REQUEST)
 	if models.gmail_group.objects.filter(group_code=code).exists():
 		group = models.gmail_group.objects.get(group_code=code)
+		if group.group_leader == members['email']:
+			return Response({"message":"Leader cannot be added as member"}, status=status.HTTP_226_IM_USED)
 		# append all members to the group
 		if members not in group.group_members:
 			group.group_members.append(members)
-		group.save()
-		return Response({"message":"Members added"}, status=status.HTTP_200_OK)
+			group.save()
+			return Response({"message":"Members added"}, status=status.HTTP_200_OK)
+		else:
+			return Response({"message":"Member already exists"}, status=status.HTTP_202_ACCEPTED)
 	else:
 		return Response({"message":"Group not found"}, status=status.HTTP_400_BAD_REQUEST)
 
