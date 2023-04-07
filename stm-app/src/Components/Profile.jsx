@@ -12,6 +12,7 @@ import PersonSearchIcon from '@mui/icons-material/PersonSearch';
 import StreamIcon from '@mui/icons-material/Stream';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import axios from "axios";
+import { useState } from "react";
 
 const Profile = () => {
     const theme = useTheme();
@@ -21,6 +22,7 @@ const Profile = () => {
     if (localStorage.length === 0){
         navigate("/login");
     }
+    const [extension, setExtension] = useState(localStorage.getItem('extension') ? localStorage.getItem('extension') : "__");
 
     return (
         <Box mb="100px" id="profile-page">
@@ -74,17 +76,19 @@ const Profile = () => {
                     <Box m="15px 0" className="person-detail">
                         <Typography variant="h4" style={{color: `${theme.palette.mode==="dark"? "rgba(255, 255, 255, 0.6)": "rgba(0, 0, 0, 0.7)"}`}}>
                             <StreamIcon style={{fontSize: "1.1em"}} /> Extension Status: </Typography> 
-                        <Typography variant="h3" style={{marginLeft: "5px"}}>{localStorage.getItem('extension') ? localStorage.getItem('extension') : "__"}</Typography>
+                        <Typography variant="h3" style={{marginLeft: "5px"}}>{extension}</Typography>
                         <IconButton onClick={() => {axios.post("http://127.0.0.1:8000/get_extension", 
                           {
                             username: localStorage.getItem('email')
                           }
                         ).then((res) => {
+                            setExtension(res.data ? "Connected" : "Not Connected");
                             localStorage.setItem('extension', res.data ? "Connected" : "Not Connected");
-                            window.location.reload();
+                            // window.location.reload();
                         }).catch((err) => {
+                            setExtension("Not Connected");
                             localStorage.setItem('extension', "Not Connected");
-                            window.location.reload();
+                            // window.location.reload();
                         })}}
                         style={{
                             marginLeft: "10px",
