@@ -20,12 +20,12 @@ def bingai(data):
     async def main(data):
         bot = Chatbot(cookiePath='cookies.json')
         data = data.split()
-        paras = [' '.join(data[i:i+1500]) for i in range(0, len(data), 1500)]
-        # print((await bot.ask(prompt="Could you provide short and precise takeaways, do not search the web and only use the content from the document. The factual information should be literally from the document. Please also highlight important tasks if there any.  Here is the document:", conversation_style=ConversationStyle.creative, wss_link="wss://sydney.bing.com/sydney/ChatHub"))["item"]["messages"][1]["adaptiveCards"][0]["body"][0]["text"])
+        paras = [' '.join(data[i:i+1800]) for i in range(0, len(data), 1800)]
+        # print((await bot.ask(prompt="share the duration of meeting, tasks and persion assigned to it and summarize it:", conversation_style=ConversationStyle.precise, wss_link="wss://sydney.bing.com/sydney/ChatHub",))["item"]["messages"][1]["adaptiveCards"][0]["body"][0]["text"])
         result = []
         for para in paras:
-            res = (await bot.ask(prompt="Could you provide short and precise takeaways, do not search the web and only use the content from the document. The factual information should be literally from the document. Please also highlight important tasks if there any.  Here is the document: "+para, conversation_style=ConversationStyle.creative, wss_link="wss://sydney.bing.com/sydney/ChatHub"))["item"]["messages"][1]["adaptiveCards"][0]["body"][0]["text"]
-            result.append(res.replace("-","").replace("\n","").replace("Here are some possible takeaways from the document:",""))
+            res = (await bot.ask(prompt="For following transcript of team meeting, please find duration, task assignment if any and summarize it: "+para, conversation_style=ConversationStyle.precise, wss_link="wss://sydney.bing.com/sydney/ChatHub"))["item"]["messages"][1]["adaptiveCards"][0]["body"][0]["text"]
+            result.append(res.replace("Is there anything else you would like to know?",""))
         await bot.close()
         return result
 # ["item"]["messages"][1]["adaptiveCards"][0]["body"][0]["text"]
@@ -189,6 +189,7 @@ class user(models.Model):
     Role = models.CharField(max_length=100, blank=True)
     Company = models.CharField(max_length=150, blank=True)
     recent_sum = models.JSONField(default=dict)
+    extension_status = models.BooleanField(default=False)
 
 class gmail_group(models.Model):
     id = models.UUIDField(
