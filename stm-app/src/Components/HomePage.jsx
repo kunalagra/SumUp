@@ -388,7 +388,7 @@ const data = {
     },
     {
       img: "img/testimonials/03.jpg",
-      text: '"Summarization models like BERT and OPEN AI are very helpful to get a birds eye view of meeting"',
+      text: '"Summarization models are very helpful to get a birds eye view of meeting"',
       name: "Joseph Thomas",
     },
     {
@@ -438,7 +438,7 @@ const data = {
       text: "We have used OpenAI and Bert models which have highest degree of precision.",
     },
     {
-      title: "Extension for Google meet to create transcript.",
+      title: "Google meet extension for live transcript.",
       text: "Our extension can also download the transcript of a meeting on all platforms like Microsoft Teams, Zoom,Google Meet.",
     },
     {
