@@ -405,17 +405,27 @@ const Summary = ({ summ, setErrorType, upind }) => {
               }
               ).then((res) => {
                 if(res.data.message === "Mail sent"){
-                  alert("Mail sent successfully");
+                  setAlertCont("Mail Sent Successfully!!");
+                  setAlertType("success");
+                  setIsAlert(true);
                   handleClose();
+                  setTimeout(() => {setAlertCont(""); setAlertType(""); setIsAlert(false);}, 3000);
                 }
                 else{
-                  alert("Error sending mail");
+                  setAlertCont("Error Occured!!");
+                  setAlertType("danger");
+                  setIsAlert(true);
+                  setTimeout(() => {setAlertCont(""); setAlertType(""); setIsAlert(false);}, 3000);
                 }
               }).catch((err) => {
-                alert("Error sending mail");
+                setAlertCont("Error Occured!!");
+                setAlertType("danger");
+                setIsAlert(true);
                 console.log(err);
+                setTimeout(() => {setAlertCont(""); setAlertType(""); setIsAlert(false);}, 3000);
               }
               );
+              setTimeout(() => {setAlertCont(""); setAlertType(""); setIsAlert(false);}, 3000);
             }
           }>Send</button>
           </div>

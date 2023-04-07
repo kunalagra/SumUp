@@ -27,4 +27,6 @@ urlpatterns = [
     path('rename_sumtitle', views.rename_sumtitle, name='rename_sumtitle'),
     path('update_summary', views.update_summary, name='update_summary'),
     path('delete_summary', views.delete_summary, name='delete_summary'),
+    path('save_extension', views.save_extension_status, name='save_extension_status'),
+    path('get_extension', views.get_extension_status, name='get_extension_status'),
 ]

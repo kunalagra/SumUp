@@ -54,7 +54,9 @@ class UpdatePassword extends Component {
     handleUpdate = (values) => {
         values.preventDefault();
         const { password, confirmPassword, name, role, gender, age, company, otherRole } = this.state;
-        if(!(/^.{6,}$/.test(password))) {
+        if (password === "" && confirmPassword === "") {}
+        
+        else if(!(/^.{6,}$/.test(password))) {
           this.setState({
             alertCont: "Password should contain atleast 6 characters!!",
             alertType: "danger",
@@ -71,7 +73,7 @@ class UpdatePassword extends Component {
           return ;
         }
 
-        if (password !== confirmPassword) {
+        else if (password !== confirmPassword) {
             this.setState({
             alertCont: "Passwords do not match!!",
             alertType: "danger",
@@ -98,6 +100,11 @@ class UpdatePassword extends Component {
         })
             .then((res) => {
                 if (res.status === 200) {
+                  localStorage.setItem("age", age);
+                  localStorage.setItem("company", company);
+                  localStorage.setItem("role", role==="Other" ? otherRole : role);
+                  localStorage.setItem("gender",gender);
+                  localStorage.setItem("name", name);
                     this.setState({
                       alertCont: "Profile Updated!!",
                       alertType: "success",
@@ -112,9 +119,17 @@ class UpdatePassword extends Component {
                       })
                     }, 2000);
                     
+                  if (password !== "") {
                     setTimeout(() => {
+                      localStorage.clear();
                       this.props.navigate("/login");
                     }, 2000);
+                  }
+                  else{
+                    setTimeout(() => {
+                      this.props.navigate("/user");
+                    }, 2000);
+                  }
 
                 }
             }
@@ -299,7 +314,6 @@ class UpdatePassword extends Component {
                       password: e.target.value,
                     })
                   }
-                  required
                 />
               </FormControl>
                 <FormControl sx={{ width: "min(270px, 90vw)" }} variant="outlined">
@@ -334,8 +348,7 @@ class UpdatePassword extends Component {
                         email: this.state.email,
                         confirmPassword: e.target.value,
                     })
-                    } 
-                    required
+                    }
                 />
                 <FormHelperText style={{fontSize:"0.8rem"}}>Password should contain atleast 6 characters</FormHelperText>
             </FormControl>

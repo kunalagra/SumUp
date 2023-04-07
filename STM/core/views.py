@@ -74,7 +74,8 @@ def update_user(request):
 	name = data['name']
 	if User.objects.filter(username=username).exists():
 		user = User.objects.get(username=username)
-		user.set_password(password)
+		if password != "":
+			user.set_password(password)
 		user.first_name = name
 		user.save()
 		profile = models.user.objects.get(username=username)
@@ -270,8 +271,6 @@ def signup(request):
 		return Response({"message":"User Already Exist"},status=status.HTTP_204_NO_CONTENT)
 	else:
 		user = User.objects.create_user(username=email, password=password, first_name=name, email=email)
-		user.save()
-		user = models.user.objects.create(username=email, recent_sum=[],id= models.user.objects.count()+1)
 		user.save()
 		login(request, user)
 		logout(request)
@@ -545,3 +544,23 @@ def delete_summary(request):
 	user.save()
 	return Response(status=status.HTTP_200_OK)
 
+@api_view(['POST'])
+def save_extension_status(request):
+	data = request.POST.dict()
+	session_key = data["sessionid"]
+	session = Session.objects.get(session_key=session_key)
+	uid = session.get_decoded().get('_auth_user_id')
+	email = User.objects.get(pk=uid)
+	user = models.user.objects.get(username=email.username)
+	user.extension_status = True
+	user.save()
+	return Response(status=status.HTTP_200_OK)
+
+@api_view(['POST'])
+def get_extension_status(request):
+	data = json.loads(request.body)
+	if models.user.objects.filter(username=data["username"]).exists():
+		user = models.user.objects.get(username=data["username"])
+		return Response(data=user.extension_status, status=status.HTTP_200_OK)
+	else:
+		return Response(data=False, status=status.HTTP_401_UNAUTHORIZED)
