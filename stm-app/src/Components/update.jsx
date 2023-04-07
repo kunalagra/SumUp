@@ -94,8 +94,7 @@ class UpdatePassword extends Component {
             gender: gender,
             age: age,
             company: company,
-            role: role,
-            otherRole: otherRole
+            role: role==="Other" ? otherRole : role
         })
             .then((res) => {
                 if (res.status === 200) {
