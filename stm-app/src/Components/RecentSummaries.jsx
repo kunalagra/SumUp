@@ -48,6 +48,7 @@ const RecentSummaries = () => {
     const handleSummitem = (summ, index) => {
         setSummitem(summ);
         setTranscript(summ.transcript);
+        // console.log(summ);
         if(isNonMobile) {
             setSumm(summ);
             setInd(index);

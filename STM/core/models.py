@@ -77,6 +77,31 @@ def openai_model(data):
     # print(responses)
     return responses
 
+def openai_model_short_response(data):
+    # print(data)
+    openai.api_key = "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"
+    data = data.split()
+    paras = [' '.join(data[i:i+3000]) for i in range(0, len(data), 3000)]
+    # print(paras)
+    responses = []
+    for i in range(len(paras)):
+        response = openai.Completion.create(
+        model="text-davinci-003",
+        prompt=f"Summarize the following meeting in bullet points: {paras[i]}",
+        temperature=0.7,
+        max_tokens=256,
+        top_p=1,
+        frequency_penalty=0,
+        presence_penalty=0
+        )
+        for i in response.choices[0].text.split('\n')[2:]:
+            if i[:2] == '10':
+                responses.append(i[3:].strip() if i[2:].strip()[-1] == '.' else i[2:].strip() + '.')
+            elif i[2:].strip() != "":
+                responses.append(i[2:].strip() if i[2:].strip()[-1] == '.' else i[2:].strip() + '.')
+    # print(responses)
+    return responses
+
 def openai_model_gpt(data):
     # print(data)
     openai.api_key = "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"

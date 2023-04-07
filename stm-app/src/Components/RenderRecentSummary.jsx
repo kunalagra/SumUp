@@ -49,6 +49,8 @@ const Summary = ({ summ, setErrorType, upind }) => {
   const [isMore, setIsMore] = useState(false);
   
   const summitem_summary = summ.summitem.summary.join("\n");
+  const highlights = summ.summitem.highlights;
+  const totalSummary = useState(highlights? `The Duration of this meeting: ${summ.summitem.duration} (mm:ss)\n${highlights["follow-ups"].length > 0? "Follow-ups\n" + highlights["follow-ups"].join("\n") : ""}\n${highlights["actions"].length > 0? "Actions\n" + highlights["actions"].join("\n") : ""}\n${highlights["importants"].length > 0? "Importants\n" + highlights["importants"].join("\n") : ""}\n\nSummary\n${summitem_summary}` : summitem_summary)
   const [message, setMessage] = useState(summitem_summary);
   const [subject, setSubject] = useState(summ.title);
   const [open, setOpen] = useState(false);
@@ -72,7 +74,7 @@ const Summary = ({ summ, setErrorType, upind }) => {
     const voices = window.speechSynthesis.getVoices();
     const voice = voices[4];
     const synth = window.speechSynthesis;
-    const utterThis = new SpeechSynthesisUtterance(summ.summitem.summary.join(" "));
+    const utterThis = new SpeechSynthesisUtterance(totalSummary);
     utterThis.voice = voice;
     synth.speak(utterThis);
     utterThis.onend = () => {
@@ -89,39 +91,127 @@ const Summary = ({ summ, setErrorType, upind }) => {
 
   const handleDownloadPdf = async () => {
     // const input = summaryPrintRef.current;
-    // convert html to pdf with poroper styling and fonts
+    // convert html to pdf with proper styling and fonts
     const pdf = new jsPDF("p", "pt", "a4");
-    // pdf.set
-    pdf.setFont("Roboto");
+    pdf.setFont("Roboto", "bold");
     pdf.setFontSize(20);
     pdf.setTextColor(0, 0, 0);
-    // align text to center
     pdf.text(70, 40, `\t\t\t\t${summ.title? summ.title : "Meeting Summary"}`);
-    // add line break
     pdf.line(40, 50, 560, 50);
     pdf.setFontSize(15);
     pdf.setTextColor(0, 0, 0);
 
     // text wrap for summary
     // if page is full then add new page and continue writing
-    let y = 100;
-    const summary = summ.summitem.summary.map((item) => `•  ${item}\n`);
-    const summaryText = pdf.splitTextToSize(summary.join("\n\n"), 500);
-    for (let i = 0; i < summaryText.length; i++) {
-      if(summaryText[i]!=="") {
-        if (y > 780) {
-          pdf.addPage();
-          y = 40;
-        }
-        pdf.text(40, y, summaryText[i]);
+    if(highlights) {
+      let y = 100;
+      pdf.setFont("Roboto", 'normal').setFontSize(16);
+      pdf.text(40, y, `Duration of this meeting: ${summ.summitem.duration} (mm:ss)`);
+      pdf.line(40, y+5, 200, y+5);
+      y += 40;
+      pdf.setFont("Roboto", 'bold').setFontSize(20);
+      if(highlights["actions"].length!==0) {
+        const highlight_actions = highlights["actions"].map((item) => `•  ${item}`);
+        var highlightsText = pdf.splitTextToSize(highlight_actions.join("\n\n"), 500);
+        pdf.setFont("Roboto", 'bold').setFontSize(17);
+        pdf.text(40, y, "Actions");
         y += 20;
+        pdf.setFont("Roboto", 'normal').setFontSize(15);
+        for (let i = 0; i < highlightsText.length; i++) {
+          if(highlightsText[i]!=="") {
+            if (y > 780) {
+              pdf.addPage();
+              y = 60;
+            }
+            pdf.text(60, y, highlightsText[i]);
+            y += 20;
+          }
+        }
+        y += 10;
+      }
+
+      if (highlights["follow-ups"].length!==0) {
+        const highlight_followups = highlights["follow-ups"].map((item) => `•  ${item}`);
+        highlightsText = pdf.splitTextToSize(highlight_followups.join("\n\n"), 500);
+        pdf.setFont("Roboto", 'bold').setFontSize(17);
+        pdf.text(40, y, "Follow-ups");
+        y += 20;
+        pdf.setFont("Roboto", 'normal').setFontSize(15);
+        for (let i = 0; i < highlightsText.length; i++) {
+          if(highlightsText[i]!=="") {
+            if (y > 780) {
+              pdf.addPage();
+              y = 60;
+            }
+            pdf.text(60, y, highlightsText[i]);
+            y += 20;
+          }
+        }
+        y += 10;
+      }
+      
+      if (highlights["importants"].length!==0) {
+        const highlight_imps = highlights["importants"].map((item) => `•  ${item}`);
+        highlightsText = pdf.splitTextToSize(highlight_imps.join("\n\n"), 500);
+        pdf.setFont("Roboto", 'bold').setFontSize(17);
+        pdf.text(40, y, "Importants");
+        y += 20;
+        pdf.setFont("Roboto", 'normal').setFontSize(15);
+        for (let i = 0; i < highlightsText.length; i++) {
+          if(highlightsText[i]!=="") {
+            if (y > 780) {
+              pdf.addPage();
+              y = 60;
+            }
+            pdf.text(60, y, highlightsText[i]);
+            y += 20;
+          }
+        }
+        y += 20;
+      }
+
+      const summary = summ.summitem.summary.map((item) => `•  ${item}`);
+      const summaryText = pdf.splitTextToSize(summary.join("\n\n"), 500);
+      pdf.setFont("Roboto", 'bold').setFontSize(20);
+      pdf.text(40, y, "Summary");
+      pdf.line(40, y+5, 125, y+5);
+      y += 25
+      pdf.setFont("Roboto", 'normal').setFontSize(15);
+      for (let i = 0; i < summaryText.length; i++) {
+        if(summaryText[i]!=="") {
+          if (y > 780) {
+            pdf.addPage();
+            y = 60;
+          }
+          pdf.text(40, y, summaryText[i]);
+          y += 20;
+        }
+      }
+    } else {
+      let y = 100;
+      const summary = summ.summitem.summary.map((item) => `•  ${item}\n`);
+      const summaryText = pdf.splitTextToSize(summary.join("\n\n"), 500);
+      pdf.setFont("Roboto", 'bold').setFontSize(20);
+      pdf.text(40, y, "Summary");
+      pdf.line(40, y, 125, y);
+      y += 25
+      for (let i = 0; i < summaryText.length; i++) {
+        if(summaryText[i]!=="") {
+          if (y > 780) {
+            pdf.addPage();
+            y = 40;
+          }
+          pdf.text(40, y, summaryText[i]);
+          y += 20;
+        }
       }
     }
 
+
     // Adding watermark 
+    pdf.setFontSize(13);
     for (let i = 1; i <= pdf.internal.getNumberOfPages(); i++) {
       pdf.setPage(i);
-      pdf.setFontSize(13);
       pdf.setTextColor(150);
       pdf.addImage(imageData, 'PNG', (pdf.internal.pageSize.width)/2 - 150, (pdf.internal.pageSize.height)/2 - 150, 300, 300);
       pdf.text(50, pdf.internal.pageSize.height - 20, `Generated by Sum-Up on ${summ.date}`);
@@ -219,6 +309,64 @@ const Summary = ({ summ, setErrorType, upind }) => {
           }
         />
         <CardContent>
+          { highlights && (
+            <>
+              <List className="summary-list">
+                <ListItem disablePadding>
+                    <ListItemIcon className="summary-list-icon" style={{color: `${colors.primary[700]}`}}>
+                      <LabelIcon />
+                    </ListItemIcon>
+                    <ListItemText  className="summary-list-text">{`The Duration of this meeting: ${summ.summitem.duration} (mm:ss)`}</ListItemText>
+                </ListItem>
+              </List>
+              {highlights["actions"].length > 0 && (
+                <>
+                  <Typography style={{color: `${colors.primary[700]}`, fontWeight: "bold", fontSize: "1.2em", textAlign: "center"}}>Actions</Typography>
+                  <List className="summary-list">
+                    {highlights["actions"].map((item, index) => (
+                      <ListItem disablePadding key={index}>
+                          <ListItemIcon className="summary-list-icon" style={{color: `${colors.primary[700]}`}}>
+                            <LabelIcon />
+                          </ListItemIcon>
+                          <ListItemText  className="summary-list-text">{item}</ListItemText>
+                      </ListItem>
+                    ))}
+                  </List>
+                </>
+              )}
+              {highlights["follow-ups"].length > 0 && (
+                <>
+                <Typography style={{color: `${colors.primary[700]}`, fontWeight: "bold", fontSize: "1.2em", textAlign: "center"}}>Follow-ups</Typography>
+                <List className="summary-list">
+                  {highlights["follow-ups"].map((item, index) => (
+                    <ListItem disablePadding key={index}>
+                        <ListItemIcon className="summary-list-icon" style={{color: `${colors.primary[700]}`}}>
+                          <LabelIcon />
+                        </ListItemIcon>
+                        <ListItemText  className="summary-list-text">{item}</ListItemText>
+                    </ListItem>
+                  ))}
+                </List>
+                </>
+              )}
+              {highlights["importants"].length > 0 && (
+                <>
+                  <Typography style={{color: `${colors.primary[700]}`, fontWeight: "bold", fontSize: "1.2em", textAlign: "center"}}>Importants</Typography>
+                  <List className="summary-list">
+                    {highlights["importants"].map((item, index) => (
+                      <ListItem disablePadding key={index}>
+                          <ListItemIcon className="summary-list-icon" style={{color: `${colors.primary[700]}`}}>
+                            <LabelIcon />
+                          </ListItemIcon>
+                          <ListItemText  className="summary-list-text">{item}</ListItemText>
+                      </ListItem>
+                    ))}
+                  </List>
+                </>
+              )}
+            </>
+          )}
+          <Typography style={{color: `${colors.primary[700]}`, fontWeight: "bold", fontSize: "1.3em", marginTop: "10px", textAlign: "center", textDecoration: "underline"}}>Summary</Typography>
           <List className="summary-list">
             {summ.summitem.summary.map((item, index) => (
               <ListItem disablePadding key={index}>

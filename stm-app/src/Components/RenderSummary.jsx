@@ -48,6 +48,8 @@ const Summary = ({ summitem }) => {
   const isSmallMobile = useMediaQuery("(max-width: 480px)")
   const [isMore, setIsMore] = useState(false);
 
+  const highlights = summitem.highlights;
+  const totalSummary = useState(highlights? `The Duration of this meeting: ${summitem.duration} (mm:ss) \n\nFollow-ups\n${summitem.highlights["follow-ups"].join("\n")}\nActions\n${summitem.highlights["actions"].join("\n")}\nImportants\n${summitem.highlights["importants"].join("\n")}\n\nSummary\n${summitem.summary.join("\n")}` : summitem.summary.join("\n"))
   const [message, setMessage] = useState(summitem.summary.join("\n"));
   const [subject, setSubject] = useState("Meeting Summary");
   const [open, setOpen] = useState(false);
@@ -64,7 +66,7 @@ const Summary = ({ summitem }) => {
     const voices = window.speechSynthesis.getVoices();
     const voice = voices[4];
     const synth = window.speechSynthesis;
-    const utterThis = new SpeechSynthesisUtterance(summitem.summary.join(" "));
+    const utterThis = new SpeechSynthesisUtterance(totalSummary);
     utterThis.voice = voice;
     synth.speak(utterThis);
     // after speech is done
@@ -96,26 +98,117 @@ const Summary = ({ summitem }) => {
 
     // text wrap for summary if it exceeds 500px width of pdf page
     // if page is full then add new page
-    let y = 100;
-    const summary = summitem.summary.map((item) => `•  ${item}`);
-    const summaryText = pdf.splitTextToSize(summary.join("\n\n"), 500);
-    for (let i = 0; i < summaryText.length; i++) {
-      if(summaryText[i]!=="") {
-        if (y > 800) {
-          pdf.addPage();
-          y = 40;
-        }
-        pdf.text(40, y, summaryText[i]);
+    if(highlights) {
+      let y = 100;
+      pdf.setFont("Roboto", 'normal').setFontSize(16);
+      pdf.text(40, y, `Duration of this meeting: ${summitem.duration} (mm:ss)`);
+      pdf.line(40, y+5, 200, y+5);
+      y += 40;
+      pdf.setFont("Roboto", 'bold').setFontSize(20);
+      if(highlights["actions"].length!==0) {
+        const highlight_actions = highlights["actions"].map((item) => `•  ${item}`);
+        var highlightsText = pdf.splitTextToSize(highlight_actions.join("\n\n"), 500);
+        pdf.setFont("Roboto", 'bold').setFontSize(17);
+        pdf.text(40, y, "Actions");
         y += 20;
+        pdf.setFont("Roboto", 'normal').setFontSize(15);
+        for (let i = 0; i < highlightsText.length; i++) {
+          if(highlightsText[i]!=="") {
+            if (y > 780) {
+              pdf.addPage();
+              y = 60;
+            }
+            pdf.text(60, y, highlightsText[i]);
+            y += 20;
+          }
+        }
+        y += 10;
+      }
+
+      if (highlights["follow-ups"].length!==0) {
+        const highlight_followups = highlights["follow-ups"].map((item) => `•  ${item}`);
+        highlightsText = pdf.splitTextToSize(highlight_followups.join("\n\n"), 500);
+        pdf.setFont("Roboto", 'bold').setFontSize(17);
+        pdf.text(40, y, "Follow-ups");
+        y += 20;
+        pdf.setFont("Roboto", 'normal').setFontSize(15);
+        for (let i = 0; i < highlightsText.length; i++) {
+          if(highlightsText[i]!=="") {
+            if (y > 780) {
+              pdf.addPage();
+              y = 60;
+            }
+            pdf.text(60, y, highlightsText[i]);
+            y += 20;
+          }
+        }
+        y += 10;
+      }
+      
+      if (highlights["importants"].length!==0) {
+        const highlight_imps = highlights["importants"].map((item) => `•  ${item}`);
+        highlightsText = pdf.splitTextToSize(highlight_imps.join("\n\n"), 500);
+        pdf.setFont("Roboto", 'bold').setFontSize(17);
+        pdf.text(40, y, "Importants");
+        y += 20;
+        pdf.setFont("Roboto", 'normal').setFontSize(15);
+        for (let i = 0; i < highlightsText.length; i++) {
+          if(highlightsText[i]!=="") {
+            if (y > 780) {
+              pdf.addPage();
+              y = 60;
+            }
+            pdf.text(60, y, highlightsText[i]);
+            y += 20;
+          }
+        }
+        y += 20;
+      }
+
+      const summary = summitem.summary.map((item) => `•  ${item}`);
+      const summaryText = pdf.splitTextToSize(summary.join("\n\n"), 500);
+      pdf.setFont("Roboto", 'bold').setFontSize(20);
+      pdf.text(40, y, "Summary");
+      pdf.line(40, y+5, 125, y+5);
+      y += 25
+      pdf.setFont("Roboto", 'normal').setFontSize(15);
+      for (let i = 0; i < summaryText.length; i++) {
+        if(summaryText[i]!=="") {
+          if (y > 780) {
+            pdf.addPage();
+            y = 60;
+          }
+          pdf.text(40, y, summaryText[i]);
+          y += 20;
+        }
+      }
+    } else {
+      let y = 100;
+      const summary = summitem.summary.map((item) => `•  ${item}\n`);
+      const summaryText = pdf.splitTextToSize(summary.join("\n\n"), 500);
+      pdf.setFont("Roboto", 'bold').setFontSize(20);
+      pdf.text(40, y, "Summary");
+      pdf.line(40, y, 125, y);
+      y += 25
+      for (let i = 0; i < summaryText.length; i++) {
+        if(summaryText[i]!=="") {
+          if (y > 780) {
+            pdf.addPage();
+            y = 40;
+          }
+          pdf.text(40, y, summaryText[i]);
+          y += 20;
+        }
       }
     }
     
     // Adding watermark 
     for (let i = 1; i <= pdf.internal.getNumberOfPages(); i++) {
       pdf.setPage(i);
+      pdf.setFontSize(13);
       pdf.setTextColor(150);
       pdf.addImage(imageData, 'PNG', (pdf.internal.pageSize.width)/2 - 150, (pdf.internal.pageSize.height)/2 - 150, 300, 300);
-      pdf.text(50, pdf.internal.pageSize.height - 30, "Generated by Sum-Up");
+      pdf.text(50, pdf.internal.pageSize.height - 20, "Generated by Sum-Up");
     }
 
     pdf.save("sum-up-summary.pdf");
@@ -210,6 +303,64 @@ const Summary = ({ summitem }) => {
           }
         />
         <CardContent>
+        { highlights && (
+            <>
+              <List className="summary-list">
+                <ListItem disablePadding>
+                    <ListItemIcon className="summary-list-icon" style={{color: `${colors.primary[700]}`}}>
+                      <LabelIcon />
+                    </ListItemIcon>
+                    <ListItemText  className="summary-list-text">{`The Duration of this meeting: ${summitem.duration} (mm:ss)`}</ListItemText>
+                </ListItem>
+              </List>
+              {highlights["actions"].length > 0 && (
+                <>
+                  <Typography style={{color: `${colors.primary[700]}`, fontWeight: "bold", fontSize: "1.2em", textAlign: "center"}}>Actions</Typography>
+                  <List className="summary-list">
+                    {highlights["actions"].map((item, index) => (
+                      <ListItem disablePadding key={index}>
+                          <ListItemIcon className="summary-list-icon" style={{color: `${colors.primary[700]}`}}>
+                            <LabelIcon />
+                          </ListItemIcon>
+                          <ListItemText  className="summary-list-text">{item}</ListItemText>
+                      </ListItem>
+                    ))}
+                  </List>
+                </>
+              )}
+              {highlights["follow-ups"].length > 0 && (
+                <>
+                <Typography style={{color: `${colors.primary[700]}`, fontWeight: "bold", fontSize: "1.2em", textAlign: "center"}}>Follow-ups</Typography>
+                <List className="summary-list">
+                  {highlights["follow-ups"].map((item, index) => (
+                    <ListItem disablePadding key={index}>
+                        <ListItemIcon className="summary-list-icon" style={{color: `${colors.primary[700]}`}}>
+                          <LabelIcon />
+                        </ListItemIcon>
+                        <ListItemText  className="summary-list-text">{item}</ListItemText>
+                    </ListItem>
+                  ))}
+                </List>
+                </>
+              )}
+              {highlights["importants"].length > 0 && (
+                <>
+                  <Typography style={{color: `${colors.primary[700]}`, fontWeight: "bold", fontSize: "1.2em", textAlign: "center"}}>Importants</Typography>
+                  <List className="summary-list">
+                    {highlights["importants"].map((item, index) => (
+                      <ListItem disablePadding key={index}>
+                          <ListItemIcon className="summary-list-icon" style={{color: `${colors.primary[700]}`}}>
+                            <LabelIcon />
+                          </ListItemIcon>
+                          <ListItemText  className="summary-list-text">{item}</ListItemText>
+                      </ListItem>
+                    ))}
+                  </List>
+                </>
+              )}
+            </>
+          )}
+          <Typography style={{color: `${colors.primary[700]}`, fontWeight: "bold", fontSize: "1.3em", marginTop: "10px", textAlign: "center", textDecoration: "underline"}}>Summary</Typography>
           <List className="summary-list">
             {summitem.summary.map((item, index) => (
               <ListItem disablePadding key={index}>

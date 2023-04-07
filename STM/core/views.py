@@ -295,11 +295,94 @@ def gen_summ(request):
 			if ext=="docx":
 				doc = Document(f)
 				paras = doc.paragraphs
-				content = ""
-				for i in range(8,len(paras),3):
-					p = paras[i+1].text.replace("’","'").replace("‘","'").replace('“','"').replace('”','"').replace("…",".")
-					content += paras[i].text.split(" - ")[0] + ": " + p + "\n"
-				data["para"] = content
+				if paras[0].text[-21:]=="(India Standard Time)":
+					i = 1
+					N = len(paras)
+					highlights = {"actions": "", "follow-ups": "", "importants": ""}
+					transcript = ""
+					isTimestamped = True
+					if paras[i].text=="Highlights":
+						i += 1
+						if paras[i].text=="Follow up:":
+							i += 1
+							if "):" not in paras[i].text:
+								isTimestamped = False
+							while paras[i].text not in ["Action:", "Important:", "Transcripts"]:
+								if paras[i].text.strip()=="": 
+									i += 1
+									continue
+								if isTimestamped:
+									name, cont = paras[i].text.split("):")[:2]
+									highlights["follow-ups"] += name.split("(")[0] + " said " + cont + ". "
+								else:
+									name, cont = paras[i].text.split(":")[:2]
+									highlights["follow-ups"] += name + " said " + cont + ". "
+								i += 1
+
+						if paras[i].text=="Action:":
+							i += 1
+							if isTimestamped:
+								if "):" not in paras[i].text:
+									isTimestamped = False
+							while paras[i].text not in ["Important:", "Transcripts"]:
+								if paras[i].text.strip()=="": 
+									i += 1
+									continue
+								if isTimestamped:
+									name, cont = paras[i].text.split("):")[:2]
+									highlights["actions"] += name.split("(")[0] + " said " + cont + ". "
+								else:
+									name, cont = paras[i].text.split(":")[:2]
+									highlights["actions"] += name + " said " + cont + ". "
+								i += 1
+
+						if paras[i].text=="Important:":
+							i += 1
+							if isTimestamped:
+								if "):" not in paras[i].text:
+									isTimestamped = False
+							while paras[i].text!="Transcripts":
+								if paras[i].text.strip()=="": 
+									i += 1
+									continue
+								if isTimestamped:
+									name, cont = paras[i].text.split("):")[:2]
+									highlights["importants"] += name.split("(")[0] + " said " + cont + ". "
+								else:
+									name, cont = paras[i].text.split(":")[:2]
+									highlights["importants"] += name + " said " + cont + ". "
+								i += 1
+					i += 1
+					if isTimestamped:
+						if "):" not in paras[i].text:
+							isTimestamped = False
+					while i < N:
+						if paras[i].text.strip()=="": 
+							i += 1
+							continue
+						temp = paras[i].text.split("):" if isTimestamped else ":")
+						if temp[1].strip()=="":
+							transcript += temp[0] + " said " + paras[i+1].text + ". "
+							i += 2
+						else:
+							transcript += temp[0].split("(")[0] + " said " + temp[1] + ". " if isTimestamped else temp[0] + " said " + temp[1] + ". "
+						i += 1
+					
+					if highlights: data["highlights"] = highlights
+					data["para"] = transcript
+					if isTimestamped: 
+						i -= 1
+						while i >= 0 and paras[i].text.strip()=="":
+							i -= 1
+						lastTime = paras[i].text.split("):")[0].split("(")[1]
+						data["duration"] = lastTime
+				
+				else:
+					content = ""
+					for i in range(8,len(paras),3):
+						p = paras[i+1].text.replace("’","'").replace("‘","'").replace('“','"').replace('”','"').replace("…",".")
+						content += paras[i].text.split(" - ")[0] + ": " + p + "\n"
+					data["para"] = content
 			elif ext=="txt":
 				data["para"] = f.read().decode("utf-8")
 			elif ext=="pdf":
@@ -381,8 +464,16 @@ def gen_summ(request):
 
 	if data['model']=='open-ai':
 		data["Model-1"] = models.openai_model(data['para'])
+		if "highlights" in data:
+			if data["highlights"]["actions"]: data["highlights"]["actions"] = models.openai_model_short_response(data["highlights"]["actions"])
+			if data["highlights"]["follow-ups"]: data["highlights"]["follow-ups"] = models.openai_model_short_response(data["highlights"]["follow-ups"])
+			if data["highlights"]["importants"]: data["highlights"]["importants"] = models.openai_model_short_response(data["highlights"]["importants"])
 	else:
 		data["Model-2"] = models.bingai(data['para'])
+		if "highlights" in data:
+			if data["highlights"]["actions"]: data["highlights"]["actions"] = models.openai_model_short_response(data["highlights"]["actions"])
+			if data["highlights"]["follow-ups"]: data["highlights"]["follow-ups"] = models.openai_model_short_response(data["highlights"]["follow-ups"])
+			if data["highlights"]["importants"]: data["highlights"]["importants"] = models.openai_model_short_response(data["highlights"]["importants"])
 		# data["Model-2"] = models.bart_large_cnn(data['para'])
 		# data["Model-2"] = models.nlp_model(data['para'])
 
@@ -403,9 +494,15 @@ def gen_summ(request):
 		"date": d.strftime("%d-%m-%Y")+ "/" + d.strftime("%H:%M:%S"),
 		"transcript": data['para'],
 		"summitem": {
-          "title": "Model-1" if data['model']=="open-ai" else "Model-2",
-          "summary": data['Model-1'] if data['model']=="open-ai" else data['Model-2'],
-          "type": "Summary generated by "+ ("Model-1" if data['model']=="open-ai" else "Model-2")
+			"title": "Model-1" if data['model']=="open-ai" else "Model-2",
+			"summary": data['Model-1'] if data['model']=="open-ai" else data['Model-2'],
+			"type": "Summary generated by "+ ("Model-1" if data['model']=="open-ai" else "Model-2"),
+			"highlights": data["highlights"],
+			"duration": data["duration"]
+		} if "highlights" in data else {
+			"title": "Model-1" if data['model']=="open-ai" else "Model-2",
+			"summary": data['Model-1'] if data['model']=="open-ai" else data['Model-2'],
+			"type": "Summary generated by "+ ("Model-1" if data['model']=="open-ai" else "Model-2")
 		}
 	}
 
