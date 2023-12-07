@@ -8,7 +8,7 @@ django-cors-middleware
 djongo
 pymongo==3.13.0
 PyMuPDF
-EdgeGPT
+EdgeGPT==0.4.0
 gunicorn
 openai
 transformers
