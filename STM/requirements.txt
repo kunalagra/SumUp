@@ -11,3 +11,4 @@ PyMuPDF
 EdgeGPT
 gunicorn
 openai
+transformers
