@@ -10,3 +10,4 @@ pymongo==3.13.0
 PyMuPDF
 EdgeGPT
 gunicorn
+openai
