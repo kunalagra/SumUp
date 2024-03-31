@@ -1,73 +1,92 @@
-# SumUp - Summarizing TEAMS Meetings
+<h1 align="center">
+  <br>
+  <a href=""><img src="https://raw.githubusercontent.com/kunalagra/SumUp/main/stm-app/public/stm-logo.png" alt="SumUp" width="200"></a>
+  <br>
+  SumUp
+  <br>
+</h1>
 
-This application is designed to provide a comprehensive solution for summarizing and managing TEAMS meetings. This project aims to streamline the process of summarizing and extracting key insights from TEAMS meetings. The app also uses a companion Chrome Extension for Google Meet which provides Live transcript and ability to connect with the backend.
+<h4 align="center">Summarize Team Meetings</h4>
 
-## Table of Contents
+<p align="center">
+  <a href="#key-features">Key Features</a> •
+  <a href="#how-to-use">How To Use</a> •
+  <a href="#credits">Credits</a> •
+  <a href="#license">License</a>
+</p>
 
-- [Features](#features)
-- [Installation](#installation)
-- [Tech Stack](#tech-stack)
-- [License](#license)
+![screenshot](https://raw.githubusercontent.com/kunalagra/SumUp/main/stm-app/public/screenshot.png)
 
-## Features
+## Key Features
 
 1. **Automated Summarization**: Utilize GPT 3.5 turbo and Bing AI to generate Summaries.
-  
 2. **Export & Import**: Import PDFs/DOCX/TXT files and generate Summaries that can be exported as PDFs
-
 4. **User-friendly Dashboard**: Access a well-designed dashboard, providing an intuitive interface for managing and reviewing generated summaries.
-
-5. **Audio and Video**: Import Audio and Video files to generate Summary.
-
-6. **Collaborative**: Create custom teams of user and auto mail them summary to keep them in loop
-
+5. **Audio and Video**: Supports processing of Audio and Video files to generate Summary using Whisper Model.
+6. **Collaborative**: Create custom teams of user and auto mail summary to keep them in loop
 7. **Secure Authentication**: Implement secure user authentication to ensure data privacy and access control.
+8. **Extension**: A Google Chrome extension was developed that connects to backend to transcribe and store meet summarizes. 
 
-## Installation
 
-1. Clone the repository to your local machine:
 
-   ```bash
-   git clone https://github.com/yourusername/summarizing-teams-meetings.git
-   ```
+## How To Use
 
-2. Navigate to the backend folder and install Django dependencies:
+To clone and run this application, you'll need [Git](https://git-scm.com), [Node.js](https://nodejs.org/en/download/) (which comes with [npm](http://npmjs.com)) & [Python](https://www.python.org/) installed. From your command line:
 
-   ```bash
-   cd summarizing-teams-meetings/backend
-   pip install -r requirements.txt
-   ```
+```bash
+# Clone this repository
+$ git clone https://github.com/kunalagra/SumUp
 
-3. Configure the MongoDB connection in the Django settings.
+# Go into the repository
+$ cd SumUp
 
-4. Start the Django server:
 
-   ```bash
-   python manage.py runserver
-   ```
+# For frontend
+$ cd stm-app
 
-5. Navigate to the frontend folder and install React dependencies:
+# Install dependencies
+$ npm install
 
-   ```bash
-   cd summarizing-teams-meetings/frontend
-   npm install
-   ```
+# Rename .env.example to .env
+$ mv .env.example .env
 
-6. Start the React development server:
+# Run the app
+$ npm run dev
 
-   ```bash
-   npm start
-   ```
+# For Backend
+$ cd STM
 
-7. Access the application in your web browser at `http://localhost:3000`.
+# Install dependencies
+$ pip install -r requirements.txt
 
-## Tech Stack
+# Rename .env.example to .env
+$ mv .env.example .env
 
-- Backend: Django, MongoDB, GPT3.5, Bing AI, Whisper Models
-- Frontend: ReactJS
+# Run the server
+$ python manage.py runserver 
+```
+> [!IMPORTANT]  
+> Populate your .env keys with their respective values. 
+
+> [!NOTE]
+> If you're using Linux Bash for Windows, [see this guide](https://www.howtogeek.com/261575/how-to-run-graphical-linux-desktop-applications-from-windows-10s-bash-shell/) or use `node` from the command prompt.
+
+## Credits
+
+This software uses the following packages:
+
+- [Python](https://www.python.org/)
+- [React.JS](https://react.dev/)
+- [MongoDB](https://www.mongodb.com/)
+
+Built at Mastek's Deep Blue
+
+
+## You may also like...
+
+- [MediCall](https://github.com/kunalagra/MediCall) - An AIO Medical platform to connect doctors and patients
+- [Codegamy](https://github.com/kunalagra/codegamy) - A LeetCode clone
 
 ## License
 
-This project is licensed under the [GNU Affero General Public License v3.0](LICENSE.md). See the [LICENSE.md](LICENSE.md) file for details.
-
-Feel free to reach out to us if you have any questions or issues. Thank you for contributing to Summarizing TEAMS Meetings!
+AGPL-3
